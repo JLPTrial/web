@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { BrowserRouter, Routes, Route,NavLink } from "react-router";
 
 function App() {
 	const [message, setMessage] = useState('Carregando mensagem do backend...')
@@ -47,7 +48,7 @@ function App() {
 		<br/>
 		<div className="space-y-4 text-gray-800">
 		<p className="text-lg font-medium">
-		Agora, você consegue utilizar o Tailwind! 🎉
+		Agora, você consegue utilizar o Tailwind!
 		</p>
 
 		<p className="text-red-500 text-2xl font-semibold">
@@ -68,23 +69,87 @@ function App() {
 
 		<p className="text-sm text-gray-600">
 		(Para encontrar algo específico, pressione{" "}
-		<span className="px-2 py-1 bg-gray-100 rounded-md font-mono text-xs">
-		Ctrl + K
-		</span>{" "}
-		e pesquise rapidamente :D)
-			</p>
-		</div>
+		 <span className="px-2 py-1 bg-gray-100 rounded-md font-mono text-xs">
+		 Ctrl + K
+		 </span>{" "}
+		 e pesquise rapidamente :D)
+		 </p>
+		 </div>
 
-		<div className={`status-pill ${isOnline ? 'ok' : 'error'}`}>
-		<span className="dot" aria-hidden="true" />
-		<span>{isOnline ? 'Backend conectado' : 'Falha de conexao'}</span>
-		</div>
+		  <div>
+      <p className="text-lg font-medium">
+        Opa, React Router instalado! 
+      </p>
 
-		<p className="response-label">Resposta do backend</p>
-		<pre>{message}</pre>
-		</section>
-		</main>
-		</div>
+      {/* Navegação */}
+      <nav className="flex gap-4">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+              isActive
+                ? "bg-red-500 text-white"
+                : "text-gray-700 hover:bg-gray-100"
+            }`
+          }
+        >
+          Home
+        </NavLink>
+
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            `px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+              isActive
+                ? "bg-red-500 text-white"
+                : "text-gray-700 hover:bg-gray-100"
+            }`
+          }
+        >
+          Login
+        </NavLink>
+
+        <NavLink
+          to="/register"
+          className={({ isActive }) =>
+            `px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+              isActive
+                ? "bg-red-500 text-white"
+                : "text-gray-700 hover:bg-gray-100"
+            }`
+          }
+        >
+          Register
+        </NavLink>
+      </nav>
+
+      {/* Rotas */}
+      <Routes>
+        <Route
+          path="/"
+          element={<p className="text-base">Página inicial!!!!</p>}
+        />
+        <Route
+          path="/login"
+          element={<p className="text-base">Uau, login :O</p>}
+        />
+        <Route
+          path="/register"
+          element={<p className="text-base">Crie a sua conta!</p>}
+        />
+      </Routes>
+    </div>
+
+		 <div className={`status-pill ${isOnline ? 'ok' : 'error'}`}>
+		 <span className="dot" aria-hidden="true" />
+		 <span>{isOnline ? 'Backend conectado' : 'Falha de conexao'}</span>
+		 </div>
+
+		 <p className="response-label">Resposta do backend</p>
+		 <pre>{message}</pre>
+		 </section>
+		 </main>
+		 </div>
 	)
 }
 
