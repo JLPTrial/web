@@ -41,7 +41,7 @@ function App() {
       <main className="web-home">
         <section className="jlpt-card" aria-live="polite">
           <h1>JLPTrial Web</h1>
-          <p className="jlpt-subtitle">
+          <p className="text-sky-500">
             VOCÊ CONSEGUIU! Tá tudo certo agora!
           </p>
 
