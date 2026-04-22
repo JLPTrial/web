@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router'
 import Dashboard from './components/Dashboard.tsx'
+import LandingPage from './components/LandingPage.tsx'
 import Statistics from './components/Statistics.tsx'
 
 function App() {
 	const [message, setMessage] = useState('Carregando mensagem do backend...')
+	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false) // protótipo
 	const [error, setError] = useState('')
 
 	useEffect(() => {
@@ -48,7 +50,24 @@ function App() {
 					className='jlpt-card'
 					aria-live='polite'>
 					<div className='flex flex-col gap-2'>
-						<Dashboard />
+						<Routes>
+							<Route
+								path='/'
+								element={isUserLoggedIn ? <Dashboard /> : <LandingPage />}
+							/>
+							<Route
+								path='/stat'
+								element={<>Stat</>}
+							/>
+							<Route
+								path='/mock-test'
+								element={<>Mock test</>}
+							/>
+							<Route
+								path='/question'
+								element={<>Question</>}
+							/>
+						</Routes>
 					</div>
 				</section>
 			</main>
