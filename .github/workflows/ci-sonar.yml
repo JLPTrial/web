@@ -46,7 +46,9 @@ jobs:
 
       - name: Run build
         run: |
-          if npm run | grep -q " build"; then
+          if npm run | grep -q " build:ci"; then
+            npm run build:ci
+          elif npm run | grep -q " build"; then
             npm run build
           else
             echo "No build script found; skipping build"
