@@ -73,11 +73,16 @@ function App() {
 							/>
 							<Route
 								path="/login"
-								element={<LogIn/>}
+								/* 
+									Por enquanto a única coisa que está sendo feita é setar a variável.
+									Eu imagino que fazer login tenha muito mais operações envolvidas.
+								*/
+								element={<LogIn onLogin={() => setIsUserLoggedIn(true)} />}
 							/>
 							<Route
 								path="/signup"
-								element={<SignUp/>}
+								// Mesma coisa aqui.
+								element={<SignUp onSignup={() => setIsUserLoggedIn(true)}/>}
 							/>
 						</Routes>
 					</div>
