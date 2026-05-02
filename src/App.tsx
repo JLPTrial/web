@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route, NavLink } from 'react-router'
 import Dashboard from './components/Dashboard.tsx'
 import LandingPage from './components/LandingPage.tsx'
 import Statistics from './components/Statistics.tsx'
+import LogIn from './components/LogIn.tsx'
+import SignUp from './components/SignUp.tsx'
 
 function App() {
 	const [message, setMessage] = useState('Carregando mensagem do backend...')
@@ -42,6 +44,8 @@ function App() {
 					<a href='#'>Questões</a>
 					<a href='#'>Meu Progresso</a>
 					<a href='#'>Minha Conta</a>
+					<NavLink to="/signup">Registrar-se</NavLink>
+					<NavLink to="/login">Entrar</NavLink>
 				</nav>
 			</header>
 
@@ -66,6 +70,14 @@ function App() {
 							<Route
 								path='/question'
 								element={<>Question</>}
+							/>
+							<Route
+								path="/login"
+								element={<LogIn/>}
+							/>
+							<Route
+								path="/signup"
+								element={<SignUp/>}
 							/>
 						</Routes>
 					</div>
