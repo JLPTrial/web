@@ -57,7 +57,7 @@
 }
 
 .jlpt-card {
-  width: min(640px, 100%);
+  width: 100%;
   padding: clamp(20px, 3vw, 28px);
   border: 1px solid var(--line);
   border-radius: 20px;
