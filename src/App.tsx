@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router'
+import { Routes, Route, NavLink } from 'react-router'
 import Dashboard from './components/Dashboard.tsx'
 import LandingPage from './components/LandingPage.tsx'
 import Statistics from './components/Statistics.tsx'
@@ -32,6 +32,8 @@ function App() {
 	}, [])
 
 	const isOnline = !error
+	console.log("a api está: " + (isOnline ? 'online' : 'offline'));
+	console.log(message);
 
 	// Sim, pedi para o gepetto me gerar esse template, mim não saber fazer design : D
 	return (
@@ -61,7 +63,7 @@ function App() {
 							/>
 							<Route
 								path='/stat'
-								element={<>Stat</>}
+								element={<Statistics/>}
 							/>
 							<Route
 								path='/mock-test'
