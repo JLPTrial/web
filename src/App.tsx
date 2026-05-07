@@ -52,7 +52,11 @@ function App() {
 			</header>
 
 			<main className='web-home'>
-			<Routes>
+				<section
+					className='jlpt-card'
+					aria-live='polite'>
+					<div className='flex flex-col gap-2'>
+						<Routes>
 							<Route
 								path='/'
 								element={isUserLoggedIn ? <Dashboard /> : <LandingPage />}
@@ -83,6 +87,8 @@ function App() {
 								element={<SignUp onSignup={() => setIsUserLoggedIn(true)}/>}
 							/>
 						</Routes>
+					</div>
+				</section>
 			</main>
 		</div>
 	)
