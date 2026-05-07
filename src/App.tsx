@@ -6,11 +6,12 @@ import LandingPage from './components/LandingPage.tsx'
 import Statistics from './components/Statistics.tsx'
 import LogIn from './components/LogIn.tsx'
 import SignUp from './components/SignUp.tsx'
+import useUser from './hooks/useUser.tsx'
 
 function App() {
 	const [message, setMessage] = useState('Carregando mensagem do backend...')
-	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false) // protótipo
 	const [error, setError] = useState('')
+	const { user } = useUser()
 
 	useEffect(() => {
 		const endpoint = import.meta.env.VITE_API_URL
@@ -32,10 +33,9 @@ function App() {
 	}, [])
 
 	const isOnline = !error
-	console.log("a api está: " + (isOnline ? 'online' : 'offline'));
-	console.log(message);
+	console.log('a api está: ' + (isOnline ? 'online' : 'offline'))
+	console.log(message)
 
-	// Sim, pedi para o gepetto me gerar esse template, mim não saber fazer design : D
 	return (
 		<div className='app-shell'>
 			<header className='top-nav'>
@@ -46,24 +46,24 @@ function App() {
 					<a href='#'>Questões</a>
 					<a href='#'>Meu Progresso</a>
 					<a href='#'>Minha Conta</a>
-					<NavLink to="/signup">Registrar-se</NavLink>
-					<NavLink to="/login">Entrar</NavLink>
+					<NavLink to='/signup'>Registrar-se</NavLink>
+					<NavLink to='/login'>Entrar</NavLink>
 				</nav>
 			</header>
 
-			<main className='web-home'>
+			<main className='w-full mx-auto mt-5 max-w-6xl flex justify-center align-center'>
 				<section
-					className='jlpt-card'
+					className='mx-auto px-4'
 					aria-live='polite'>
 					<div className='flex flex-col gap-2'>
 						<Routes>
 							<Route
 								path='/'
-								element={isUserLoggedIn ? <Dashboard /> : <LandingPage />}
+								element={user.isLoggedIn ? <Dashboard /> : <LandingPage />}
 							/>
 							<Route
 								path='/stat'
-								element={<Statistics/>}
+								element={<Statistics />}
 							/>
 							<Route
 								path='/mock-test'
@@ -74,17 +74,14 @@ function App() {
 								element={<>Question</>}
 							/>
 							<Route
-								path="/login"
-								/* 
-									Por enquanto a única coisa que está sendo feita é setar a variável.
-									Eu imagino que fazer login tenha muito mais operações envolvidas.
-								*/
-								element={<LogIn onLogin={() => setIsUserLoggedIn(true)} />}
+								path='/login'
+								element={<LogIn onLogin={() => console.log('Vai logar!')} />}
 							/>
 							<Route
-								path="/signup"
-								// Mesma coisa aqui.
-								element={<SignUp onSignup={() => setIsUserLoggedIn(true)}/>}
+								path='/signup'
+								element={
+									<SignUp onSignup={() => console.log('Vai criar conta!')} />
+								}
 							/>
 						</Routes>
 					</div>
