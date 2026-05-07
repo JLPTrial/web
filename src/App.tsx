@@ -6,7 +6,7 @@ import LandingPage from './components/LandingPage.tsx'
 import Statistics from './components/Statistics.tsx'
 import LogIn from './components/LogIn.tsx'
 import SignUp from './components/SignUp.tsx'
-import useUser from './hooks/useUser.tsx'
+import useUser from './hooks/useUser.ts'
 
 function App() {
 	const [message, setMessage] = useState('Carregando mensagem do backend...')
