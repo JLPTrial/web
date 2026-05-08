@@ -6,6 +6,7 @@ import LandingPage from './components/LandingPage.tsx'
 import Statistics from './components/Statistics.tsx'
 import LogIn from './components/LogIn.tsx'
 import SignUp from './components/SignUp.tsx'
+import Question from './components/Question.tsx'
 import useUser from './hooks/useUser.ts'
 
 function App() {
@@ -71,7 +72,7 @@ function App() {
 							/>
 							<Route
 								path='/question'
-								element={<>Question</>}
+								element={<Question />}
 							/>
 							<Route
 								path='/login'
