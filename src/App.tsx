@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { Routes, Route, NavLink } from 'react-router'
+import { Routes, Route, NavLink, useNavigate } from 'react-router'
 import Dashboard from './components/Dashboard.tsx'
 import LandingPage from './components/LandingPage.tsx'
 import Statistics from './components/Statistics.tsx'
@@ -12,7 +12,13 @@ import useUser from './hooks/useUser.ts'
 function App() {
 	const [message, setMessage] = useState('Carregando mensagem do backend...')
 	const [error, setError] = useState('')
-	const { user } = useUser()
+	const { user, logout } = useUser()
+	const navigate = useNavigate()
+
+	function handleLogout() {
+		logout()
+		navigate('/')
+	}
 
 	useEffect(() => {
 		const endpoint = import.meta.env.VITE_API_URL
@@ -47,8 +53,21 @@ function App() {
 					<a href='#'>Questões</a>
 					<a href='#'>Meu Progresso</a>
 					<a href='#'>Minha Conta</a>
-					<NavLink to='/signup'>Registrar-se</NavLink>
-					<NavLink to='/login'>Entrar</NavLink>
+					{
+						user.isLoggedIn ?
+						(
+							<button onClick={handleLogout} className='cursor-pointer'>
+								Sair
+							</button>
+						)
+							: 
+						(
+							<>
+								<NavLink to='/signup'>Registrar-se</NavLink>
+								<NavLink to='/login'>Entrar</NavLink>
+							</>
+						)
+					}
 				</nav>
 			</header>
 
@@ -76,13 +95,11 @@ function App() {
 							/>
 							<Route
 								path='/login'
-								element={<LogIn onLogin={() => console.log('Vai logar!')} />}
+								element={<LogIn />}
 							/>
 							<Route
 								path='/signup'
-								element={
-									<SignUp onSignup={() => console.log('Vai criar conta!')} />
-								}
+								element={<SignUp />}
 							/>
 						</Routes>
 					</div>
