@@ -3,6 +3,18 @@
   --text: #111;
   --muted: #555;
   --line: #e8e8e8;
+  --nav-border: #ececec;
+  --link-color: #4a4a4a;
+}
+
+/* Quando a nossa classe dark for ativada pelo botão, estas cores assumem o controle */
+.dark {
+  --bg: #111827;      /* Fundo escuro padrão (Tailwind gray-900) */
+  --text: #f9fafb;    /* Texto claro (Tailwind gray-50) */
+  --muted: #9ca3af;   /* Texto secundário (Tailwind gray-400) */
+  --line: #374151;    /* Linhas e bordas escuras (Tailwind gray-700) */
+  --nav-border: #1f2937; /* Borda da nav escura */
+  --link-color: #d1d5db; /* Links mais legíveis no escuro */
 }
 
 #root {
@@ -17,15 +29,17 @@
   background: var(--bg);
   color: var(--text);
   text-align: left;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .top-nav {
   height: 64px;
   padding: 0 28px;
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid var(--nav-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: border-color 0.3s ease;
 }
 
 .brand {
@@ -40,9 +54,10 @@
 }
 
 .top-links a {
-  color: #4a4a4a;
+  color: var(--link-color);
   font-size: 0.9rem;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .top-links a:hover {
