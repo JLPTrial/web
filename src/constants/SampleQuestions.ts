@@ -201,73 +201,52 @@ export const listeningQuestions: QuestionModel[] = [
 export const readingQuestions: QuestionModel[] = [
 	{
 		id: 1,
-		question_type: "reading",
-		question_text: "ねこは、いまどこにいますか。",
+		question_type: 'reading',
+		question_text: 'ねこ　は、　いま　どこ　に　います　か。',
 		statement: {
-			question_command: "つぎの文章を読んで、質問に答えてください。答えは、１・２・３・４から、いちばんいいものを一つえらんでください。",
+			question_command: 'つぎ　の　文章[ぶんしょう]　を　読[よ]んで、　質問[しつもん]　に　答[こた]えてください。　答[こた]え　は、　１・２・３・４　から、　いちばん　いい　もの　を　一[ひと]つ　えらんでください。',
 		},
 		alternatives: {
-			alternative_1: "１",
-			alternative_2: "２",
-			alternative_3: "３",
-			alternative_4: "４",
+			alternative_1: '１',
+			alternative_2: '２',
+			alternative_3: '３',
+			alternative_4: '４',
 			correct_alternative: 1
 		},
 		media: {
 			audio_file_path: null,
-			image_file_path: "/sampleQuestions/images/reading/JT4Y/R12-Q1.png",
-			text_content: "Ａ：ねこは、どこへ行きましたか。\nＢ：ねこ…。あ、いすの上でねていますよ。\nＡ：ほんとだ。すこしまえはつくえの下でねていましたが…。"
+			image_file_path: '/sampleQuestions/images/reading/JT4Y/R12-Q1.png',
+			text_content: 'Ａ：ねこ　は、　どこ　へ　行[い]きました　か。\nＢ：ねこ　…。　あ、　いす　の　上[うえ]　で　ねています　よ。\nＡ：ほんとう　だ。　すこし　まえ　は　つくえ　の　下[した]　で　ねていましたが　…。'
 		},
-		tags: [],
+		tags: ['Extração de informação', 'Entendimento de Contexto (Textos curtos)'],
   	},
 	{
 		id: 2,
 		question_type: 'reading',
-		question_text: 'きのう買ったかさはどんなかさですか。',
+		question_text: 'きのう　買[か]った　かさ　は　どんな　かさ　です　か。',
 		statement: {
-			question_command: 'つぎの文章を読んで、質問に答えてください。答えは、１・２・３・４から、いちばんいいものを一つえらんでください。',
+			question_command: 'つぎ　の　文章[ぶんしょう]　を　読[よ]んで、　質問[しつもん]　に　答[こた]えてください。　答[こた]え　は、　１・２・３・４　から、　いちばん　いい　もの　を　一[ひと]つ　えらんでください。',
 		},
 		alternatives: {
-			alternative_1: '高くておもいです。',
-			alternative_2: '安いですが、おもいです。',
-			alternative_3: 'かるくてきれいです。',
-			alternative_4: 'きれいですが、高いです。',
+			alternative_1: '高[たか]くて　おもいです。',
+			alternative_2: '安[やす]いですが、　おもいです。',
+			alternative_3: 'かるくて　きれい　です。',
+			alternative_4: 'きれい　ですが、　高[たか]いです。',
 			correct_alternative: 3,
 		},
 		media: {
 			audio_file_path: null,
 			image_file_path: null,
-			text_content: 'Ａ：きのうかさを買いました。\nＢ：あ、そのかさですか。きれいなかさですね。高かったですか。\nＡ：いいえ。きょねん買ったのは高くておもかったですが、このかさはかるくていいです。',
+			text_content: 'Ａ：きのう　かさ　を　買[か]いました。\nＢ：あ、　その　かさ　です　か。　きれいな　かさ　です　ね。　高[たか]かったです　か。\nＡ：いいえ。　きょねん　買[か]った　の　は　高[たか]くて　おもかったですが、　この　かさ　は　かるくて　いいです。',
 		},
-		tags: [],
+		tags: ['Extração de informação', 'Entendimento de Contexto (Textos curtos)'],
 	},
 	{
 		id: 3,
 		question_type: 'reading',
-		question_text: '（ア）には何を入れますか。',
+		question_text: '『しつもん』　（ア）　に　は　何[なに]　を　入[い]れます　か。',
 		statement: {
-			question_command: '（ア） から （ウ） に　なにを　いれますか。１・２・３・４から　いちばん　いい　ものを　ひとつ　えらんで　ください。',
-		},
-		alternatives: {
-			alternative_1: 'とりますか',
-			alternative_2: 'とりましょうか',
-			alternative_3: 'とっていますか',
-			alternative_4: 'とってくださいませんか',
-			correct_alternative: 4,
-		},
-		media: {
-			audio_file_path: null,
-			image_file_path: null,
-			text_content: 'パク：すみません、あの上にある本を見たいです。（ ア ）。\n店の人：はい、わかりました。（ イ ）。\nパク：あれです。あの『にほんご』と書いてある本です。\n店の人：これですか。\nパク：いいえ、かんじじゃなくてひらがなで『にほんご』と書いてある本です。\n店の人：ああ、これですか。\nパク：はい、それです。それはいくらですか。\n店の人：３０００円です。\nパク：３０００円ですか。ちょっと高いですね。（ウ）すみません。\n店の人：いいえ。またどうぞ。',
-		},
-		tags: [],
-	},
-	{
-		id: 13,
-		question_type: 'reading',
-		question_text: '『しつもん』 （ア）には何を入れますか。',
-		statement: {
-			question_command: '（ア） から （イ） に　なにを　いれますか。１・２・３・４から　いちばん　いい　ものを　ひとつ　えらんで　ください。',
+			question_command: '（ア）　から　（イ）　に　なに　を　いれます　か。　１・２・３・４　から　いちばん　いい　もの　を　ひとつ　えらんでください。',
 		},
 		alternatives: {
 			alternative_1: 'そうでした',
@@ -279,16 +258,16 @@ export const readingQuestions: QuestionModel[] = [
 		media: {
 			audio_file_path: null,
 			image_file_path: null,
-			text_content: 'ヤン：もそもし、大山さんですか。ヤンです。\n大山：アメリカにいるヤンさん？おげんきですか。\nヤン：はい。げんきです。大山さん、おたんじょうび、おめでとうございます。\n大山：ああ、ヤンさん、わたしのたんじょうびをまだおぼえていましたか。ありがとうございます。\nヤン：もちろんです。でもことしはいっしょにたんじょうびのパーティーができませんでしたね。もうパーティーをしましたか。\n大山：ええ。きのうかいしゃのともだちとケーキを食べたり、ダンスをしたりしてたのしかったですよ。あしたはかぞくとレストランへ行きます。\nヤン：（ア）\n大山：来月しごとでアメリカへ行きますからヤンさんにもいちどあいたいですね。\nヤン：ほんとうですか。（イ）そのときは電話をください。',
+			text_content: 'ヤン：もし　もし、　大山[おおやま]さん　です　か。　ヤン　です。\n大山[おおやま]：アメリカ　に　いる　ヤンさん？　お　げんき　です　か。\nヤン：はい。　げんき　です。　大山[おおやま]さん、　おたんじょうび、　おめでとう　ございます。\n大山[おおやま]：ああ、　ヤンさん、　わたし　の　たんじょうび　を　まだ　おぼえていました　か。　ありがとう　ございます。\nヤン：もちろん　です。　でも　ことし　は　いっしょに　たんじょうび　の　パーティー　が　できませんでした　ね。　もう　パーティー　を　しました　か。\n大山[おおやま]：ええ。　きのう　かいしゃ　の　ともだち　と　ケーキ　を　食[た]べたり、　ダンス　を　したり　して　たのしかったです　よ。　あした　は　かぞく　と　レストラン　へ　行[い]きます。\nヤン：（ア）\n大山[おおやま]：来月[らいげつ]　しごと　で　アメリカ　へ　行[い]きますから、　ヤンさん　に　も　いちど　あいたいです　ね。\nヤン：ほんとう　です　か。　（イ）　その　とき　は　電話[でんわ]　を　ください。',
 		},
-		tags: [],
+		tags: ['Entendimento de Contexto (Textos longos)'],
 	},
 	{
 		id: 17,
 		question_type: 'reading',
-		question_text: '「１」にはなにをいれますか。',
+		question_text: '「１」　に　は　なに　を　いれます　か。',
 		statement: {
-			question_command: '「１」 から 「４」 に　なにを　いれますか。１・２・３・４から　いちばん　いい　ものを　ひとつ　えらんで　ください。',
+			question_command: '「１」　から　「４」　に　なに　を　いれます　か。　１・２・３・４　から　いちばん　いい　もの　を　ひとつ　えらんでください。',
 		},
 		alternatives: {
 			alternative_1: 'おもしろい',
@@ -300,30 +279,30 @@ export const readingQuestions: QuestionModel[] = [
 		media: {
 			audio_file_path: null,
 			image_file_path: null,
-			text_content: '「うちでこの本をよんでください。すこしむずかしいですが、とても「１」ですから、がんばってください。知らない「２」がはいっていますが、はじめはじしょをひかないでぜんぶ「３」ください。つぎにじしょをひきながらもう「４」よんでください。いいですか。２かいよむんですよ。」',
+			text_content: '「うち　で　この　本[ほん]　を　よんでください。　すこし　むずかしいですが、　とても　「１」　ですから、　がんばってください。　知[し]らない　「２」　が　はいっていますが、　はじめ　は　じしょ　を　ひかないで　ぜんぶ　「３」　ください。　つぎ　に　じしょ　を　ひきながら　もう　「４」　よんでください。　いいです　か。　２かい　よむんです　よ。」',
 		},
-		tags: [],
+		tags: ['Entendimento de Contexto (Textos curtos)'],
 	},
 	{
 		id: 32,
 		question_type: 'reading',
-		question_text: '([blank]) には何を入れますか。',
+		question_text: '([blank])　に　は　何[なに]　を　入[い]れます　か。',
 		statement: {
-			question_command: '([blank]) に　なにを　いれますか。１・２・３・４から　いちばん　いい　ものを　ひとつ　えらんで　ください。',
+			question_command: '([blank])　に　なに　を　いれます　か。　１・２・３・４　から　いちばん　いい　もの　を　ひとつ　えらんでください。',
 		},
 		alternatives: {
-			alternative_1: '本は２９日、ざっしは２２日です。',
-			alternative_2: '本は２２日、ざっしは２９日です。',
-			alternative_3: '本もざっしも２９日です。',
-			alternative_4: '本もざっしも２２日です。',
+			alternative_1: '本[ほん]　は　２９日[にち]、　ざっし　は　２２日[にち]　です。',
+			alternative_2: '本[ほん]　は　２２日[にち]、　ざっし　は　２９日[にち]　です。',
+			alternative_3: '本[ほん]　も　ざっし　も　２９日[にち]　です。',
+			alternative_4: '本[ほん]　も　ざっし　も　２２日[にち]　です。',
 			correct_alternative: 1,
 		},
 		media: {
 			audio_file_path: null,
 			image_file_path: null,
-			text_content: '学生：すみません。この本をかりたいです。\nとしょかんの人：この学校の学生ですか。\n学生：はい。\nとしょかんの人：では、はじめにこのかみに名前とじゅうしょと電話ばんごうを書いてぐださい。\n学生：はい。\nとしょかんの人：書きましたか。\n学生：はい。\nとしょかんの人：これはじしょですね。としょかんの中でつかってぐださい。\n学生：はい、わかりました。では、この７さつをかしてぐださい。\nとしょかんの人：ああ、学生は４さつまでです。\n学生：そうですか。では、この３さつはかりません。\nとしょかんの人：わかりました。では、こちらの本は２しゅうかん、ざっしは1しゅうかんでかえしてぐださい。きょうは１５日ですから、([blank])\n学生：はい、わかりました。',
+			text_content: '学生[がくせい]：すみません。　この　本[ほん]　を　かりたいです。\nとしょかん　の　人[ひと]：この　学校[がっこう]　の　学生[がくせい]　です　か。\n学生[がくせい]：はい。\nとしょかん　の　人[ひと]：では、　はじめ　に　この　かみ　に　名前[なまえ]　と　じゅうしょ　と　電話[でんわ]　ばんごう　を　書[か]いて　ください。\n学生[がくせい]：はい。\nとしょかん　の　人[ひと]：書[か]きました　か。\n学生[がくせい]：はい。\nとしょかん　の　人[ひと]：これ　は　じしょ　です　ね。　としょかん　の　中[なか]　で　つかって　ください。\n学生[がくせい]：はい、　わかりました。　では、　この　７さつ　を　かして　ください。\nとしょかん　の　人[ひと]：ああ、　学生[がくせい]　は　４さつ　までです。\n学生[がくせい]：そう　です　か。　では、　この　３さつ　は　かりません。\nとしょかん　の　人[ひと]：わかりました。　では、　こちら　の　本[ほん]　は　２しゅうかん、　ざっし　は　１しゅうかん　で　かえしてください。　きょう　は　１５日[にち]　ですから、　([blank])\n学生[がくせい]：はい、　わかりました。',
 		},
-		tags: [],
+		tags: ['Entendimento de Contexto (Textos longos)'],
 	},
 ]
 
