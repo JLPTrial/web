@@ -50,7 +50,7 @@ function App() {
 				<nav
 					className='top-links'
 					aria-label='Navegacao principal'>
-					<a href='#'>Questões</a>
+					<NavLink to='/question'>Questões</NavLink>
 					<a href='#'>Meu Progresso</a>
 					<a href='#'>Minha Conta</a>
 					{

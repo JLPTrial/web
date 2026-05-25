@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Navigate, useNavigate } from 'react-router'
+import useUser from '../hooks/useUser.ts'
 
 import {
 	grammarQuestions,
@@ -8,10 +10,26 @@ import {
 	vocabularyQuestions
 } from '../constants/SampleQuestions'
 
+
 export default function Question() {
+
+	const navigate = useNavigate()
+
+	const { user } = useUser()
+
+	// impede o usuário de acessar esta página se não estiver logado (eu imagino que isso aqui mude quando tivermos autenticação de fato)
+	if (!user.isLoggedIn) { 
+		return(<Navigate to='/login' replace />)
+	}
 
 	// 'definidor' da questão atual em que o usuário se encontra
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+
+	// será verdadeiro se o usuário estiver na última questão do batch de questões
+	const isLastQuestion = currentQuestionIndex + 1 >= listeningQuestions.length
+
+	// 'definidor' do estado do batch de questões (este estado será verdadeiro quando o user clicar no botão 'finalizar' na última questão do batch)
+	const [isQuestionsFinished, setIsQuestionsFinished] = useState(false)
 
 	// 'definidor' da alternativa atualmente selecionada pelo usuário na questão atual
 	const [selectedAlternative,  setSelectedAlternative]  = useState<number | null>(null)
@@ -49,12 +67,36 @@ export default function Question() {
 
 	function nextQuestion() {
 		setCurrentQuestionIndex((previous) => previous + 1)
-	
+
 		setSelectedAlternative(null)  // define que nenhuma alternativa está selecionada
 		setAnswerStatus(null)         // define que a questão ainda não foi respondida
 	}
 
-    
+
+	function finishQuestions() {
+		setIsQuestionsFinished(true)
+	}
+
+
+	function handleQuestionsFinished() {
+		navigate('/')
+	}
+
+
+	// quando usuário terminar o batch de questões, ao invés de mostrar a próxima questão (que não existe), mostre o seguinte:
+	if(isQuestionsFinished) {
+		return (
+			<div className='flex flex-col gap-4'>
+				<p>Questões finalizadas!</p>
+
+				<button onClick={ handleQuestionsFinished }>
+					Voltar ao Dashboard
+				</button>
+			</div>
+		)
+	}
+
+	// mostrando a questão
 	return(
 		<div className='space-y-5'>
 			<div className='bg-yellow-500 rounded-md p-2'>
@@ -126,7 +168,13 @@ export default function Question() {
 					</button>
 
 					{/* condição para mostrar o botão que leva para a próxima questão */}
-					{answerStatus !== null && (<button onClick={nextQuestion}>Próxima Questão</button>)}
+					{
+						answerStatus !== null && (
+							<button onClick={isLastQuestion ? finishQuestions : nextQuestion}>
+								{isLastQuestion ? 'Finalizar' : 'Próxima Questão'}
+							</button>
+						)
+					}
 				</div>
 
 
