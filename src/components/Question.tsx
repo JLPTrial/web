@@ -3,11 +3,7 @@ import { Navigate, useNavigate } from 'react-router'
 import useUser from '../hooks/useUser.ts'
 
 import {
-	grammarQuestions,
 	listeningQuestions,
-	readingQuestions,
-	kanjiQuestions,
-	vocabularyQuestions
 } from '../constants/SampleQuestions'
 
 
@@ -16,11 +12,6 @@ export default function Question() {
 	const navigate = useNavigate()
 
 	const { user } = useUser()
-
-	// impede o usuário de acessar esta página se não estiver logado (eu imagino que isso aqui mude quando tivermos autenticação de fato)
-	if (!user.isLoggedIn) { 
-		return(<Navigate to='/login' replace />)
-	}
 
 	// 'definidor' da questão atual em que o usuário se encontra
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -65,7 +56,8 @@ export default function Question() {
 
 		const isCorrect = selectedAlternative === currentQuestion.alternatives.correct_alternative
 		setAnswerStatus(isCorrect)
-		isCorrect ? showPopup("Resposta correta!") : showPopup("Resposta incorreta!") ;
+		const message = isCorrect ? "Resposta correta!" : "Resposta incorreta!"
+		showPopup(message)
 	}
 
 
@@ -92,6 +84,13 @@ export default function Question() {
 		setTimeout(() => { setPopup(null); }, duration);
 	}
 
+	// voltar para o topo da janela quando o usuário avançar para a próxima questão
+	useEffect(() => {window.scrollTo({ top: 0 }); }, [currentQuestionIndex])
+
+	// impede o usuário de acessar esta página se não estiver logado (eu imagino que isso aqui mude quando tivermos autenticação de fato)
+	if (!user.isLoggedIn) { 
+		return(<Navigate to='/login' replace />)
+	}
 
 	// quando usuário terminar o batch de questões, ao invés de mostrar a próxima questão (que não existe), mostre o seguinte:
 	if(isQuestionsFinished) {
@@ -120,9 +119,6 @@ export default function Question() {
 			</div>
 		)
 	}
-
-	// voltar para o topo da janela quando o usuário avançar para a próxima questão
-	useEffect(() => {window.scrollTo({ top: 0 }); }, [currentQuestionIndex])
 
 	// mostrando a questão
 	return(
