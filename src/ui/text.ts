@@ -1,0 +1,59 @@
+import { cva } from "class-variance-authority"
+
+export const text = cva(
+  `
+  text-black
+  leading-relaxed
+  tracking-normal
+  `,
+  {
+    variants: {
+      size: {
+        xs: "text-xs",
+        sm: "text-sm",
+        md: "text-base",
+        lg: "text-lg",
+        xl: "text-xl",
+        "2xl": "text-2xl",
+      },
+
+      weight: {
+        light: "font-light",
+        normal: "font-normal",
+        medium: "font-medium",
+        semibold: "font-semibold",
+        bold: "font-bold",
+      },
+
+      tone: {
+	jlpt:"text-red-600",
+        default: "text-white",
+        muted: "text-stone-300",
+        subtle: "text-stone-400",
+        danger: "text-red-500",
+        success: "text-green-500",
+        warning: "text-yellow-400",
+        active: "text-red-300",
+      },
+
+      align: {
+        left: "text-left",
+        center: "text-center",
+        right: "text-right",
+      },
+
+      truncate: {
+        true: "truncate",
+        false: "",
+      },
+    },
+
+    defaultVariants: {
+      size: "md",
+      weight: "normal",
+      tone: "default",
+      align: "left",
+      truncate: false,
+    },
+  }
+)
