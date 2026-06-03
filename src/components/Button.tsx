@@ -13,6 +13,7 @@ export function Button({
   icon,
   children,
   className,
+  direction,
   ...props
 }: ButtonProps) {
   return (
@@ -22,6 +23,7 @@ export function Button({
         tone,
         size,
         className,
+	direction,
       })}
       {...props}
     >
