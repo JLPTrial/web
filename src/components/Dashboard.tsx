@@ -32,10 +32,9 @@ function StatisticsDisplay({type}) {
 
 }
 
-
 function StatisticsNavButton({active2, buttonId, setActive2, text}) {
 	return (
-		<Button onClick={() => setActive2(buttonId)}
+		<Button tone={active2==buttonId? "active":"default"} onClick={() => setActive2(buttonId)}
 			id={buttonId}>
 			{text}
 		</Button>
@@ -48,15 +47,9 @@ function QuestionsButton({ link, text, alignment }) {
 		<Link to={link}>
 			<Button
 				size="lg"
-				className={`
-					w-full
-					${
-						alignment === 'left'
-							? 'rounded-tr-2xl rounded-bl-2xl'
-							: '!rounded-br-2xl !rounded-tl-2xl !rounded-tr-none !rounded-bl-none'
-					}
-				`}
-			>
+				direction={alignment}			
+				className="w-full"
+				>
 				{text}
 			</Button>
 		</Link>
