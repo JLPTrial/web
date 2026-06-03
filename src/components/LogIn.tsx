@@ -87,9 +87,9 @@ function LoginButton() {
     }
 
     return (
-      <Button             onClick={handleLogin}>
-        Entrar
-      </Button>
+        <Button onClick={handleLogin}>
+            Entrar
+        </Button>
     );
 }
 
