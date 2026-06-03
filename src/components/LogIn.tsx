@@ -1,10 +1,12 @@
 import useUser from '../hooks/useUser.ts'
 import { useNavigate } from 'react-router'
+import { Button } from './Button.tsx';
+import { text } from '../ui/text.ts';
 
 function LoginHeader() {
     return (
         <div className="flex flex-col justify-center text-left w-full sm:max-w-[700px] min-h-[250px] p-5 self-center">
-            <div className='font-bold text-5xl p-1 self-center'>Entrar</div>
+            <div className={text({tone:"jlpt",size:"5xl",weight:"semibold",align:"center" })}>Entrar</div>
             <div className='p-2 self-center'>Entre na sua conta JLPTrial</div>
         </div>
     );
@@ -85,22 +87,9 @@ function LoginButton() {
     }
 
     return (
-      <button className="bg-black
-            shadow-2xl
-            text-white
-            rounded-lg
-            self-center
-            px-10
-            py-3
-            my-5
-            text-l
-            cursor-pointer
-            hover:bg-[rgb(255,0,0)]
-            transition-all
-            "
-            onClick={handleLogin}>
+      <Button             onClick={handleLogin}>
         Entrar
-      </button>
+      </Button>
     );
 }
 

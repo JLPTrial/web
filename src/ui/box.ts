@@ -6,7 +6,7 @@ export const box = cva(
   text-base
   text-shadow-md
   shadow-md shadow-stone-400
-  bg-red-500 text-shadow-red-600
+  bg-red-600 text-shadow-red-700
   font-bold
   sm:font-medium
   m-1

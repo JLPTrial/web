@@ -5,6 +5,7 @@ import useUser from '../hooks/useUser.ts'
 import {
 	listeningQuestions,
 } from '../constants/SampleQuestions'
+import { box } from '../ui/box.ts'
 
 
 export default function Question() {
@@ -133,8 +134,7 @@ export default function Question() {
 					{currentQuestion.tags.map((tag, index) => (
 						<div
 							key={index}
-							className='text-white text-base px-3 p-1 text-shadow-md shadow shadow-stone-400 bg-red-500 text-shadow-red-600 rounded-tl-2xl rounded-br-2xl sm:rounded-tl-none sm:rounded-tr-2xl sm:rounded-bl-2xl sm:rounded-br-none'
-						>
+							className={box()}						>
 							{tag}
 						</div>
 					))}
@@ -233,7 +233,7 @@ export default function Question() {
 				{/* BOTÃO - VERIFICAR RESPOSTA */}
 				<div className='flex justify-between gap-3 m-2 mt-5'>
 					{(answerStatus === null) ? <button
-						className="
+						className={`
 							bg-black
 							shadow-2xl
 							text-white
@@ -246,7 +246,7 @@ export default function Question() {
 							cursor-pointer
 							hover:bg-[rgb(255,0,0)]
 							transition-all
-						"
+						`}
 
 						onClick={validateAnswer}                                          // botão para validar resposta (e consequentemente ele também marca a questão como respondida)
 						disabled={selectedAlternative === null || answerStatus !== null}  // condição para desabilitação do botão
