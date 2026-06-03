@@ -1,5 +1,7 @@
 
 import { useState } from 'react'
+import {Button} from "./Button.tsx"
+import {Link} from "react-router"
 
 function StatDisplayBox({title, data, type}) {
     return (
@@ -30,36 +32,27 @@ function StatisticsDisplay({type}) {
 
 }
 
-
 function StatisticsNavButton({active2, buttonId, setActive2, text}) {
 	return (
-		<button onClick={() => setActive2(buttonId)}
-			id={buttonId}
-			className={`${active2 === buttonId?
-			'bg-red-700 text-shadow-red-800 rounded-tl-2xl rounded-tr-none rounded-bl-none rounded-br-2xl scale-105' :
-			'bg-red-500 text-shadow-red-600 rounded-tl-2xl rounded-br-2xl sm:rounded-tl-none sm:rounded-tr-2xl sm:rounded-bl-2xl sm:rounded-br-none hover:bg-red-600 hover:scale-105'}
-			cursor-pointer transition-all duration-300
-			text-white text-base font-bold sm:text-sm sm:font-medium text-shadow-md 
-			shadow-md shadow-stone-400
-			p-1 m-1 h-[60px] sm:h-[40px]`}>
+		<Button tone={active2==buttonId? "active":"default"} onClick={() => setActive2(buttonId)}
+			id={buttonId}>
 			{text}
-		</button>
+		</Button>
 	);
 }
 
 
-function QuestionsButton ({link, text, alignment}) {
+function QuestionsButton({ link, text, alignment }) {
 	return (
-		<a href={link}
-		className={`flex items-center justify-center h-[60px]
-			bg-red-600 text-white text-center font-bold text-shadow-md text-shadow-red-700
-			${alignment === 'left' ?
-			'rounded-tr-2xl rounded-bl-2xl' :
-			'rounded-tr-2xl rounded-bl-2xl sm:rounded-tr-none sm:rounded-bl-none sm:rounded-tl-2xl sm:rounded-br-2xl'}
-			shadow-lg shadow-stone-400
-			cursor-pointer hover:scale-105 transition-all duration-300`}>
-			{text}
-		</a>
+		<Link to={link}>
+			<Button
+				size="lg"
+				direction={alignment}			
+				className="w-full"
+				>
+				{text}
+			</Button>
+		</Link>
 	);
 }
 
