@@ -14,7 +14,7 @@ function SignupHeader() {
 
 function SignupForm() {
     return (
-        <div className="flex flex-col justify-center gap-4">
+        <div className="flex flex-col justify-center items-center gap-4">
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                         Endereço de email
