@@ -32,12 +32,40 @@ export const box = cva(
                                 md: "h-[40px] px-3 text-sm",
                                 lg: "h-[56px] px-4 text-base",
                         },
+                        radius: {
+                                normal: ` rounded-tl-2xl rounded-br-2xl `,
+                                large: ` rounded-tl-[64px] rounded-br-[64px] `,
+                                hero: ` rounded-tl-[120px] rounded-br-[120px] `,
+                        }
                 },
                 defaultVariants: {
-			direction:"left",
+                        direction: "left",
                         interactive: false,
                         tone: "default",
                         size: "md",
                 },
+                compoundVariants: [
+                        {
+                                direction: "left",
+                                radius: "normal",
+                                class: ` rounded-tl-none rounded-br-none rounded-tr-2xl rounded-bl-2xl `,
+                        },
+                        {
+                                direction: "right",
+                                radius: "normal",
+                                class: ` rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none `,
+                        },
+
+                        {
+                                direction: "left",
+                                radius: "hero",
+                                class: ` rounded-tl-none rounded-br-none rounded-tr-[120px] rounded-bl-[120px] `,
+                        },
+                        {
+                                direction: "right",
+                                radius: "hero",
+                                class: ` rounded-tl-[120px] rounded-br-[120px] rounded-tr-none rounded-bl-none `,
+                        },
+                ]
         }
 )
