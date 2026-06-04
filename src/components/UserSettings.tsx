@@ -43,7 +43,7 @@ export default function UserSettings() {
                             !text-gray-900 dark:!text-gray-100
                         "
                         type="text"
-                        defaultValue={user.username || ''}
+                        defaultValue={user.name || ''}
                         placeholder="Seu nome de usuário"
                     />
                 </div>
