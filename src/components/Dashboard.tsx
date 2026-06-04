@@ -1,4 +1,4 @@
-
+import { useNavigate } from 'react-router'
 import { useState } from 'react'
 import {Button} from "./Button.tsx"
 import {Link} from "react-router"
@@ -18,6 +18,7 @@ function StatDisplayBox({title, data, type}) {
 }
 
 function StatisticsDisplay({type}) {
+	const navigate = useNavigate();
 	return (
 		<div className='max-w-[300px] sm:max-w-[1000px] flex flex-col items-center'>
 			<div className='grid grid-cols-1 sm:grid-cols-2 gap-1'>
@@ -26,7 +27,7 @@ function StatisticsDisplay({type}) {
 				<StatDisplayBox title="Porcentagem de acertos hoje" data="80%" type={type} />
 				<StatDisplayBox title="Questões respondidas hoje" data="10" type={type} />
 			</div>
-			<button className='m-2 self-end p-1 hover:scale-110 cursor-pointer font-bold transition-all duration-300'>Ver mais ➝</button>
+			<button onClick={() => navigate('/stat')} className='m-2 self-end p-1 hover:scale-110 cursor-pointer font-bold transition-all duration-300'>Ver mais ➝</button>
 		</div>
 	);
 
@@ -59,8 +60,8 @@ function QuestionsButton({ link, text, alignment }) {
 function MainButton({title, active1, setActive1}) {
 	return (
 		<button onClick={() => setActive1(!active1)}
-		className="border-b-4 border-red-600 py-4 rounded-xl
-			shadow-stone-400 shadow-[0_0_20px_-5px_rgba(230,230,230,0.1)]
+		className="border-b-4 border-red-600 py-4 rounded-xl dark:border-t-2 dark:border-x-2 dark:border-t-gray-700 dark:border-x-gray-700
+			shadow-stone-400 shadow-[0_0_20px_-5px_rgba(230,230,230,0.1)] dark:shadow-none
 			h-[70px] my-1 sm:my-10 w-full
 			cursor-pointer
 			flex items-center justify-start">
@@ -109,12 +110,12 @@ function QuestionBox({title, revision}) {
 			<MainButton title={title} active1={active1} setActive1={setActive1} />
 			<div className={`mt-3 grid grid-cols-1 sm:grid-cols-2 gap-5 transition-all duration-500
 				${active1 ? "max-h-[1000px] opacity-100" : "max-h-[0px] pointer-events-none opacity-0"}`}>
-				<QuestionsButton link={revision ? "/" : "/login"} text="Kanji/Vocabulário" alignment="left" />
-				<QuestionsButton link={revision ? "/" : "/login"} text="Leitura" alignment="right" />
-				<QuestionsButton link={revision ? "/" : "/login"} text="Gramática" alignment="left" />
-				<QuestionsButton link={revision ? "/" : "/login"} text="Escuta" alignment="right" />
-				<QuestionsButton link={revision ? "/" : "/login"} text="Tudo" alignment="left" />
-				<QuestionsButton link={revision ? "/" : "/login"} text="Continuar de onde parei"  alignment="right" />
+				<QuestionsButton link={revision ? "/question" : "/question"} text="Kanji/Vocabulário" alignment="left" />
+				<QuestionsButton link={revision ? "/question" : "/question"} text="Leitura" alignment="right" />
+				<QuestionsButton link={revision ? "/question" : "/question"} text="Gramática" alignment="left" />
+				<QuestionsButton link={revision ? "/question" : "/question"} text="Escuta" alignment="right" />
+				<QuestionsButton link={revision ? "/question" : "/question"} text="Tudo" alignment="left" />
+				<QuestionsButton link={revision ? "/question" : "/question"} text="Continuar de onde parei"  alignment="right" />
 				
 			</div>
         </div>
@@ -128,8 +129,7 @@ function MockTestBox({title}) {
 			<MainButton title={title} active1={active1} setActive1={setActive1} />
 			<div className={`mt-3 grid grid-cols-1 sm:grid-cols-2 gap-5 transition-all duration-500 ease-out
 			${active1 ? "max-h-[100px] opacity-100" : "max-h-[0px] pointer-events-none opacity-0"}`}>
-				<QuestionsButton link="/" text="Novo simulado" alignment="left" />
-				<QuestionsButton link="/" text="Refazer simulado" alignment="right" />	
+				<QuestionsButton link="/mock-test" text="Novo simulado" alignment="left" />
 			</div>
         </div>
     );
