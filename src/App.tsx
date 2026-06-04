@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import './App.css'
 import { Routes, Route, NavLink, useNavigate, Navigate } from 'react-router'
 import Dashboard from './components/Dashboard.tsx'
@@ -7,42 +6,18 @@ import Statistics from './components/Statistics.tsx'
 import LogIn from './components/LogIn.tsx'
 import SignUp from './components/SignUp.tsx'
 import Question from './components/Question.tsx'
+import QuestionPreview from './components/QuestionPreview.tsx'
 import UserSettings from './components/UserSettings.tsx'
 import useUser from './hooks/useUser.ts'
 
 function App() {
-        const [message, setMessage] = useState('Carregando mensagem do backend...')
-        const [error, setError] = useState('')
         const { user, logout } = useUser()
         const navigate = useNavigate()
 
-        function handleLogout() {
-                logout()
+        async function handleLogout() {
+                await logout()
                 navigate('/')
         }
-
-        useEffect(() => {
-                const endpoint = import.meta.env.VITE_API_URL
-
-                fetch(endpoint)
-                        .then(async (response) => {
-                                if (!response.ok) {
-                                        throw new Error(`Falha na resposta do backend (${response.status})`)
-                                }
-
-                                const data = (await response.json()) as { message: string }
-                                setMessage(data.message)
-                        })
-                        .catch((err: unknown) => {
-                                const reason = err instanceof Error ? err.message : 'Erro desconhecido'
-                                setError(reason)
-                                setMessage('Não foi possível buscar a mensagem do backend.')
-                        })
-        }, [])
-
-        const isOnline = !error
-        console.log('a api está: ' + (isOnline ? 'online' : 'offline'))
-        console.log(message)
 
         return (
                 <div className='app-shell'>
@@ -51,14 +26,16 @@ function App() {
                                 <nav
                                         className='top-links'
                                         aria-label='Navegacao principal'>
-                                        <a href='/question'>Questões</a>
+                                        <NavLink to='/question'>Questões</NavLink>
+                                        <NavLink to='/question-preview'>Teste da API</NavLink>
                                         <a href='#'>Meu Progresso</a>
                                         <NavLink to='/settings'>Minha Conta</NavLink>
                                         {
                                                 user.isLoggedIn ?
                                                 (
                                                         <button onClick={handleLogout} className='cursor-pointer'>
-                                                                Sair
+                                                                <a>Sair</a> 
+                                                                {/* TODO: Designers mexendo no CSS, mudem o estilo disso para não precisar do <a></a> ou não sla... */}
                                                         </button>
                                                 )
                                                 :
@@ -93,6 +70,10 @@ function App() {
                                                         <Route
                                                                 path='/question'
                                                                 element={<Question />}
+                                                        />
+                                                        <Route
+                                                                path='/question-preview'
+                                                                element={<QuestionPreview />}
                                                         />
                                                         <Route
                                                                 path='/login'
