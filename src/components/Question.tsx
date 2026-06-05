@@ -29,8 +29,13 @@ export default function Question() {
 	// 'definidor' do estado de resposta da questão [não respondido -> null, respondido -> true/false]
 	const [answerStatus, setAnswerStatus] = useState<boolean | null>(null)
 
+	type PopupState = {
+		message: string;
+		type: "correct" | "incorrect";
+	} | null;
+
 	// 'definidor' de popup para quando o usuário responder uma questão
-	const [popup, setPopup] = useState<string | null>(null);
+	const [popup, setPopup] = useState<PopupState>(null);
 
 	// questão atualmente sendo mostrada
 	const currentQuestion = listeningQuestions[currentQuestionIndex]
@@ -57,8 +62,10 @@ export default function Question() {
 
 		const isCorrect = selectedAlternative === currentQuestion.alternatives.correct_alternative
 		setAnswerStatus(isCorrect)
-		const message = isCorrect ? "Resposta correta!" : "Resposta incorreta!"
-		showPopup(message)
+		showPopup(
+			isCorrect ? "Correto!" : "Incorreto!",
+			isCorrect ? "correct" : "incorrect"
+		)
 	}
 
 
@@ -80,8 +87,8 @@ export default function Question() {
 	}
 
 
-	function showPopup(message: string, duration = 1000) {
-		setPopup(message);
+	function showPopup(message: string, type: "correct" | "incorrect", duration = 1400) {
+		setPopup({ message, type });
 		setTimeout(() => { setPopup(null); }, duration);
 	}
 
@@ -200,7 +207,7 @@ export default function Question() {
 								// estilização das alternativas dependendo do caso
 								const alternativeStyling =
 									answerStatus === null ? "bg-white border-[rgb(230,230,230)] hover:border-black hover:bg-[rgb(230,230,230)] cursor-pointer" // ainda não-respondida
-										: isCorrect ? "border-[rgb(0,255,0)] bg-[rgb(192,255,192)]" // alternativa correta
+										: isCorrect ? "border-[rgb(68,170,0)] bg-[rgb(190,233,161)]" // alternativa correta
 											: isSelected ? "border-[rgb(255,0,0)] bg-[rgb(255,192,192)]" // alternativa errada
 												: "border-[rgb(230,230,230)] opacity-60"; // demais alternativas
 
@@ -283,8 +290,36 @@ export default function Question() {
 				{/* POPUP para quando o usuário responder a questão */}
 				{
 					popup && (
-						<div className="fixed inset-0 flex items-center justify-center bg-black/15 z-50">
-							<div className="bg-[rgb(0,0,0)] text-white px-6 py-4 rounded-xl text-lg animate-spin">{popup}</div>
+						<div className="fixed inset-0 flex flex-col items-center justify-center bg-black/15 z-50 animate-question-answer-backdrop">
+							{popup.type === "correct" ?
+								(
+									<div className="flex flex-col items-center justify-center gap-10">
+										<img
+											src="src/assets/correct_answer.svg"
+											alt="Correct"
+											className="h-50 w-50 animate-question-answer-icon"
+										/>
+
+										<div className="text-[50px] font-bold text-[rgb(68,170,0)] animate-question-answer-text">
+											{popup.message}
+										</div>
+									</div>
+								)
+								: 
+								(
+									<div className="flex flex-col items-center justify-center gap-10">
+										<img
+											src="src/assets/wrong_answer.svg"
+											alt="Wrong"
+											className="h-50 w-50 animate-question-answer-icon"
+										/>
+
+										<div className="text-[35px] font-bold text-[rgb(255,0,0)] animate-question-answer-text">
+											{popup.message}
+										</div>
+									</div>
+								)
+							}
 						</div>
 					)
 				}
