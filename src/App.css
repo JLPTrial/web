@@ -46,9 +46,8 @@
 }
 
 .brand {
-  color: #d00;
-  font-size: 1rem;
-  font-weight: 700;
+  height: 42px;
+  width: auto;
 }
 
 .top-links {
