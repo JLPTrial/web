@@ -2,6 +2,7 @@ import useUser from '../hooks/useUser.ts'
 import { useNavigate } from 'react-router'
 import { Button } from './Button.tsx';
 import { text } from '../ui/text.ts';
+import { form_input } from '../ui/form-input-variants.ts';
 
 function LoginHeader() {
     return (
@@ -20,22 +21,7 @@ function LoginForm() {
                     Endereço de email
                 </label>
                 <input
-                    className="
-                        w-[400px]
-                        px-3
-                        py-2
-                        bg-white
-                        border
-                        border-gray-300
-                        rounded-md
-                        shadow-sm
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-black-500
-                        focus:border-transparent
-                        transition
-                        duration-150
-                    "
+                    className={form_input()}
                     type="email"
                     placeholder="você@exemplo.com"
                 />
@@ -46,21 +32,7 @@ function LoginForm() {
                     Senha
                 </label>
                 <input
-                    className="
-                        w-[400px]
-                        px-3
-                        py-2
-                        bg-white
-                        border
-                        border-gray-300
-                        rounded-md
-                        shadow-sm
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-black-500
-                        focus:border-transparent
-                        transition duration-150
-                    "
+                    className={form_input()}
                     type="password"
                     placeholder="Insira a sua senha"
                 />
@@ -95,7 +67,7 @@ function LoginButton() {
 
 export default function LogInPage() {
 	return(
-        <div className='flex flex-col gap-10 w-full max-w-[1200px] mx-auto sm:px-10'>
+        <div className='flex flex-col justify-center items-center gap-10 w-full max-w-[1200px] mx-auto sm:px-10'>
             <LoginHeader />
             <LoginForm />
             <LoginButton />
