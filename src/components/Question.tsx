@@ -156,11 +156,11 @@ export default function Question() {
 								</div>)
 							}
 							{media.image_file_path && (
-								<div className="flex justify-center">
+								<div className="flex justify-center m-2">
 									{media.image_file_path && (
 										<img
 											src={media.image_file_path}
-											className="w-1/2 my-3 border-2 border-[rgb(230,230,230)] rounded-md"
+											className="w-full md:w-1/2 my-3 p-2 border-2 border-[rgb(230,230,230)] rounded-md"
 										/>
 									)}
 								</div>)
@@ -227,16 +227,13 @@ export default function Question() {
 				
 				{/* BOTÃO - VERIFICAR RESPOSTA */}
 				<div className='flex justify-between gap-3 m-2 mt-5'>
-					{(answerStatus === null) ? 
-						<button
-							className={leaf_button()}
-							onClick={validateAnswer}                                          // botão para validar resposta (e consequentemente ele também marca a questão como respondida)
-							disabled={selectedAlternative === null || answerStatus !== null}  // condição para desabilitação do botão
-						>
-							Verificar Resposta
-						</button> 
-						:
-						<div></div>} {/* A div vazia é só pra manter o alinhamento do flex justify-between*/}
+					<button
+						className={answerStatus === null && selectedAlternative !== null ? leaf_button() : leaf_button({ status: "disabled"})}
+						onClick={validateAnswer}  // botão para validar resposta (e consequentemente ele também marca a questão como respondida)
+						disabled={selectedAlternative === null || answerStatus !== null}  // condição para desabilitação do botão
+					>
+						Verificar Resposta
+					</button> 
 
 					{/* condição para mostrar o botão que leva para a próxima questão */}
 					{
