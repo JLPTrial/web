@@ -7,7 +7,7 @@ import japanBg from '../assets/japan.svg';
 
 function SignupHeader() {
     return (
-        <div className="flex flex-col justify-center text-left w-full sm:max-w-[700px] min-h-[250px] p-5 self-center">
+        <div className="flex flex-col justify-center text-left w-full p-5 self-center">
             <div className={text({ tone: "jlpt", size: "5xl", weight: "semibold", align: "center" })}>Registrar-se</div>
             <div className='p-2 self-center'>Crie uma conta JLPTrial</div>
         </div>
@@ -74,7 +74,7 @@ export default function SignUpPage() {
                 style={{backgroundImage: `url(${japanBg})`}}
             />
 
-            <div className='relative z-50 flex flex-1 flex-col justify-start lg:justify-center items-center gap-10'>
+            <div className='relative z-50 flex flex-1 flex-col justify-start items-center gap-10'>
                 <SignupHeader />
                 <SignupForm />
                 <SignupButton />

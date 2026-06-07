@@ -74,7 +74,7 @@ export default function LogInPage() {
                 style={{backgroundImage: `url(${japanBg})`}}
             />
 
-            <div className='relative z-50 flex flex-1 flex-col justify-start lg:justify-center items-center gap-10'>
+            <div className='relative z-50 flex flex-1 flex-col justify-start items-center gap-10'>
                 <LoginHeader />
                 <LoginForm />
                 <LoginButton />
