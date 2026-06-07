@@ -6,6 +6,7 @@ import {
 	listeningQuestions,
 } from '../constants/SampleQuestions'
 import { box } from '../ui/box.ts'
+import { leaf_button } from '../ui/leaf-button-variants.ts';
 
 
 export default function Question() {
@@ -107,20 +108,7 @@ export default function Question() {
 				<div className='font-bold text-2xl p-2 self-center'>Questões finalizadas!</div>
 
 				<button 
-					className="
-						bg-black
-						shadow-2xl
-						text-white
-						rounded-lg
-						self-center
-						px-10
-						py-3
-						my-2
-						text-l
-						cursor-pointer
-						hover:bg-[rgb(255,0,0)]
-						transition-all
-					"
+					className={leaf_button()}
 					onClick={ handleQuestionsFinished }>
 					Voltar ao Dashboard
 				</button>
@@ -239,47 +227,24 @@ export default function Question() {
 				
 				{/* BOTÃO - VERIFICAR RESPOSTA */}
 				<div className='flex justify-between gap-3 m-2 mt-5'>
-					{(answerStatus === null) ? <button
-						className={`
-							bg-black
-							shadow-2xl
-							text-white
-							rounded-lg
-							self-center
-							px-10
-							py-3
-							my-2
-							text-l
-							cursor-pointer
-							hover:bg-[rgb(255,0,0)]
-							transition-all
-						`}
-
-						onClick={validateAnswer}                                          // botão para validar resposta (e consequentemente ele também marca a questão como respondida)
-						disabled={selectedAlternative === null || answerStatus !== null}  // condição para desabilitação do botão
-					>
-						Verificar Resposta
-					</button> : <div></div>} {/* A div vazia é só pra manter o alinhamento do flex justify-between*/}
+					{(answerStatus === null) ? 
+						<button
+							className={leaf_button()}
+							onClick={validateAnswer}                                          // botão para validar resposta (e consequentemente ele também marca a questão como respondida)
+							disabled={selectedAlternative === null || answerStatus !== null}  // condição para desabilitação do botão
+						>
+							Verificar Resposta
+						</button> 
+						:
+						<div></div>} {/* A div vazia é só pra manter o alinhamento do flex justify-between*/}
 
 					{/* condição para mostrar o botão que leva para a próxima questão */}
 					{
 						answerStatus !== null && (
 							<button 
-								className="
-									bg-black
-									shadow-2xl
-									text-white
-									rounded-lg
-									self-center
-									px-10
-									py-3
-									my-2
-									text-l
-									cursor-pointer
-									hover:bg-[rgb(255,0,0)]
-									transition-all
-								"
-								onClick={isLastQuestion ? finishQuestions : nextQuestion}>
+								className={leaf_button()}
+								onClick={isLastQuestion ? finishQuestions : nextQuestion}
+							>
 								{isLastQuestion ? 'Finalizar' : 'Próxima Questão'}
 							</button>
 						)

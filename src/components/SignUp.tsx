@@ -1,6 +1,6 @@
 import useUser from '../hooks/useUser.ts'
 import { useNavigate } from 'react-router'
-import { Button } from './Button.tsx';
+import { leaf_button } from '../ui/leaf-button-variants.ts';
 import { text } from '../ui/text.ts';
 import { form_input } from '../ui/form-input-variants.ts';
 import japanBg from '../assets/japan.svg';
@@ -60,9 +60,9 @@ function SignupButton() {
     }
 
     return (
-        <Button onClick={handleSignup}>
+        <button className={leaf_button()} onClick={handleSignup}>
             Criar conta
-        </Button>
+        </button>
     );
 }
 

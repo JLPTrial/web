@@ -2,8 +2,6 @@ import { cva } from "class-variance-authority"
 
 export const box = cva(
         `
-  w-[300px]
-  md:w-[400px]
   text-white
   text-base
   text-shadow-md
