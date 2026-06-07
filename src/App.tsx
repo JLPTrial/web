@@ -47,7 +47,9 @@ function App() {
         return (
                 <div className='app-shell'>
                         <header className='top-nav'>
-                                <img src="src/assets/jlptrial_logo_variant_cursor.svg" alt="JLPTrial" className="brand" />
+                                <NavLink to='/'>
+                                        <img src="src/assets/jlptrial_logo_variant_cursor.svg" alt="JLPTrial" className="brand" />
+                                </NavLink>
                                 <nav
                                         className='top-links'
                                         aria-label='Navegacao principal'>

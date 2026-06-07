@@ -50,6 +50,7 @@
 .brand {
   height: 42px;
   width: auto;
+  cursor: pointer;
 }
 
 .top-links {
