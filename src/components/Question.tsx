@@ -7,6 +7,7 @@ import {
 } from '../constants/SampleQuestions'
 import { box } from '../ui/box.ts'
 import { leaf_button } from '../ui/leaf-button-variants.ts';
+import AudioPlayer from "./AudioPlayer";
 
 
 export default function Question() {
@@ -104,7 +105,7 @@ export default function Question() {
 	// quando usuário terminar o batch de questões, ao invés de mostrar a próxima questão (que não existe), mostre o seguinte:
 	if(isQuestionsFinished) {
 		return (
-			<div className='flex flex-col gap-4'>
+			<div className='flex flex-col items-center gap-4'>
 				<div className='font-bold text-2xl p-2 self-center'>Questões finalizadas!</div>
 
 				<button 
@@ -148,11 +149,7 @@ export default function Question() {
 						<>
 							{media.audio_file_path && (
 								<div className='flex justify-center m-2 my-5'>
-									<audio
-										src={media.audio_file_path}
-										controls
-										className="w-full p-2 shadow-md rounded-full border border-[rgb(230,230,230)]"
-									/>
+									<AudioPlayer src={media.audio_file_path} />
 								</div>)
 							}
 							{media.image_file_path && (

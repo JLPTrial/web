@@ -2,11 +2,7 @@ import { cva } from "class-variance-authority"
 
 export const leaf_button = cva(
     `
-    h-[40px]
-    w-[300px]
-    md:w-[400px]
     text-white
-    text-base
     text-shadow-md
     shadow-md shadow-stone-400
     font-bold
@@ -24,12 +20,22 @@ export const leaf_button = cva(
             status: {
                 enabled: `bg-[rgb(255,0,0)] text-shadow-red-700 cursor-pointer transition-all duration-300 hover:scale-105`,
                 disabled: `bg-[rgb(152,152,152)] text-shadow-[rgb(100,100,100)] cursor-not-allowed`
+            },
+            shape: {
+                square: `h-[50px] w-[50px]`,
+                rectangle: `h-[40px] w-[300px] md:w-[400px]`
+            },
+            text_size: {
+                default: `text-base`,
+                larger: `text-xl`
             }
         },
 
         defaultVariants: {
             direction: "left",
-            status: "enabled"
+            status: "enabled",
+            shape: "rectangle",
+            text_size: "default"
         }
     }
 )
