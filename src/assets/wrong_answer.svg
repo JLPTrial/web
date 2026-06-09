@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512mm"
+   height="512mm"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="wrong_answer"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="object">
+    <path
+       style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;fill:#ff0000;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+       d="M 53.019532,0 0,53.019532 202.98047,256 0,458.98046 53.019535,512 256,309.01953 458.98046,512 512,458.98046 309.01953,256 512,53.019535 458.98046,0 256,202.98047 Z"
+       id="wrong-answer-symbol" />
+  </g>
+</svg>

@@ -1,11 +1,13 @@
 import useUser from '../hooks/useUser.ts'
 import { useNavigate } from 'react-router'
-import { Button } from './Button.tsx';
+import { leaf_button } from '../ui/leaf-button-variants.ts';
 import { text } from '../ui/text.ts';
+import { form_input } from '../ui/form-input-variants.ts';
+import japanBg from '../assets/japan.svg';
 
 function LoginHeader() {
     return (
-        <div className="flex flex-col justify-center text-left w-full sm:max-w-[700px] min-h-[250px] p-5 self-center">
+        <div className="flex flex-col justify-center text-left w-full p-5 self-center">
             <div className={text({tone:"jlpt",size:"5xl",weight:"semibold",align:"center" })}>Entrar</div>
             <div className='p-2 self-center'>Entre na sua conta JLPTrial</div>
         </div>
@@ -14,28 +16,13 @@ function LoginHeader() {
 
 function LoginForm() {
     return(
-        <div className="flex flex-col justify-center gap-4">
+        <div className="flex flex-col justify-center items-center gap-4">
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                     Endereço de email
                 </label>
                 <input
-                    className="
-                        w-[400px]
-                        px-3
-                        py-2
-                        bg-white
-                        border
-                        border-gray-300
-                        rounded-md
-                        shadow-sm
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-black-500
-                        focus:border-transparent
-                        transition
-                        duration-150
-                    "
+                    className={form_input()}
                     type="email"
                     placeholder="você@exemplo.com"
                 />
@@ -46,21 +33,7 @@ function LoginForm() {
                     Senha
                 </label>
                 <input
-                    className="
-                        w-[400px]
-                        px-3
-                        py-2
-                        bg-white
-                        border
-                        border-gray-300
-                        rounded-md
-                        shadow-sm
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-black-500
-                        focus:border-transparent
-                        transition duration-150
-                    "
+                    className={form_input()}
                     type="password"
                     placeholder="Insira a sua senha"
                 />
@@ -87,18 +60,25 @@ function LoginButton() {
     }
 
     return (
-      <Button             onClick={handleLogin}>
-        Entrar
-      </Button>
+        <button className={leaf_button()} onClick={handleLogin}>
+            Entrar
+        </button>
     );
 }
 
 export default function LogInPage() {
 	return(
-        <div className='flex flex-col gap-10 w-full max-w-[1200px] mx-auto sm:px-10'>
-            <LoginHeader />
-            <LoginForm />
-            <LoginButton />
-        </div> 
+        <div className="min-h-[calc(100vh-92px)] flex justify-center items-stretch">
+            <div
+                className="fixed z-0 opacity-33 pointer-events-none inset-0 bg-center bg-no-repeat bg-[length:125vmin] lg:bg-[length:150vmin] transition-transform duration-300 -rotate-30 lg:rotate-0"
+                style={{backgroundImage: `url(${japanBg})`}}
+            />
+
+            <div className='relative z-50 flex flex-1 flex-col justify-start items-center gap-10'>
+                <LoginHeader />
+                <LoginForm />
+                <LoginButton />
+            </div>
+        </div>
     )
 }

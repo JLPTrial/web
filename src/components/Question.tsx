@@ -6,6 +6,8 @@ import {
 	listeningQuestions,
 } from '../constants/SampleQuestions'
 import { box } from '../ui/box.ts'
+import { leaf_button } from '../ui/leaf-button-variants.ts';
+import AudioPlayer from "./AudioPlayer";
 
 
 export default function Question() {
@@ -29,8 +31,13 @@ export default function Question() {
 	// 'definidor' do estado de resposta da questão [não respondido -> null, respondido -> true/false]
 	const [answerStatus, setAnswerStatus] = useState<boolean | null>(null)
 
+	type PopupState = {
+		message: string;
+		type: "correct" | "incorrect";
+	} | null;
+
 	// 'definidor' de popup para quando o usuário responder uma questão
-	const [popup, setPopup] = useState<string | null>(null);
+	const [popup, setPopup] = useState<PopupState>(null);
 
 	// questão atualmente sendo mostrada
 	const currentQuestion = listeningQuestions[currentQuestionIndex]
@@ -57,8 +64,10 @@ export default function Question() {
 
 		const isCorrect = selectedAlternative === currentQuestion.alternatives.correct_alternative
 		setAnswerStatus(isCorrect)
-		const message = isCorrect ? "Resposta correta!" : "Resposta incorreta!"
-		showPopup(message)
+		showPopup(
+			isCorrect ? "Correto!" : "Incorreto!",
+			isCorrect ? "correct" : "incorrect"
+		)
 	}
 
 
@@ -80,8 +89,8 @@ export default function Question() {
 	}
 
 
-	function showPopup(message: string, duration = 1000) {
-		setPopup(message);
+	function showPopup(message: string, type: "correct" | "incorrect", duration = 1400) {
+		setPopup({ message, type });
 		setTimeout(() => { setPopup(null); }, duration);
 	}
 
@@ -96,24 +105,11 @@ export default function Question() {
 	// quando usuário terminar o batch de questões, ao invés de mostrar a próxima questão (que não existe), mostre o seguinte:
 	if(isQuestionsFinished) {
 		return (
-			<div className='flex flex-col gap-4'>
+			<div className='flex flex-col items-center gap-4'>
 				<div className='font-bold text-2xl p-2 self-center'>Questões finalizadas!</div>
 
 				<button 
-					className="
-						bg-black
-						shadow-2xl
-						text-white
-						rounded-lg
-						self-center
-						px-10
-						py-3
-						my-2
-						text-l
-						cursor-pointer
-						hover:bg-[rgb(255,0,0)]
-						transition-all
-					"
+					className={leaf_button()}
 					onClick={ handleQuestionsFinished }>
 					Voltar ao Dashboard
 				</button>
@@ -153,19 +149,15 @@ export default function Question() {
 						<>
 							{media.audio_file_path && (
 								<div className='flex justify-center m-2 my-5'>
-									<audio
-										src={media.audio_file_path}
-										controls
-										className="w-full p-2 shadow-md rounded-full border border-[rgb(230,230,230)]"
-									/>
+									<AudioPlayer src={media.audio_file_path} />
 								</div>)
 							}
 							{media.image_file_path && (
-								<div className="flex justify-center">
+								<div className="flex justify-center m-2">
 									{media.image_file_path && (
 										<img
 											src={media.image_file_path}
-											className="w-1/2 my-3 border-2 border-[rgb(230,230,230)] rounded-md"
+											className="w-full md:w-1/2 my-3 p-2 border-2 border-[rgb(230,230,230)] rounded-md"
 										/>
 									)}
 								</div>)
@@ -200,7 +192,7 @@ export default function Question() {
 								// estilização das alternativas dependendo do caso
 								const alternativeStyling =
 									answerStatus === null ? "bg-white border-[rgb(230,230,230)] hover:border-black hover:bg-[rgb(230,230,230)] cursor-pointer" // ainda não-respondida
-										: isCorrect ? "border-[rgb(0,255,0)] bg-[rgb(192,255,192)]" // alternativa correta
+										: isCorrect ? "border-[rgb(68,170,0)] bg-[rgb(190,233,161)]" // alternativa correta
 											: isSelected ? "border-[rgb(255,0,0)] bg-[rgb(255,192,192)]" // alternativa errada
 												: "border-[rgb(230,230,230)] opacity-60"; // demais alternativas
 
@@ -232,47 +224,21 @@ export default function Question() {
 				
 				{/* BOTÃO - VERIFICAR RESPOSTA */}
 				<div className='flex justify-between gap-3 m-2 mt-5'>
-					{(answerStatus === null) ? <button
-						className={`
-							bg-black
-							shadow-2xl
-							text-white
-							rounded-lg
-							self-center
-							px-10
-							py-3
-							my-2
-							text-l
-							cursor-pointer
-							hover:bg-[rgb(255,0,0)]
-							transition-all
-						`}
-
-						onClick={validateAnswer}                                          // botão para validar resposta (e consequentemente ele também marca a questão como respondida)
+					<button
+						className={answerStatus === null && selectedAlternative !== null ? leaf_button() : leaf_button({ status: "disabled"})}
+						onClick={validateAnswer}  // botão para validar resposta (e consequentemente ele também marca a questão como respondida)
 						disabled={selectedAlternative === null || answerStatus !== null}  // condição para desabilitação do botão
 					>
 						Verificar Resposta
-					</button> : <div></div>} {/* A div vazia é só pra manter o alinhamento do flex justify-between*/}
+					</button> 
 
 					{/* condição para mostrar o botão que leva para a próxima questão */}
 					{
 						answerStatus !== null && (
 							<button 
-								className="
-									bg-black
-									shadow-2xl
-									text-white
-									rounded-lg
-									self-center
-									px-10
-									py-3
-									my-2
-									text-l
-									cursor-pointer
-									hover:bg-[rgb(255,0,0)]
-									transition-all
-								"
-								onClick={isLastQuestion ? finishQuestions : nextQuestion}>
+								className={leaf_button()}
+								onClick={isLastQuestion ? finishQuestions : nextQuestion}
+							>
 								{isLastQuestion ? 'Finalizar' : 'Próxima Questão'}
 							</button>
 						)
@@ -283,8 +249,36 @@ export default function Question() {
 				{/* POPUP para quando o usuário responder a questão */}
 				{
 					popup && (
-						<div className="fixed inset-0 flex items-center justify-center bg-black/15 z-50">
-							<div className="bg-[rgb(0,0,0)] text-white px-6 py-4 rounded-xl text-lg animate-spin">{popup}</div>
+						<div className="fixed inset-0 flex flex-col items-center justify-center bg-black/15 z-50 animate-question-answer-backdrop">
+							{popup.type === "correct" ?
+								(
+									<div className="flex flex-col items-center justify-center gap-10">
+										<img
+											src="src/assets/correct_answer.svg"
+											alt="Correct"
+											className="h-50 w-50 animate-question-answer-icon"
+										/>
+
+										<div className="text-[50px] font-bold text-[rgb(68,170,0)] animate-question-answer-text">
+											{popup.message}
+										</div>
+									</div>
+								)
+								: 
+								(
+									<div className="flex flex-col items-center justify-center gap-10">
+										<img
+											src="src/assets/wrong_answer.svg"
+											alt="Wrong"
+											className="h-50 w-50 animate-question-answer-icon"
+										/>
+
+										<div className="text-[35px] font-bold text-[rgb(255,0,0)] animate-question-answer-text">
+											{popup.message}
+										</div>
+									</div>
+								)
+							}
 						</div>
 					)
 				}

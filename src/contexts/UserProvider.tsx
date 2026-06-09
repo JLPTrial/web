@@ -7,7 +7,7 @@ const defaultUser = {
 	email: '',
 	username: '',
 	id: '',
-	isLoggedIn: true,
+	isLoggedIn: false,
 }
 export function UserProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User>(defaultUser)
