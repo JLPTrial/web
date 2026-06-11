@@ -69,30 +69,6 @@ function LoginForm({
     )
 }
 
-function LoginButton() {
-    const navigate = useNavigate();
-    const { login } = useUser()
-    
-    async function handleLogin() {
-        await login(
-            {
-                email: 'teste@email.com',
-                username: 'Usuário Teste',
-                id: '1',
-                isLoggedIn: true,
-            }
-        );
-
-        navigate('/')
-    }
-
-    return (
-        <button className={leaf_button()} onClick={handleLogin}>
-            Entrar
-        </button>
-    );
-}
-
 export default function LogInPage() {
     const navigate = useNavigate()
     const { loginWithEmail, loginWithGoogle } = useUser()
