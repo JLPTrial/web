@@ -1,24 +1,4 @@
-type QuestionModel = {
-	id: number
-	question_type: string
-	question_text: string
-	statement: {
-		question_command: string
-	}
-	alternatives: {
-		alternative_1: string | null
-		alternative_2: string | null
-		alternative_3: string | null
-		alternative_4: string | null
-		correct_alternative: number
-	}
-	media: {
-		audio_file_path: string | null
-		image_file_path: string | null
-		text_content: string | null
-	} | null
-	tags: string[]
-}
+import type { QuestionModel } from '../models/QuestionModel'
 
 export const grammarQuestions: QuestionModel[] = [
 	{

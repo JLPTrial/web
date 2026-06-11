@@ -14,7 +14,7 @@ export default function Question() {
 
 	const navigate = useNavigate()
 
-	const { user } = useUser()
+	const { user, isSessionReady } = useUser()
 
 	// 'definidor' da questão atual em que o usuário se encontra
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -96,6 +96,14 @@ export default function Question() {
 
 	// voltar para o topo da janela quando o usuário avançar para a próxima questão
 	useEffect(() => {window.scrollTo({ top: 0 }); }, [currentQuestionIndex])
+
+
+	// Quando fazemos login, pode demorar um pouquinho para sincronizar e validar.
+	// Por isso, retornamos antes de verificar se o usuário está logado para ele não voltar
+	// Para a página de login, caso queiram, podem aproveitar esta micro estrutura para implementar uma tela de loading ou algo assim.
+	if (!isSessionReady) {
+		return <div className='p-8 text-center'>Carregando sessão...</div>
+	}
 
 	// impede o usuário de acessar esta página se não estiver logado (eu imagino que isso aqui mude quando tivermos autenticação de fato)
 	if (!user.isLoggedIn) { 
