@@ -1,10 +1,10 @@
 import { Link } from 'react-router';
 import useUser from '../hooks/useUser.ts';
-import { useTheme } from '../hooks/useTheme.ts';
+import { useThemeContext } from '../contexts/ThemeProvider.tsx';
 
 export default function UserSettings() {
     const { user } = useUser();
-    const { theme, toggleTheme } = useTheme();
+    const { theme, toggleTheme } = useThemeContext();
 
     return (
         <div className="flex flex-col gap-10 w-full max-w-[1200px] mx-auto sm:px-10 my-10 text-left transition-colors duration-200">

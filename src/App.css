@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
 :root {
   --bg: #fff;
   --text: #111;
@@ -268,4 +269,20 @@
     opacity: 0;
     transform: translateY(-4px);
   }
+}
+
+.dark .top-nav {
+  background-color: #1f2937;
+}
+
+.dark .top-links a {
+  color: #d1d5db;
+}
+
+.dark .top-links a:hover {
+  color: #f9fafb;
+}
+
+.dark .top-nav button a {
+  color: #d1d5db;
 }
