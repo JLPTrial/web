@@ -1,5 +1,5 @@
 import './App.css'
-import { Routes, Route, NavLink, useNavigate, Navigate } from 'react-router'
+import { Routes, Route, useNavigate, Navigate } from 'react-router'
 import Dashboard from './components/Dashboard.tsx'
 import LandingPage from './components/LandingPage.tsx'
 import Statistics from './components/Statistics.tsx'
@@ -9,6 +9,7 @@ import Question from './components/Question.tsx'
 import QuestionPreview from './components/QuestionPreview.tsx'
 import UserSettings from './components/UserSettings.tsx'
 import useUser from './hooks/useUser.ts'
+import TopNavBar from './components/TopNavBar.tsx'
 
 function App() {
         const { user, logout } = useUser()
@@ -21,35 +22,11 @@ function App() {
 
         return (
                 <div className='app-shell'>
-                        <header className='top-nav'>
-                                <NavLink to='/'>
-                                        <img src="src/assets/jlptrial_logo_variant_cursor.svg" alt="JLPTrial" className="brand" />
-                                </NavLink>
-                                <nav
-                                        className='top-links'
-                                        aria-label='Navegacao principal'>
-                                        <NavLink to='/question'>Questões</NavLink>
-                                        <NavLink to='/question-preview'>Teste da API</NavLink>
-                                        <a href='#'>Meu Progresso</a>
-                                        <NavLink to='/settings'>Minha Conta</NavLink>
-                                        {
-                                                user.isLoggedIn ?
-                                                (
-                                                        <button onClick={handleLogout} className='cursor-pointer'>
-                                                                <a>Sair</a> 
-                                                                {/* TODO: Designers mexendo no CSS, mudem o estilo disso para não precisar do <a></a> ou não sla... */}
-                                                        </button>
-                                                )
-                                                :
-                                                (
-                                                        <>
-                                                                <NavLink to='/signup'>Registrar-se</NavLink>
-                                                                <NavLink to='/login'>Entrar</NavLink>
-                                                        </>
-                                                )
-                                        }
-                                </nav>
-                        </header>
+                        
+                        <TopNavBar
+                                isLoggedIn={user.isLoggedIn}
+                                handleLogout={handleLogout}
+                        />
 
                         <main className='w-full mx-auto mt-5 max-w-6xl flex justify-center align-center'>
                                 <section
