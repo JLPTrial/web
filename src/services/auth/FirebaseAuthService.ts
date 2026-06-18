@@ -9,7 +9,7 @@ import {
   signOut,
 } from "firebase/auth";
 
-import { buildSession, buildGoogleSession, getFirebaseIdToken } from "./SessionUtils";
+import { buildSession, buildGoogleSession, getFirebaseIdToken, USERS_ENDPOINT } from "./SessionUtils";
 import { auth } from '../../constants/FirebaseApp';
 
 const googleProvider = new GoogleAuthProvider();
@@ -46,6 +46,6 @@ export async function signUpWithEmail(email: string, password: string, name: str
 // Logout
 
 export async function logout(): Promise<void> {
-  await apiClient.post('/logout')
+  await apiClient.post(`${USERS_ENDPOINT}/logout`)
   await signOut(auth)
 }
