@@ -10,8 +10,10 @@ import { getGoogleDisplayName, isUnregisteredUserError } from "./GoogleAuthUtils
 
 type SessionBody = FirebaseLoginRequest | FirebaseSignupRequest
 
+const USERS_ENDPOINT = '/users'
+
 export async function buildSession(endpoint: '/login' | '/signup', body: SessionBody): Promise<FirebaseUserPayload> {
-  const response = await apiClient.post<FirebaseSessionResponse>(endpoint, body)
+  const response = await apiClient.post<FirebaseSessionResponse>(`${USERS_ENDPOINT}${endpoint}`, body)
 
   return response.user
 }
@@ -53,7 +55,7 @@ export async function getFirebaseIdToken(): Promise<string> {
 }
 
 export async function refreshSession(): Promise<FirebaseUserPayload> {
-  const response = await apiClient.post<FirebaseSessionResponse>('/refresh')
+  const response = await apiClient.post<FirebaseSessionResponse>(`${USERS_ENDPOINT}/refresh`)
 
   return response.user
 }
