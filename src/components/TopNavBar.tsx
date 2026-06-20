@@ -50,10 +50,10 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
         {open && (
             <div className="flex flex-col items-center gap-2 relative z-50 bg-[rgb(255,255,255)] text-black p-4 sm:hidden">
                 
-                <NavLink className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/question">Questões</NavLink>
-                <NavLink className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/question-preview">Teste da API</NavLink>
-                <a className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" href="#">Meu Progresso</a>
-                <NavLink className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/settings">Minha Conta</NavLink>
+                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/question">Questões</NavLink>
+                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/question-preview">Teste da API</NavLink>
+                <a onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" href="#">Meu Progresso</a>
+                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/settings">Minha Conta</NavLink>
 
                 {
                     isLoggedIn ? (
@@ -62,8 +62,8 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
                         </button>
                     ) : (
                         <>
-                            <NavLink className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/signup">Registrar-se</NavLink>
-                            <NavLink className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/login">Entrar</NavLink>
+                            <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/signup">Registrar-se</NavLink>
+                            <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/login">Entrar</NavLink>
                         </>
                     )   
                 }
