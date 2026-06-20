@@ -19,7 +19,7 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
             </NavLink>
 
             {/* Navigation bar shown on desktop (i.e. large screens) */}
-            <div className="hidden sm:flex gap-3">
+            <div className="hidden lg:flex gap-3">
                 
                 <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/question">Questões</NavLink>
                 <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/question-preview">Teste da API</NavLink>
@@ -42,28 +42,39 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
             </div>
             
             {/* Menu button to show navigation links (only shown on mobile) */}
-            <button className="text-xl cursor-pointer mr-2 sm:hidden" onClick={() => setOpen(!open)}>☰</button>
+            <button
+                className="w-10 h-10 flex items-center justify-center text-[30px] cursor-pointer mr-2 lg:hidden relative"
+                onClick={() => setOpen(!open)}
+            >
+                <span className={`absolute text-[30px] transition-opacity duration-200 ${ open ? "opacity-0" : "opacity-100"  }`} >
+                    ☰
+                </span>
+
+                <span className={`absolute text-[30px] transition-opacity duration-200 ${ open ? "opacity-100" : "opacity-0" }`} >
+                    ✖
+                </span>
+            </button>
             
         </header>
 
         {/* Navigation bar shown on mobile (i.e. smaller screens) */}
         {open && (
-            <div className="flex flex-col items-center gap-2 relative z-50 bg-[rgb(255,255,255)] text-black p-4 sm:hidden">
+            <div className="flex flex-col items-center gap-2 relative z-50 bg-[rgba(225,225,225,0.5)] text-black p-4 lg:hidden">
                 
-                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/question">Questões</NavLink>
-                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/question-preview">Teste da API</NavLink>
-                <a onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" href="#">Meu Progresso</a>
-                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/settings">Minha Conta</NavLink>
+                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/question">Questões</NavLink>
+                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/question-preview">Teste da API</NavLink>
+                <a onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" href="#">Meu Progresso</a>
+                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/settings">Minha Conta</NavLink>
 
                 {
                     isLoggedIn ? (
-                        <button onClick={handleLogout} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center">
+                        <button onClick={handleLogout} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center">
                             Sair
                         </button>
                     ) : (
                         <>
-                            <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/signup">Registrar-se</NavLink>
-                            <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 hover:bg-[rgb(200,200,200)] text-center" to="/login">Entrar</NavLink>
+                            <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/signup">Registrar-se</NavLink>
+                            <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/login">Entrar</NavLink>
                         </>
                     )   
                 }
