@@ -1,5 +1,7 @@
 import { NavLink } from "react-router";
 import { useState } from 'react'
+import Logo from './NavBarLogo.tsx'
+import "../App.css";
 
 interface TopNavBarProperties {
     isLoggedIn: boolean;
@@ -13,7 +15,7 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
         <header className="relative z-50 bg-white h-[64px] px-4 border-b border-[var(--nav-border)] flex items-center justify-between">
 
             <NavLink to="/">
-                <img src="src/assets/jlptrial_logo_variant_cursor.svg" alt="JLPTrial" className="brand" />
+                <Logo />
             </NavLink>
 
             {/* Navigation bar shown on desktop (i.e. large screens) */}
