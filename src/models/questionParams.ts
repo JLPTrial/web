@@ -1,7 +1,3 @@
-export type QuestionTopicConstants = 'grammar' | 'kanji' | 'listening' | 'reading' | 'vocabulary'
-
-export type QuestionLevelConstants = 4 | 5
-
 // Abaixo está definido o que pode ser passado como Query Params
 // Basicamente, é a parte JSON de uma request.
 
@@ -39,3 +35,7 @@ export const QuestionLevel = {
     N4: 4,
     N5: 5,
 } as const
+
+export type QuestionTopicConstants = typeof QuestionTopic[keyof typeof QuestionTopic]
+
+export type QuestionLevelConstants = typeof QuestionLevel[keyof typeof QuestionLevel]
