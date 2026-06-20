@@ -27,15 +27,15 @@ export type GetQuestionsQueryParams = {
     limit?: number
 }
 
-export const QuestionTopic = {
-    Grammar: 'grammar' as const,
-    Kanji: 'kanji' as const,
-    Listening: 'listening' as const,
-    Reading: 'reading' as const,
-    Vocabulary: 'vocabulary' as const,
-}
+export const QuestionTopic = { 
+     Grammar: 'grammar', 
+     Kanji: 'kanji', 
+     Listening: 'listening', 
+     Reading: 'reading', 
+     Vocabulary: 'vocabulary', 
+} as const;
 
 export const QuestionLevel = {
-    N4: 4 as const,
-    N5: 5 as const,
-}
+    N4: 4,
+    N5: 5,
+} as const
