@@ -130,45 +130,52 @@ export default function SignUpPage() {
                 style={{ backgroundImage: `url(${japanBg})` }}
             />
 
-            <div className="relative z-50 flex flex-1 flex-col justify-start items-center gap-10">
+            <div className="relative z-50 flex flex-1 flex-col justify-start items-center gap-3">
                 <SignupHeader />
 
-                <form
-                    onSubmit={handleSignup}
-                    className="flex flex-col items-center gap-4"
-                >
-                    <SignupForm
-                        name={name}
-                        setName={setName}
-                        email={email}
-                        setEmail={setEmail}
-                        password={password}
-                        setPassword={setPassword}
-                    />
-
-                    {error && (
-                        <div className="text-sm text-red-600">
-                            {error}
-                        </div>
-                    )}
-
-                    <button
-                        className={leaf_button()}
-                        type="submit"
-                        disabled={isLoading}
+                <div className='flex flex-col justify-center items-center gap-7'>
+                    <form
+                        onSubmit={handleSignup}
+                        className="flex flex-col items-center gap-4"
                     >
-                        {isLoading ? 'Criando...' : 'Criar conta'}
-                    </button>
-                </form>
+                        <SignupForm
+                            name={name}
+                            setName={setName}
+                            email={email}
+                            setEmail={setEmail}
+                            password={password}
+                            setPassword={setPassword}
+                        />
 
-                <button
-                    type="button"
-                    onClick={handleGoogleSignup}
-                    disabled={isLoading}
-                    className={leaf_button({ variant: 'secondary' })}
-                >
-                    Entrar com Google
-                </button>
+                        {error && (
+                            <div className="text-sm text-red-600">
+                                {error}
+                            </div>
+                        )}
+
+                    </form>
+
+                    <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className={leaf_button({ shape: 'rectangle'})}
+                        >
+                            {isLoading ? 'Criando...' : 'Criar conta'}
+                        </button>
+
+                        <p>ou</p>
+
+                        <button
+                            type="button"
+                            onClick={handleGoogleSignup}
+                            disabled={isLoading}
+                            className={leaf_button({ shape: 'rectangle' })}
+                        >
+                            Entrar com Google
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     )
