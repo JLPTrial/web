@@ -18,12 +18,12 @@ export const leaf_button = cva(
                 right: `rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none `
             },
             status: {
-                enabled: `bg-[rgb(255,0,0)] text-shadow-red-700 cursor-pointer transition-all duration-300 hover:scale-105`,
+                enabled: `bg-[rgb(255,0,0)] text-shadow-red-700 cursor-pointer transition-transform duration-300 hover:scale-105`,
                 disabled: `bg-[rgb(152,152,152)] text-shadow-[rgb(100,100,100)] cursor-not-allowed`
             },
             shape: {
-                square: `h-[50px] w-[50px]`,
-                rectangle: `h-[40px] w-[300px] md:w-[400px]`
+                square: `h-[50px] w-[50px]`,                              // used at the audio player at Question.tsx
+                rectangle: `h-[40px] w-[300px] md:h-[50px] md:w-[200px]`  // used at Question.tsx and at login/signup screens
             },
             text_size: {
                 default: `text-base`,
