@@ -147,7 +147,7 @@ export default function Question() {
 				<br></br>
 
 				{/* COMANDO DA QUESTÃO (e.g. 'Leia', 'Escute', etc. */}
-				<div className='m-2 my-3 p-2 pl-4 border-2 border-[rgb(230,230,230)] rounded-md shadow'>
+				<div className='m-2 my-3 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
 					{currentQuestion.statement.question_command}
 				</div>
 
@@ -176,7 +176,7 @@ export default function Question() {
 				}
 
 				{/* PERGUNTA DA QUESTÃO (e.g. 'Onde fulano trabalha?') */}
-				<div className='m-2 mb-8 p-2 pl-4 border-2 border-[rgb(230,230,230)] rounded-md shadow'>
+				<div className='m-2 mb-8 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
 					{currentQuestion.question_text}
 				</div>
 
@@ -199,10 +199,13 @@ export default function Question() {
 
 								// estilização das alternativas dependendo do caso
 								const alternativeStyling =
-									answerStatus === null ? "bg-white border-[rgb(230,230,230)] hover:border-black hover:bg-[rgb(230,230,230)] cursor-pointer" // ainda não-respondida
-										: isCorrect ? "border-[rgb(68,170,0)] bg-[rgb(190,233,161)]" // alternativa correta
-											: isSelected ? "border-[rgb(255,0,0)] bg-[rgb(255,192,192)]" // alternativa errada
-												: "border-[rgb(230,230,230)] opacity-60"; // demais alternativas
+									answerStatus === null
+										? "bg-white dark:bg-gray-800 border-[rgb(230,230,230)] dark:border-gray-600 hover:border-black dark:hover:border-white hover:bg-[rgb(230,230,230)] dark:hover:bg-gray-700 cursor-pointer"
+										: isCorrect
+											? "border-[rgb(68,170,0)] bg-[rgb(190,233,161)] dark:bg-[rgb(34,85,0)] dark:border-[rgb(68,170,0)]"
+											: isSelected
+												? "border-[rgb(255,0,0)] bg-[rgb(255,192,192)] dark:bg-[rgb(100,0,0)] dark:border-[rgb(255,0,0)]"
+												: "border-[rgb(230,230,230)] dark:border-gray-600 opacity-60"
 
 								return(
 
