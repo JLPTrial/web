@@ -20,11 +20,11 @@ export const box = cva(
                                 right: `rounded-tl-none rounded-br-none rounded-tr-2xl rounded-bl-2xl sm:rounded-tl-2xl sm:rounded-br-2xl sm:rounded-tr-none sm:rounded-bl-none `
                         },
                         interactive: {
-                                true: "cursor-pointer transition-all duration-400 transition-all hover:bg-[length:100%_100%] hover:text-shadow-none",
+                                true: "cursor-pointer transition-all duration-400 transition-all hover:scale-105 bg-gradient-to-r from-black to-black bg-no-repeat hover:bg-left bg-[length:0%_100%]",
                                 false: "",
                         },
                         tone: {
-                                default: "bg-gradient-to-r from-black to-black bg-no-repeat bg-left bg-[length:0%_100%]",
+                                default: "",
                                 active: "bg-gradient-to-r from-black to-black bg-[length:100%_100%] scale-105 text-shadow-none",
                                 danger: "bg-red-900 hover:bg-red-950",
                         },
@@ -32,6 +32,7 @@ export const box = cva(
                                 sm: "h-[32px] px-2 text-xs",
                                 md: "h-[40px] px-3 text-sm",
                                 lg: "h-[56px] px-4 text-base",
+                                sq: "h-[56px] w-[56px] px-4 text-base"
                         },
                         radius: {
                                 normal: ` rounded-tl-2xl rounded-br-2xl `,
