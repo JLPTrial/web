@@ -1,8 +1,23 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
 :root {
   --bg: #fff;
   --text: #111;
   --muted: #555;
   --line: #e8e8e8;
+  --nav-border: #ececec;
+  --link-color: #4a4a4a;
+}
+
+/* Quando a nossa classe dark for ativada pelo botão, estas cores assumem o controle */
+.dark {
+  --bg: #111827;      /* Fundo escuro padrão (Tailwind gray-900) */
+  --text: #f9fafb;    /* Texto claro (Tailwind gray-50) */
+  --muted: #9ca3af;   /* Texto secundário (Tailwind gray-400) */
+  --line: #374151;    /* Linhas e bordas escuras (Tailwind gray-700) */
+  --nav-border: #1f2937; /* Borda da nav escura */
+  --link-color: #d1d5db; /* Links mais legíveis no escuro */
 }
 
 #root {
@@ -17,22 +32,68 @@
   background: var(--bg);
   color: var(--text);
   text-align: left;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .top-nav {
+  position: relative;
+  z-index: 50;
+  background-color: #FFFFFF;
   height: 64px;
   padding: 0 28px;
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid var(--nav-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: border-color 0.3s ease;
 }
 
+
+/* Styling of the logo at the top navigation bar */
+
 .brand {
-  color: #d00;
-  font-size: 1rem;
-  font-weight: 700;
+  height: 42px;
+  width: auto;
+  cursor: pointer;
+  overflow: visible !important;
 }
+
+.brand:hover { transform: scale(1.075); }
+
+.brand, .brand:hover { transition: transform 0.2s ease-in-out; }
+
+.brand       .cursor { display: none; opacity: 0;}
+.brand:hover .cursor { display: unset; opacity: 1; }
+
+.brand       .cursor,
+.brand:hover .cursor
+{
+  transition: opacity 0.5s ease-in-out, display 0.5s ease-in-out allow-discrete;
+}
+
+.brand .wordmark      { fill: rgb(0,0,0); }
+.brand .text-ring     { fill: rgb(255,255,255); }
+.brand .emblem-circle { fill: rgb(255,0,0); }
+.brand .text-circle   { fill: rgb(0,0,0); }
+.brand .cursor        { fill: rgb(0,0,0); }
+
+.brand       .text-spin-animation { transform: rotate(0deg); }
+.brand:hover .text-spin-animation { transform: rotate(360deg); }
+
+.brand:hover .text-spin-animation,
+.brand       .text-spin-animation
+{ 
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.5s ease-in-out;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ==================================================================== */
 
 .top-links {
   display: flex;
@@ -40,9 +101,10 @@
 }
 
 .top-links a {
-  color: #4a4a4a;
+  color: var(--link-color);
   font-size: 0.9rem;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .top-links a:hover {
@@ -164,4 +226,104 @@
     padding: 18px;
     border-radius: 16px;
   }
+}
+
+@theme {
+  --animate-question-answer-icon: question-answer-icon 700ms
+    cubic-bezier(0.22, 1, 0.36, 1)
+    forwards;
+
+  --animate-question-answer-backdrop: question-answer-backdrop 1400ms
+    ease-in-out
+    forwards;
+
+  --animate-question-answer-text: question-answer-text 1400ms
+    ease-in-out
+    forwards;
+}
+
+@keyframes question-answer-icon {
+  0% {
+    opacity: 0;
+    transform: scale(4);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(0.85);
+  }
+
+  65% {
+    transform: scale(1.12);
+  }
+
+  82% {
+    transform: scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes question-answer-backdrop {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes question-answer-text {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  20% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  35% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  75% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.dark .top-nav {
+  background-color: #1f2937;
+}
+
+.dark .top-links a {
+  color: #d1d5db;
+}
+
+.dark .top-links a:hover {
+  color: #f9fafb;
+}
+
+.dark .top-nav button a {
+  color: #d1d5db;
 }

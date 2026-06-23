@@ -1,78 +1,78 @@
-import { useEffect, useState } from 'react'
 import './App.css'
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router'
+import { Routes, Route, useNavigate, Navigate } from 'react-router'
 import Dashboard from './components/Dashboard.tsx'
 import LandingPage from './components/LandingPage.tsx'
 import Statistics from './components/Statistics.tsx'
+import LogIn from './components/LogIn.tsx'
+import SignUp from './components/SignUp.tsx'
+import Question from './components/Question.tsx'
+import QuestionPreview from './components/QuestionPreview.tsx'
+import UserSettings from './components/UserSettings.tsx'
+import useUser from './hooks/useUser.ts'
+import TopNavBar from './components/TopNavBar.tsx'
 
 function App() {
-	const [message, setMessage] = useState('Carregando mensagem do backend...')
-	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false) // protótipo
-	const [error, setError] = useState('')
+	const { user, logout } = useUser()
+    const navigate = useNavigate()
 
-	useEffect(() => {
-		const endpoint = import.meta.env.VITE_API_URL
+    async function handleLogout() {
+        await logout()
+        navigate('/')
+    }
 
-		fetch(endpoint)
-			.then(async (response) => {
-				if (!response.ok) {
-					throw new Error(`Falha na resposta do backend (${response.status})`)
-				}
+    return (
+        <div className='app-shell'>
+            
+            <TopNavBar
+                isLoggedIn={user.isLoggedIn}
+                handleLogout={handleLogout}
+            />
 
-				const data = (await response.json()) as { message: string }
-				setMessage(data.message)
-			})
-			.catch((err: unknown) => {
-				const reason = err instanceof Error ? err.message : 'Erro desconhecido'
-				setError(reason)
-				setMessage('Não foi possível buscar a mensagem do backend.')
-			})
-	}, [])
-
-	const isOnline = !error
-
-	// Sim, pedi para o gepetto me gerar esse template, mim não saber fazer design : D
-	return (
-		<div className='app-shell'>
-			<header className='top-nav'>
-				<strong className='brand'>JLPTrial</strong>
-				<nav
-					className='top-links'
-					aria-label='Navegacao principal'>
-					<a href='#'>Questões</a>
-					<a href='#'>Meu Progresso</a>
-					<a href='#'>Minha Conta</a>
-				</nav>
-			</header>
-
-			<main className='web-home'>
-				<section
-					className='jlpt-card'
-					aria-live='polite'>
-					<div className='flex flex-col gap-2'>
-						<Routes>
-							<Route
-								path='/'
-								element={isUserLoggedIn ? <Dashboard /> : <LandingPage />}
-							/>
-							<Route
-								path='/stat'
-								element={<>Stat</>}
-							/>
-							<Route
-								path='/mock-test'
-								element={<>Mock test</>}
-							/>
-							<Route
-								path='/question'
-								element={<>Question</>}
-							/>
-						</Routes>
-					</div>
-				</section>
-			</main>
-		</div>
-	)
+            <main className='w-full mx-auto mt-5 max-w-6xl flex justify-center align-center'>
+                <section
+                    className='mx-auto px-4 w-full'
+                    aria-live='polite'>
+                    <div className='flex flex-col gap-2 w-full'>
+                        <Routes>
+                            <Route
+                                path='/'
+                                element={user.isLoggedIn ? <Dashboard /> : <LandingPage />}
+                            />
+                            <Route
+                                path='/stat'
+                                element={<Statistics />}
+                            />
+                            <Route
+                                path='/mock-test'
+                                element={<>Mock test</>}
+                            />
+                            <Route
+                                path='/question'
+                                element={<Question />}
+                            />
+                            <Route
+                                path='/question-preview'
+                                element={<QuestionPreview />}
+                            />
+                            <Route
+                                path='/login'
+                                element={<LogIn />}
+                            />
+                            <Route
+                                path='/signup'
+                                element={<SignUp />}
+                            />
+                            {/* Rota Protegida de Configurações */}
+                            <Route 
+                                path='/settings' 
+                                element={user.isLoggedIn ? <UserSettings /> : <Navigate to="/login" replace />} 
+                            />
+                        </Routes>
+                    </div>
+                </section>
+            </main>
+        </div>
+    )
 }
 
 export default App

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512mm"
+   height="512mm"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="correct_answer"
+   sodipodi:docname="correct_answer.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.41082764"
+     inkscape:cx="967.55906"
+     inkscape:cy="967.55906"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="correct_answer" />
+  <defs
+     id="defs1" />
+  <g
+     id="object"
+     style="fill:#44aa00">
+    <path
+       id="correct-answer-symbol"
+       style="fill:#44aa00;stroke-width:0.264583"
+       d="M 255.99988 0 A 256 256 0 0 0 0 255.99988 A 256 256 0 0 0 255.99988 511.99976 A 256 256 0 0 0 511.99976 255.99988 A 256 256 0 0 0 255.99988 0 z M 255.99988 74.980436 A 181.01933 181.01933 0 0 1 437.01932 255.99988 A 181.01933 181.01933 0 0 1 255.99988 437.01932 A 181.01933 181.01933 0 0 1 74.980436 255.99988 A 181.01933 181.01933 0 0 1 255.99988 74.980436 z " />
+  </g>
+</svg>
