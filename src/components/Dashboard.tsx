@@ -20,15 +20,29 @@ function StatDisplayBox({title, data, type}) {
 
 // Function that applies the filters selected by the user,
 // and checks if there are any questions in the database with these filters
-function get_number_of_questions(answered: string = 'false', topic: string = "kanji", level: string = "n4", limit: string = "5", correct: string = "true" ) {
+async function get_number_of_questions(answer_type: string = 'unanswered', topic: string = "kanji", level: string = "n4", limit: string = "5" ) {
 	let url: string;
+	let n: number;
 	if (topic === "all") {
-		url = `/levels/${level}/questions?answered=${answered}&limit=${limit}&correct=${correct}&random=true`;
+		url = `/levels/${level}/questions?answer_type=${answer_type}&limit=${limit}&random=true`;
 	}
 	else {
-		url = `/levels/${level}/topics/${topic}/questions?answered=${answered}&limit=${limit}&correct=${correct}&random=true`;
+		url = `/levels/${level}/topics/${topic}/questions?answer_type=${answer_type}&limit=${limit}&random=true`;
 	}
-	console.log(url);
+	try {
+		const response = await fetch(url);
+		if (!response.ok) {
+			throw new Error("Erro ao buscar dados");
+		}
+		const data = await response.json();
+
+		n = data.total;
+		return (n);
+	} catch (error) {
+		console.error("Erro:", error);
+		return -1;
+    }
+	
 }
 
 // Display that contains all boxes with statistics
@@ -68,17 +82,32 @@ function ButtonText({kanji, text}) {
 	);
 }
 
-function StartButton({answered ='false', topic = "kanji", level = "n4", limit = "5", correct = "true"}) {
+function StartButton({answer_type ='unanswered', topic = "kanji", level = "n4", limit = "5"}) {
         const navigate = useNavigate();
 
-
 	return (
-		<button onClick={() => get_number_of_questions(answered, topic, level, limit, correct)}
+		<button onClick={() => {
+			get_number_of_questions(answer_type, topic, level, limit).then((response) => {
+				if (response === 0) {
+					alert("Não existem questões para estes filtros");
+				}
+				else if (response === -1) {
+					alert("Erro ao buscar questôes");
+				}
+				else {
+					const url = `question?level=${level}&topic=${topic}answer_type=${answer_type}&limit=${limit}`;
+					navigate(url);
+				}
+			});
+		
+		}}
 			className='m-2 px-10 py-5 rounded-xl text-xl
 			bg-red-700 text-white font-bold
 			hover:scale-115 cursor-pointer
 			shadow-md shadow-stone-400 dark:shadow-none
-			transition-all duration-300'>Começar</button>
+			transition-all duration-300'>
+				Começar
+		</button>
 	);
 }
 
@@ -186,6 +215,8 @@ function QuestionBox({title, review}) {
 	const title5 = <ButtonText kanji="聴取" text="Audição" />
 	const title6 = <ButtonText kanji="全て" text="Tudo" />
 
+
+
     return (
         <div className="flex flex-col w-[95%] p-2 sm:p-0 sm:max-w-[700px]">
 
@@ -195,7 +226,6 @@ function QuestionBox({title, review}) {
 			{/* Content section */}
 			<div className={`transition-all duration-500
 					${active1 ? "max-h-[2000px] opacity-100" : "max-h-[0px] pointer-events-none opacity-0"}`}>
-
 				{/* Type of review filter */}
 				<div className={review ? "" : "hidden"}>
 					<div className='text-xl font-bold p-1'>Tipo de revisão</div>
@@ -232,7 +262,7 @@ function QuestionBox({title, review}) {
 				</div>
 				
 				<div className='w-full flex items-centers justify-center'>
-					<StartButton answered={review ? "true" : "false"} topic={active2} level={active3} limit={active4} correct={active5 === "all" ? "true" : "false"} />
+					<StartButton answer_type={review ? (active5 == "all" ? "answered" : "incorrect") : "unanswered"} topic={active2} level={active3} limit={active4} correct={active5 === "all" ? "true" : "false"} />
 				</div>
 
 			</div>
