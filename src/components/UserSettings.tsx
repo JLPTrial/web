@@ -1,10 +1,20 @@
 import { Link } from 'react-router';
 import useUser from '../hooks/useUser.ts';
 import { useThemeContext } from '../contexts/ThemeProvider.tsx';
+import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 
 export default function UserSettings() {
     const { user } = useUser();
     const { theme, toggleTheme } = useThemeContext();
+    const { authStatus } = useRequireAuth()
+
+    if (authStatus === 'pending') {
+        return <div className='p-8 text-center'>Carregando sessão...</div>
+    }
+
+    if (authStatus === 'unauthenticated') {
+        return null
+    }
 
     return (
         <div className="flex flex-col gap-10 w-full max-w-[1200px] mx-auto sm:px-10 my-10 text-left transition-colors duration-200">

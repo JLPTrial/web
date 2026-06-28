@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Navigate } from 'react-router'
-import useUser from '../hooks/useUser.ts'
+import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { getLevelTopicQuestions } from '../services/questions/QuestionService.ts'
 import type { QuestionListModel } from '../models/QuestionListModel.ts'
 import { QuestionLevel, QuestionTopic } from '../models/questionParams'
@@ -24,7 +23,7 @@ const previewLevel = QuestionLevel.N5
 const previewTopic = QuestionTopic.Listening
 
 export default function QuestionPreview() {
-	const { user } = useUser()
+	const { authStatus } = useRequireAuth()
 	const [questionsResponse, setQuestionsResponse] = useState<QuestionListModel | null>(null)
 	const [error, setError] = useState('')
 	const [isLoading, setIsLoading] = useState(true)
@@ -67,8 +66,12 @@ export default function QuestionPreview() {
 		}
 	}, [page])
 
-	if (!user.isLoggedIn) {
-		return <Navigate to='/login' replace />
+	if (authStatus === 'pending') {
+		return <div className='p-8 text-center'>Carregando sessão...</div>
+	}
+
+	if (authStatus === 'unauthenticated') {
+		return null
 	}
 
 	const questions = questionsResponse?.items ?? []

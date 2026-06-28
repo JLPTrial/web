@@ -1,5 +1,5 @@
 import './App.css'
-import { Routes, Route, useNavigate, Navigate } from 'react-router'
+import { Routes, Route, useNavigate, } from 'react-router'
 import Dashboard from './components/Dashboard.tsx'
 import LandingPage from './components/LandingPage.tsx'
 import Statistics from './components/Statistics.tsx'
@@ -65,7 +65,7 @@ function App() {
                             {/* Rota Protegida de Configurações */}
                             <Route 
                                 path='/settings' 
-                                element={user.isLoggedIn ? <UserSettings /> : <Navigate to="/login" replace />} 
+                                element={<UserSettings />} 
                             />
                         </Routes>
                     </div>
