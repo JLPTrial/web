@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Navigate, useNavigate } from 'react-router'
-import useUser from '../hooks/useUser.ts'
+import { useNavigate } from 'react-router'
+import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 
 import {
 	listeningQuestions,
@@ -14,7 +14,7 @@ export default function Question() {
 
 	const navigate = useNavigate()
 
-	const { user, isSessionReady } = useUser()
+	const { authStatus } = useRequireAuth()
 
 	// 'definidor' da questão atual em que o usuário se encontra
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -101,13 +101,13 @@ export default function Question() {
 	// Quando fazemos login, pode demorar um pouquinho para sincronizar e validar.
 	// Por isso, retornamos antes de verificar se o usuário está logado para ele não voltar
 	// Para a página de login, caso queiram, podem aproveitar esta micro estrutura para implementar uma tela de loading ou algo assim.
-	if (!isSessionReady) {
-		return <div className='p-8 text-center'>Carregando sessão...</div>
+	if (authStatus === 'pending') {
+    	return <div className='p-8 text-center'>Carregando sessão...</div>
 	}
 
-	// impede o usuário de acessar esta página se não estiver logado (eu imagino que isso aqui mude quando tivermos autenticação de fato)
-	if (!user.isLoggedIn) { 
-		return(<Navigate to='/login' replace />)
+	// impede o usuário de acessar esta página se não estiver logado (eu imagino que isso aqui mude quando tivermos autenticação de fato) (mudou)
+	if (authStatus === 'unauthenticated') {
+    	return null
 	}
 
 	// quando usuário terminar o batch de questões, ao invés de mostrar a próxima questão (que não existe), mostre o seguinte:
