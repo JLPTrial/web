@@ -153,28 +153,28 @@ export default function SignUpPage() {
                             </div>
                         )}
 
+
+                        <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
+                            <button
+                                type="submit"
+                                disabled={isLoading}
+                                className={leaf_button({ shape: 'rectangle'})}
+                                >
+                                {isLoading ? 'Criando...' : 'Criar conta'}
+                            </button>
+
+                            <p>ou</p>
+
+                            <button
+                                type="button"
+                                onClick={handleGoogleSignup}
+                                disabled={isLoading}
+                                className={leaf_button({ shape: 'rectangle' })}
+                                >
+                                Entrar com Google
+                            </button>
+                        </div>
                     </form>
-
-                    <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className={leaf_button({ shape: 'rectangle'})}
-                        >
-                            {isLoading ? 'Criando...' : 'Criar conta'}
-                        </button>
-
-                        <p>ou</p>
-
-                        <button
-                            type="button"
-                            onClick={handleGoogleSignup}
-                            disabled={isLoading}
-                            className={leaf_button({ shape: 'rectangle' })}
-                        >
-                            Entrar com Google
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
