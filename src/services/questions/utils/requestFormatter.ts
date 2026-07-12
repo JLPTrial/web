@@ -1,11 +1,34 @@
-import type { GetQuestionsQueryParams } from '../../../models/questionParams'
+import type { GetQuestionsQueryParams, GetStatisticsQueryParams, QuestionLevelConstants, QuestionTopicConstants } from '../../../models/questionParams'
 
-export function formatPath(params: GetQuestionsQueryParams = {}) {
-	return buildBasePath(params)
+export type QuestionPathParams = GetQuestionsQueryParams & {
+	level?: QuestionLevelConstants
+	topic?: QuestionTopicConstants
 }
 
-function buildBasePath(params: GetQuestionsQueryParams) {
-	return buildQueryPath('/questions', params)
+export function formatPath(params: QuestionPathParams = {}) {
+	return buildQueryPath(buildBasePath(params), params)
+}
+
+export function formatStatisticsPath(params: GetStatisticsQueryParams = {}) {
+	const query = new URLSearchParams()
+
+	setQueryParam(query, 'level', params.level)
+	setQueryParam(query, 'topic', params.topic)
+	setQueryParam(query, 'tag', params.tag)
+
+	return appendQueryString('/questions/statistics', query)
+}
+
+function buildBasePath(params: QuestionPathParams) {
+	if (params.level !== undefined && params.topic !== undefined) {
+		return `/levels/${params.level}/topics/${params.topic}/questions`
+	}
+
+	if (params.level !== undefined) {
+		return `/levels/${params.level}/questions`
+	}
+
+	return '/questions'
 }
 
 function buildQueryPath(basePath: string, params: GetQuestionsQueryParams) {
@@ -13,14 +36,18 @@ function buildQueryPath(basePath: string, params: GetQuestionsQueryParams) {
 
 	setQueryParam(query, 'question_id', params.questionId)
 	setQueryParam(query, 'tag', params.tag)
-	setQueryParam(query, 'answered', params.answered)
+	setQueryParam(query, 'answer_status', params.answerStatus)
 	setQueryParam(query, 'page', params.page)
 	setQueryParam(query, 'limit', params.limit)
 
 	return appendQueryString(basePath, query)
 }
 
-function setQueryParam(query: URLSearchParams, key: string, value: unknown) {
+function setQueryParam(
+	query: URLSearchParams,
+	key: string,
+	value: string | number | undefined | null,
+) {
 	if (value === undefined || value === null) {
 		return
 	}
