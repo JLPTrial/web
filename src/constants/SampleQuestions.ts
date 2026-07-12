@@ -3,6 +3,7 @@ import type { QuestionModel } from '../models/QuestionModel'
 export const grammarQuestions: QuestionModel[] = [
 	{
 		id: 1,
+		uid: 'N5-grammar-001',
 		question_type: 'grammar',
 		question_text: 'まいにち　しんぶん　（[blank]）　読[よ]みます。',
 		statement: {
@@ -20,6 +21,7 @@ export const grammarQuestions: QuestionModel[] = [
 	},
 	{
 		id: 106,
+		uid: 'N5-grammar-106',
 		question_type: 'grammar',
 		question_text: '「１」に　何[なん]　を　入[い]れますか。',
 		statement: {
@@ -37,6 +39,7 @@ export const grammarQuestions: QuestionModel[] = [
 	},
 	{
 		id: 201,
+		uid: 'N5-grammar-201',
 		question_type: 'grammar',
 		question_text: 'ヤンさん　は　この　つくえ　を[underline_blank][underline_blank][star_underline_blank][underline_blank]よ。',
 		statement: {
@@ -57,6 +60,7 @@ export const grammarQuestions: QuestionModel[] = [
 export const kanjiQuestions: QuestionModel[] = [
 	{
 		id: 1,
+		uid: 'N5-kanji-001',
 		question_type: 'kanji',
 		question_text: 'しけん　は　{来月}　の　七月八日[しちがつようか]、木[もく]よう日[び]、九時[くじ]　から　です。',
 		statement: {
@@ -74,6 +78,7 @@ export const kanjiQuestions: QuestionModel[] = [
 	},
 	{
 		id: 16,
+		uid: 'N5-kanji-016',
 		question_type: 'kanji',
 		question_text: 'はは　は　{まいにち}、だいがく　の　としょかん　で　はたらいています。',
 		statement: {
@@ -94,6 +99,7 @@ export const kanjiQuestions: QuestionModel[] = [
 export const listeningQuestions: QuestionModel[] = [
 	{
 		id: 1,
+		uid: 'N5-listening-001',
 		question_type: 'listening',
 		question_text: '女[おんな]　の　人[ひと]　と　男[おとこ]　の　人[ひと]　が　話[はな]しています。女[おんな]　の　人[ひと]　の　コート　は　どれ　です　か。',
 		statement: {
@@ -115,6 +121,7 @@ export const listeningQuestions: QuestionModel[] = [
 	},
 	{
 		id: 6,
+		uid: 'N5-listening-006',
 		question_type: 'listening',
 		question_text: '女[おんな]　の　人[ひと]　と　男[おとこ]　の　人[ひと]　が　話[はな]しています。男[おとこ]　の　人[ひと]　は　冷蔵庫[れいぞうこ]　に　何[なに]　を　入[い]れます　か。',
 		statement: {
@@ -136,6 +143,7 @@ export const listeningQuestions: QuestionModel[] = [
 	},
 	{
 		id: 50,
+		uid: 'N5-listening-050',
 		question_type: 'listening',
 		question_text: 'お国[くに]　はは　どちら　です　か。',
 		statement: {
@@ -157,6 +165,7 @@ export const listeningQuestions: QuestionModel[] = [
 	},
 	{
 		id: 63,
+		uid: 'N5-listening-063',
 		question_type: 'listening',
 		question_text: 'レストラン　で　お店[みせ]　の　人[ひと]　を　呼[よ]びます。なんと　言[い]います　か。',
 		statement: {
@@ -181,6 +190,7 @@ export const listeningQuestions: QuestionModel[] = [
 export const readingQuestions: QuestionModel[] = [
 	{
 		id: 1,
+		uid: 'N5-reading-001',
 		question_type: 'reading',
 		question_text: 'ねこ　は、　いま　どこ　に　います　か。',
 		statement: {
@@ -202,6 +212,7 @@ export const readingQuestions: QuestionModel[] = [
   	},
 	{
 		id: 2,
+		uid: 'N5-reading-002',
 		question_type: 'reading',
 		question_text: 'きのう　買[か]った　かさ　は　どんな　かさ　です　か。',
 		statement: {
@@ -223,6 +234,7 @@ export const readingQuestions: QuestionModel[] = [
 	},
 	{
 		id: 3,
+		uid: 'N5-reading-003',
 		question_type: 'reading',
 		question_text: '『しつもん』　（ア）　に　は　何[なに]　を　入[い]れます　か。',
 		statement: {
@@ -244,6 +256,7 @@ export const readingQuestions: QuestionModel[] = [
 	},
 	{
 		id: 17,
+		uid: 'N5-reading-017',
 		question_type: 'reading',
 		question_text: '「１」　に　は　なに　を　いれます　か。',
 		statement: {
@@ -265,6 +278,7 @@ export const readingQuestions: QuestionModel[] = [
 	},
 	{
 		id: 32,
+		uid: 'N5-reading-032',
 		question_type: 'reading',
 		question_text: '([blank])　に　は　何[なに]　を　入[い]れます　か。',
 		statement: {
@@ -289,6 +303,7 @@ export const readingQuestions: QuestionModel[] = [
 export const vocabularyQuestions: QuestionModel[] = [
 	{
 		id: 1,
+		uid: 'N5-vocabulary-001',
 		question_type: 'vocabulary',
 		question_text: '（[blank]）、　えいが　を　みにいきませんか？',
 		statement: {
@@ -306,6 +321,7 @@ export const vocabularyQuestions: QuestionModel[] = [
 	},
 	{
 		id: 71,
+		uid: 'N5-vocabulary-071',
 		question_type: 'vocabulary',
 		question_text: '{リーさん　は　にほんご　を　ならっています。}',
 		statement: {
