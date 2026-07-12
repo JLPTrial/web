@@ -5,7 +5,7 @@
 // const response = await getLevelTopicQuestions(previewLevel, previewTopic, {
 //                     page,
 //                     limit: 10,
-//                     answered: "false",
+//                     answerStatus: AnswerStatus.Unanswered,
 //                     tag: "uso",
 //                     ...
 //                 })
@@ -18,10 +18,24 @@
 export type GetQuestionsQueryParams = {
     questionId?: number
     tag?: string
-    answered?: boolean
+    answerStatus?: AnswerStatusConstants
     page?: number
     limit?: number
 }
+
+export type GetStatisticsQueryParams = {
+    level?: QuestionLevelConstants
+    topic?: QuestionTopicConstants
+    tag?: string
+}
+
+export const AnswerStatus = {
+    All: 'all',
+    Answered: 'answered',
+    Unanswered: 'unanswered',
+    Correct: 'correct',
+    Incorrect: 'incorrect',
+} as const;
 
 export const QuestionTopic = { 
      Grammar: 'grammar', 
@@ -39,3 +53,5 @@ export const QuestionLevel = {
 export type QuestionTopicConstants = typeof QuestionTopic[keyof typeof QuestionTopic]
 
 export type QuestionLevelConstants = typeof QuestionLevel[keyof typeof QuestionLevel]
+
+export type AnswerStatusConstants = typeof AnswerStatus[keyof typeof AnswerStatus]
