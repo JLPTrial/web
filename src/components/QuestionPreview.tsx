@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { getLevelTopicQuestions } from '../services/questions/QuestionService.ts'
 import type { QuestionListModel } from '../models/QuestionListModel.ts'
-import { QuestionLevel, QuestionTopic } from '../models/questionParams'
+import { AnswerStatus, QuestionLevel, QuestionTopic } from '../models/questionParams'
 
 // Feito com ChatGPT apenas para testar a API, depois que já estiverem acostumados com o
 // formato, fiquem a vontade para explodir este arquivo.
@@ -18,7 +18,7 @@ function QuestionPreviewHeader() {
 
 const INITIAL_PAGE = 1
 const LIMIT = 5
-const ANSWERED = false
+const ANSWER_STATUS = AnswerStatus.All
 const previewLevel = QuestionLevel.N5
 const previewTopic = QuestionTopic.Listening
 
@@ -38,7 +38,7 @@ export default function QuestionPreview() {
 				const response = await getLevelTopicQuestions(previewLevel, previewTopic, {
 					page,
 					limit: LIMIT,
-					answered: ANSWERED,
+					answerStatus: ANSWER_STATUS,
 				})
 				console.log(response)
 				if (!active) {
@@ -92,7 +92,7 @@ export default function QuestionPreview() {
 						<div className='border-2 border-stone-200 rounded-md p-5 my-3'>
 									<div className='font-bold text-2xl p-2 self-center'>Rota /levels/{previewLevel}/topics/{previewTopic}/questions</div>
 								<div className='text-sm text-stone-500 px-2 pb-2 flex items-center gap-4'>
-									<div>Answered: {ANSWERED.toString()}</div>
+									<div>Answer status: {ANSWER_STATUS}</div>
 									<div>Página: {page} / {totalPages}</div>
 									<div>Limite: {LIMIT}</div>
 									<div>Olhe o payload lá em baixo, tem coisas úteis para estatísticas</div>
