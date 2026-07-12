@@ -40,7 +40,6 @@ export default function QuestionPreview() {
 					limit: LIMIT,
 					answerStatus: ANSWER_STATUS,
 				})
-				console.log(response)
 				if (!active) {
 					return
 				}

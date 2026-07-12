@@ -60,7 +60,7 @@ function StatisticsDisplay({type}) {
 // Navigation buttons in the statistics section
 function StatisticsNavButton({active2, buttonId, setActive2, text}) {
 	return (
-		<Button tone={active2==buttonId? "active":"default"} onClick={() => setActive2(buttonId)}
+		<Button tone={active2===buttonId? "active":"default"} onClick={() => setActive2(buttonId)}
 			id={buttonId}>
 			{text}
 		</Button>
@@ -117,7 +117,7 @@ function StartButton({answer_status = AnswerStatus.Unanswered, topic = "kanji", 
 function QuestionsButton({active, buttonId, setActive, text, alignment }) {
 	return (
 		<Button
-			tone={active==buttonId? "active":"default"}
+			tone={active===buttonId? "active":"default"}
 			onClick={() => setActive(buttonId)}
 			size="lg"
 			direction={alignment}			
@@ -132,7 +132,7 @@ function QuestionsButton({active, buttonId, setActive, text, alignment }) {
 function LeafButton({active, buttonId, setActive, text }) {
 	return (
 		<Button
-			tone={active==buttonId? "active":"default"}
+			tone={active===buttonId? "active":"default"}
 			onClick={() => setActive(buttonId)}
 			size="sq"
 			direction="right"			
