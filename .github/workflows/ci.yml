@@ -26,19 +26,13 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: |
-          set -e
-          if [ -f package-lock.json ]; then
-            npm ci --ignore-scripts
-          else
-            npm install --ignore-scripts
-          fi
+        run: npm ci --ignore-scripts
 
       - name: Run ESLint
         run: npm run lint
 
       - name: TypeScript type checking
-        run: npx tsc --noEmit
+        run: npx --no-install tsc --noEmit
 
   build:
     name: Build Verification
@@ -59,13 +53,7 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: |
-          set -e
-          if [ -f package-lock.json ]; then
-            npm ci --ignore-scripts
-          else
-            npm install --ignore-scripts
-          fi
+        run: npm ci --ignore-scripts
 
       - name: Build for production
         run: |
@@ -94,13 +82,7 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: |
-          set -e
-          if [ -f package-lock.json ]; then
-            npm ci --ignore-scripts
-          else
-            npm install --ignore-scripts
-          fi
+        run: npm ci --ignore-scripts
 
       - name: Run tests
         run: |
