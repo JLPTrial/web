@@ -11,7 +11,3 @@ export function getGoogleEmail(user: FirebaseUserPayload): string {
 export function getGoogleUID(user: FirebaseUserPayload): string {
   return user.firebase_uid;
 }
-
-export function isUnregisteredUserError(error: unknown): boolean {
-  return error instanceof Error && error.message.includes('User is not registered')
-}

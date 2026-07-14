@@ -19,5 +19,16 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+
+    
+    rules: {
+      eqeqeq: ['error', 'smart'],
+
+      'no-var': 'error',
+
+      'prefer-const': 'error',
+
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+    },
   },
 ])

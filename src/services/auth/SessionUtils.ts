@@ -6,7 +6,6 @@ import type {
   FirebaseUserPayload,
   FirebaseSignupRequest,
 } from "../../models/FirebaseModel";
-import { getGoogleDisplayName, isUnregisteredUserError } from "./GoogleAuthUtils";
 
 type SessionBody = FirebaseLoginRequest | FirebaseSignupRequest
 
@@ -21,27 +20,7 @@ export async function buildSession(endpoint: '/login' | '/signup', body: Session
 export async function buildGoogleSession(): Promise<FirebaseUserPayload> {
   const uidToken = await getFirebaseIdToken()
 
-  try {
-    return await buildSession('/login', { uid_token: uidToken })
-  } catch (error) {
-    if (!isUnregisteredUserError(error)) {
-      throw error
-    }
-
-    const currentUser = auth.currentUser
-    if (!currentUser || !currentUser.email) {
-      throw new Error('Usuário do Google não está autenticado')
-    }
-
-    return buildSession('/signup', {
-      uid_token: uidToken,
-      name: getGoogleDisplayName({
-        firebase_uid: currentUser.uid,
-        email: currentUser.email,
-        name: currentUser.displayName ?? '',
-      }),
-    })
-  }
+  return buildSession('/login', { uid_token: uidToken })
 }
 
 export async function getFirebaseIdToken(): Promise<string> {

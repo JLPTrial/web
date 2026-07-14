@@ -2,6 +2,9 @@ import { useNavigate } from 'react-router'
 import { useState } from 'react'
 import {Button} from "./Button.tsx"
 import japanBg from '../assets/japan.svg';
+import { getLevelQuestions, getLevelTopicQuestions } from '../services/questions/QuestionService.ts'
+import { AnswerStatus, QuestionLevel } from '../models/questionParams'
+import type { AnswerStatusConstants, QuestionTopicConstants } from '../models/questionParams'
 
 // Box that displays statistics data
 function StatDisplayBox({title, data, type}) {
@@ -20,29 +23,21 @@ function StatDisplayBox({title, data, type}) {
 
 // Function that applies the filters selected by the user,
 // and checks if there are any questions in the database with these filters
-async function get_number_of_questions(answer_type: string = 'unanswered', topic: string = "kanji", level: string = "n4", limit: string = "5" ) {
-	let url: string;
-	let n: number;
-	if (topic === "all") {
-		url = `/levels/${level}/questions?answer_type=${answer_type}&limit=${limit}&random=true`;
-	}
-	else {
-		url = `/levels/${level}/topics/${topic}/questions?answer_type=${answer_type}&limit=${limit}&random=true`;
-	}
-	try {
-		const response = await fetch(url);
-		if (!response.ok) {
-			throw new Error("Erro ao buscar dados");
-		}
-		const data = await response.json();
+async function get_number_of_questions(answer_status: AnswerStatusConstants = AnswerStatus.Unanswered, topic: string = "kanji", level: string = "N4", limit: string = "5" ) {
+	const levelId = QuestionLevel[level as keyof typeof QuestionLevel]
+	const params = { answerStatus: answer_status, limit: Number(limit) }
 
-		n = data.total;
-		return (n);
+	try {
+		const response = topic === "all"
+			? await getLevelQuestions(levelId, params)
+			: await getLevelTopicQuestions(levelId, topic as QuestionTopicConstants, params)
+
+		return response.total;
 	} catch (error) {
 		console.error("Erro:", error);
 		return -1;
     }
-	
+
 }
 
 // Display that contains all boxes with statistics
@@ -65,7 +60,7 @@ function StatisticsDisplay({type}) {
 // Navigation buttons in the statistics section
 function StatisticsNavButton({active2, buttonId, setActive2, text}) {
 	return (
-		<Button tone={active2==buttonId? "active":"default"} onClick={() => setActive2(buttonId)}
+		<Button tone={active2===buttonId? "active":"default"} onClick={() => setActive2(buttonId)}
 			id={buttonId}>
 			{text}
 		</Button>
@@ -82,12 +77,19 @@ function ButtonText({kanji, text}) {
 	);
 }
 
-function StartButton({answer_type ='unanswered', topic = "kanji", level = "n4", limit = "5"}) {
+type StartButtonProps = Readonly<{
+	answer_status?: AnswerStatusConstants
+	topic?: string
+	level?: string
+	limit?: string
+}>
+
+function StartButton({answer_status = AnswerStatus.Unanswered, topic = "kanji", level = "N4", limit = "5"}: StartButtonProps) {
         const navigate = useNavigate();
 
 	return (
 		<button onClick={() => {
-			get_number_of_questions(answer_type, topic, level, limit).then((response) => {
+			get_number_of_questions(answer_status, topic, level, limit).then((response) => {
 				if (response === 0) {
 					alert("Não existem questões para estes filtros");
 				}
@@ -95,11 +97,11 @@ function StartButton({answer_type ='unanswered', topic = "kanji", level = "n4", 
 					alert("Erro ao buscar questôes");
 				}
 				else {
-					const url = `question?level=${level}&topic=${topic}answer_type=${answer_type}&limit=${limit}`;
-					navigate(url);
+					const query = new URLSearchParams({level, topic, answer_status, limit});
+					navigate(`question?${query.toString()}`);
 				}
 			});
-		
+
 		}}
 			className='m-2 px-10 py-5 rounded-xl text-xl
 			bg-red-700 text-white font-bold
@@ -115,7 +117,7 @@ function StartButton({answer_type ='unanswered', topic = "kanji", level = "n4", 
 function QuestionsButton({active, buttonId, setActive, text, alignment }) {
 	return (
 		<Button
-			tone={active==buttonId? "active":"default"}
+			tone={active===buttonId? "active":"default"}
 			onClick={() => setActive(buttonId)}
 			size="lg"
 			direction={alignment}			
@@ -130,7 +132,7 @@ function QuestionsButton({active, buttonId, setActive, text, alignment }) {
 function LeafButton({active, buttonId, setActive, text }) {
 	return (
 		<Button
-			tone={active==buttonId? "active":"default"}
+			tone={active===buttonId? "active":"default"}
 			onClick={() => setActive(buttonId)}
 			size="sq"
 			direction="right"			
@@ -199,6 +201,13 @@ function StatisticsBox() {
     );
 }
 
+function getAnswerStatusFilter(review: boolean, reviewType: string): AnswerStatusConstants {
+	if (!review) {
+		return AnswerStatus.Unanswered
+	}
+	return reviewType === "all" ? AnswerStatus.Answered : AnswerStatus.Incorrect
+}
+
 // Main box for question selection
 function QuestionBox({title, review}) {
 	const [active1, setActive1] = useState(false) // variable that defines if main button is active
@@ -262,7 +271,7 @@ function QuestionBox({title, review}) {
 				</div>
 				
 				<div className='w-full flex items-centers justify-center'>
-					<StartButton answer_type={review ? (active5 == "all" ? "answered" : "incorrect") : "unanswered"} topic={active2} level={active3} limit={active4} correct={active5 === "all" ? "true" : "false"} />
+					<StartButton answer_status={getAnswerStatusFilter(review, active5)} topic={active2} level={active3} limit={active4} />
 				</div>
 
 			</div>

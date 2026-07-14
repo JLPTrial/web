@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import useUser from '../hooks/useUser.ts';
-import { useThemeContext } from '../contexts/ThemeProvider.tsx';
+import { useThemeContext } from '../contexts/ThemeContext.ts';
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 
 export default function UserSettings() {
