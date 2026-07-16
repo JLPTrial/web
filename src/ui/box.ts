@@ -30,6 +30,7 @@ export const box = cva(
                         },
                         size: {
                                 sm: "h-[32px] px-2 text-xs",
+                                sm2: "p-2 text-xs",
                                 md: "h-[40px] px-3 text-sm",
                                 lg: "h-[56px] px-4 text-base",
                                 sq: "h-[56px] w-[56px] px-4 text-base"
