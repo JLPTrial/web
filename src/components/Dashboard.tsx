@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router'
-import { act, useState } from 'react'
+import { useState } from 'react'
 import {Button} from "./Button.tsx"
 import japanBg from '../assets/japan.svg';
 import { getLevelQuestions, getLevelTopicQuestions } from '../services/questions/QuestionService.ts'
