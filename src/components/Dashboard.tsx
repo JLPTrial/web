@@ -1,15 +1,18 @@
 import { useNavigate } from 'react-router'
-import { useState } from 'react'
+import { act, useState } from 'react'
 import {Button} from "./Button.tsx"
 import japanBg from '../assets/japan.svg';
 import { getLevelQuestions, getLevelTopicQuestions } from '../services/questions/QuestionService.ts'
 import { AnswerStatus, QuestionLevel } from '../models/questionParams'
 import type { AnswerStatusConstants, QuestionTopicConstants } from '../models/questionParams'
+import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 
 // Box that displays statistics data
 function StatDisplayBox({title, data, type}) {
     return (
-        <div className='flex flex-col justify-around items-center text-center bg-white border-2 border-stone-200 rounded-xl p-2 m-2'>
+        <div className='flex flex-col justify-around items-center
+						text-center border-2 border-stone-200 rounded-xl p-2 m-2
+						bg-white text-[#6b6375] dark:bg-gray-900 dark:text-gray-50'>
 			<div className='font-bold text-md'>
 				{title} {type}
 			</div>
@@ -86,30 +89,37 @@ type StartButtonProps = Readonly<{
 
 function StartButton({answer_status = AnswerStatus.Unanswered, topic = "kanji", level = "N4", limit = "5"}: StartButtonProps) {
         const navigate = useNavigate();
+		const [popup, setPopup] = useState(false) // variable that defines if warning PopUp is active
+		const [text, setText] = useState("Não existem questões para estes filtros") // variable that defines the PopUp text		
 
 	return (
-		<button onClick={() => {
-			get_number_of_questions(answer_status, topic, level, limit).then((response) => {
-				if (response === 0) {
-					alert("Não existem questões para estes filtros");
-				}
-				else if (response === -1) {
-					alert("Erro ao buscar questôes");
-				}
-				else {
-					const query = new URLSearchParams({level, topic, answer_status, limit});
-					navigate(`question?${query.toString()}`);
-				}
-			});
+		<>
+			<button onClick={() => {
+				get_number_of_questions(answer_status, topic, level, limit).then((response) => {
+					if (response === 0) {
+						setText("Não existem questões para estes filtros");
+						setPopup(!popup);
+					}
+					else if (response === -1) {
+						setText("Erro ao buscar questôes");
+						setPopup(!popup);
+					}
+					else {
+						const query = new URLSearchParams({level, topic, answer_status, limit});
+						navigate(`question?${query.toString()}`);
+					}
+				});
 
-		}}
-			className='m-2 px-10 py-5 rounded-xl text-xl
-			bg-red-700 text-white font-bold
-			hover:scale-115 cursor-pointer
-			shadow-md shadow-stone-400 dark:shadow-none
-			transition-all duration-300'>
-				Começar
-		</button>
+			}}
+				className='m-2 px-10 py-5 rounded-xl text-xl
+				bg-red-700 text-white font-bold
+				hover:scale-115 cursor-pointer
+				shadow-md shadow-stone-400 dark:shadow-none
+				transition-all duration-300'>
+					Começar
+			</button>
+			<WarningPopUp text={text} active={popup} setActive={setPopup} />
+		</>
 	);
 }
 
@@ -128,8 +138,9 @@ function QuestionsButton({active, buttonId, setActive, text, alignment }) {
 	);
 }
 
+
 // Square leaf button used to select filters
-function LeafButton({active, buttonId, setActive, text }) {
+function FilterLeafButton({active, buttonId, setActive, text }) {
 	return (
 		<Button
 			tone={active===buttonId? "active":"default"}
@@ -142,6 +153,19 @@ function LeafButton({active, buttonId, setActive, text }) {
 	);
 }
 
+// Square leaf button used in the popup
+function PopUpLeafButton({active, setActive}) {
+	return (
+		<Button
+			onClick={() => setActive(!active)}
+			size="sq"
+			direction="right"			
+			>
+			OK
+		</Button>
+	);
+}
+
 // Dropdown button for each main section of the dashboard
 function MainButton({title, active1, setActive1}) {
 	return (
@@ -149,6 +173,7 @@ function MainButton({title, active1, setActive1}) {
 		className="border-b-4 border-red-600 py-4 rounded-xl dark:border-t-2 dark:border-x-2 dark:border-t-gray-700 dark:border-x-gray-700
 			shadow-stone-400 shadow-[0_0_20px_-5px_rgba(230,230,230,0.1)] dark:shadow-none
 			h-[70px] my-1 sm:mt-10 sm:mb-7 w-full
+			bg-white text-[#6b6375] dark:bg-gray-900 dark:text-gray-50
 			cursor-pointer bg-white
 			flex items-center justify-start">
 
@@ -201,20 +226,23 @@ function StatisticsBox() {
     );
 }
 
-function getAnswerStatusFilter(review: boolean, reviewType: string): AnswerStatusConstants {
-	if (!review) {
+function getAnswerStatusFilter(questionType: string, reviewType: string): AnswerStatusConstants {
+	if (questionType === "new") {
 		return AnswerStatus.Unanswered
 	}
 	return reviewType === "all" ? AnswerStatus.Answered : AnswerStatus.Incorrect
 }
 
 // Main box for question selection
-function QuestionBox({title, review}) {
+function QuestionBox() {
 	const [active1, setActive1] = useState(false) // variable that defines if main button is active
-	const [active2, setActive2] = useState("kanji") // variable that defines which type of question is selected
-	const [active3, setActive3] = useState("N4") // variable that defines which level is selected
-	const [active4, setActive4] = useState("5") // variable that defines which number of questions is selected
-	const [active5, setActive5] = useState("all") // variable that defines which type of review is selected
+	const [active2, setActive2] = useState("new") // variable that defines if the question is new or review
+	const [active3, setActive3] = useState("all") // variable that defines which type of review is selected
+	const [active4, setActive4] = useState("N4") // variable that defines which level is selected
+	const [active5, setActive5] = useState("kanji") // variable that defines which type of question is selected
+	const [active6, setActive6] = useState("5") // variable that defines which number of questions is selected
+
+
 
 	// Texts for each button
 	const title1 = <ButtonText kanji="漢字" text="Kanji" />
@@ -230,48 +258,57 @@ function QuestionBox({title, review}) {
         <div className="flex flex-col w-[95%] p-2 sm:p-0 sm:max-w-[700px]">
 
 			{/* Main button */}
-			<MainButton title={title} active1={active1} setActive1={setActive1} />
+			<MainButton title="Questões" active1={active1} setActive1={setActive1} />
 
 			{/* Content section */}
 			<div className={`transition-all duration-500
 					${active1 ? "max-h-[2000px] opacity-100" : "max-h-[0px] pointer-events-none opacity-0"}`}>
+
+				{/* Review filter */}
+				<div className='text-xl font-bold p-1'>Tipo de questão</div>
+				<div className={`grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5`}>
+					<QuestionsButton active={active2} buttonId="new" setActive={setActive2} text="Questões novas" alignment="left" />
+					<QuestionsButton active={active2} buttonId="review" setActive={setActive2} text="Revisão" alignment="right" />				
+				</div>
+							
 				{/* Type of review filter */}
-				<div className={review ? "" : "hidden"}>
+				<div className={`transition-all duration-500 ${active2 === "review" ? "max-h-[2000px] opacity-100" : "max-h-[0px] pointer-events-none opacity-0"}`}>
 					<div className='text-xl font-bold p-1'>Tipo de revisão</div>
 					<div className={`grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5`}>
-						<QuestionsButton active={active5} buttonId="all" setActive={setActive5} text="Todas as questões" alignment="left" />
-						<QuestionsButton active={active5} buttonId="wrong" setActive={setActive5} text="Apenas erradas" alignment="right" />				
+						<QuestionsButton active={active3} buttonId="all" setActive={setActive3} text="Todas as questões" alignment="left" />
+						<QuestionsButton active={active3} buttonId="wrong" setActive={setActive3} text="Apenas erradas" alignment="right" />				
 					</div>
 				</div>
+
 				{/* Level filter */}
 				<div className='text-xl font-bold p-1'>Nível</div>
 				<div className={`flex flex-row gap-x-1 gap-y-5 mb-5`}>
-					<LeafButton active={active3} buttonId="N4" setActive={setActive3} text="N4" />
-					<LeafButton active={active3} buttonId="N5" setActive={setActive3} text="N5" />
+					<FilterLeafButton active={active4} buttonId="N4" setActive={setActive4} text="N4" />
+					<FilterLeafButton active={active4} buttonId="N5" setActive={setActive4} text="N5" />
 				</div>
 
 				{/* Competency filter */}
 				<div className='text-xl font-bold p-1'>Competência</div>
 				<div className={`grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5`}>
-					<QuestionsButton active={active2} buttonId="kanji" setActive={setActive2} text={title1} alignment="left" />
-					<QuestionsButton active={active2} buttonId="vocabulary" setActive={setActive2} text={title2} alignment="right" />
-					<QuestionsButton active={active2} buttonId="reading" setActive={setActive2} text={title3} alignment="left" />
-					<QuestionsButton active={active2} buttonId="grammar" setActive={setActive2} text={title4} alignment="right" />
-					<QuestionsButton active={active2} buttonId="listening" setActive={setActive2} text={title5} alignment="left" />
-					<QuestionsButton active={active2} buttonId="all" setActive={setActive2} text={title6} alignment="right" />				
+					<QuestionsButton active={active5} buttonId="kanji" setActive={setActive5} text={title1} alignment="left" />
+					<QuestionsButton active={active5} buttonId="vocabulary" setActive={setActive5} text={title2} alignment="right" />
+					<QuestionsButton active={active5} buttonId="reading" setActive={setActive5} text={title3} alignment="left" />
+					<QuestionsButton active={active5} buttonId="grammar" setActive={setActive5} text={title4} alignment="right" />
+					<QuestionsButton active={active5} buttonId="listening" setActive={setActive5} text={title5} alignment="left" />
+					<QuestionsButton active={active5} buttonId="all" setActive={setActive5} text={title6} alignment="right" />				
 				</div>
 
 				{/* Number of questions filter */}
 				<div className='text-xl font-bold p-1'>Quantidade de questões</div>
 				<div className='flex flex-row gap-x-1 gap-y-5 mb-5'>
-					<LeafButton active={active4} buttonId="5" setActive={setActive4} text="5" />
-					<LeafButton active={active4} buttonId="10" setActive={setActive4} text="10" />
-					<LeafButton active={active4} buttonId="20" setActive={setActive4} text="20" />
-					<LeafButton active={active4} buttonId="30" setActive={setActive4} text="30" />
+					<FilterLeafButton active={active6} buttonId="5" setActive={setActive6} text="5" />
+					<FilterLeafButton active={active6} buttonId="10" setActive={setActive6} text="10" />
+					<FilterLeafButton active={active6} buttonId="20" setActive={setActive6} text="20" />
+					<FilterLeafButton active={active6} buttonId="30" setActive={setActive6} text="30" />
 				</div>
 				
 				<div className='w-full flex items-centers justify-center'>
-					<StartButton answer_status={getAnswerStatusFilter(review, active5)} topic={active2} level={active3} limit={active4} />
+					<StartButton answer_status={getAnswerStatusFilter(active2, active3)} topic={active5} level={active4} limit={active6} />
 				</div>
 
 			</div>
@@ -298,9 +335,37 @@ function MockTestBox({title}) {
     );
 }
 
+function WarningPopUp({text, active, setActive}) {
+	return (
+		<div className={active? "fixed inset-0 flex flex-col items-center justify-center bg-black/20 dark:bg-white/20 z-50" : "hidden"}>
+			<div className="rounded-xl w-[90%] sm:w-[500px] h-[300px]
+				border-8 border-red-900 border-double
+				flex flex-col items-center justify-center gap-3
+				bg-white text-[#6b6375] dark:bg-gray-900 dark:text-gray-50">
+				<div className='mt-7 rounded p-3 text-xl w-[50%] text-center'>
+					{text}
+				</div>
+				<PopUpLeafButton active={active} setActive={setActive} />
+
+			</div>
+		</div>
+	);
+}
+
 
 // Dashboard
 export default function Dashboard() {
+
+	// Authentication
+	const { authStatus } = useRequireAuth()
+
+	if (authStatus === 'pending') {
+    	return <div className='p-8 text-center'>Carregando sessão...</div>
+	}
+	if (authStatus === 'unauthenticated') {
+    	return null
+	}
+
 	return (
 		<>
 			<div
@@ -310,11 +375,12 @@ export default function Dashboard() {
 			
 			<div className='relative z-50 w-full flex flex-col items-center justify-center pb-[200px]'>
 				<StatisticsBox />
-				<QuestionBox title="Novas questões" review={false}/>
-				<QuestionBox title="Revisar questões" review={true} />
+				<QuestionBox />
 				<MockTestBox title="Simulado" />
 
 			</div>
+			
+
 		</>
 	)
 }
