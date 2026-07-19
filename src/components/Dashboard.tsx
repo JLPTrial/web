@@ -2,9 +2,8 @@ import { useNavigate } from 'react-router'
 import { useState } from 'react'
 import {Button} from "./Button.tsx"
 import japanBg from '../assets/japan.svg';
-import { getLevelQuestions, getLevelTopicQuestions } from '../services/questions/QuestionService.ts'
-import { AnswerStatus, QuestionLevel } from '../models/questionParams'
-import type { AnswerStatusConstants, QuestionTopicConstants } from '../models/questionParams'
+import { useQuestions } from '../hooks/useQuestions.ts'
+import type { QuestionFilters } from '../hooks/useQuestions.ts'
 
 // Box that displays statistics data
 function StatDisplayBox({title, data, type}) {
@@ -18,25 +17,6 @@ function StatDisplayBox({title, data, type}) {
 			</div>	
         </div>
     );
-
-}
-
-// Function that applies the filters selected by the user,
-// and checks if there are any questions in the database with these filters
-async function get_number_of_questions(answer_status: AnswerStatusConstants = AnswerStatus.Unanswered, topic: string = "kanji", level: string = "N4", limit: string = "5" ) {
-	const levelId = QuestionLevel[level as keyof typeof QuestionLevel]
-	const params = { answerStatus: answer_status, limit: Number(limit) }
-
-	try {
-		const response = topic === "all"
-			? await getLevelQuestions(levelId, params)
-			: await getLevelTopicQuestions(levelId, topic as QuestionTopicConstants, params)
-
-		return response.total;
-	} catch (error) {
-		console.error("Erro:", error);
-		return -1;
-    }
 
 }
 
@@ -78,39 +58,46 @@ function ButtonText({kanji, text}) {
 }
 
 type StartButtonProps = Readonly<{
-	answer_status?: AnswerStatusConstants
-	topic?: string
-	level?: string
-	limit?: string
+        answer_status?: 'new' | 'all' | 'wrong'
+        topic?: string
+        level?: string
+        limit?: string
 }>
 
-function StartButton({answer_status = AnswerStatus.Unanswered, topic = "kanji", level = "N4", limit = "5"}: StartButtonProps) {
+function StartButton({answer_status = "new", topic = "kanji", level = "N4", limit = "5"}: StartButtonProps) {
         const navigate = useNavigate();
+        const { getQuestionCount } = useQuestions()
 
-	return (
-		<button onClick={() => {
-			get_number_of_questions(answer_status, topic, level, limit).then((response) => {
-				if (response === 0) {
-					alert("Não existem questões para estes filtros");
-				}
-				else if (response === -1) {
-					alert("Erro ao buscar questôes");
-				}
-				else {
-					const query = new URLSearchParams({level, topic, answer_status, limit});
-					navigate(`question?${query.toString()}`);
-				}
-			});
+        return (
+                <button onClick={() => {
+                        const filters: QuestionFilters = {
+                                level: level as QuestionFilters['level'],
+                                topic: topic as QuestionFilters['topic'],
+                                answer_status,
+                                limit: limit as QuestionFilters['limit'],
+                        }
+                        getQuestionCount(filters).then((response) => {
+                                if (response === 0) {
+                                        alert("Não existem questões para estes filtros");
+                                }
+                                else if (response === -1) {
+                                        alert("Erro ao buscar questôes");
+                                }
+                                else {
+                                        const query = new URLSearchParams({level, topic, answer_status, limit});
+                                        navigate(`question?${query.toString()}`);
+                                }
+                        });
 
-		}}
-			className='m-2 px-10 py-5 rounded-xl text-xl
-			bg-red-700 text-white font-bold
-			hover:scale-115 cursor-pointer
-			shadow-md shadow-stone-400 dark:shadow-none
-			transition-all duration-300'>
-				Começar
-		</button>
-	);
+                }}
+                        className='m-2 px-10 py-5 rounded-xl text-xl
+                        bg-red-700 text-white font-bold
+                        hover:scale-115 cursor-pointer
+                        shadow-md shadow-stone-400 dark:shadow-none
+                        transition-all duration-300'>
+                                Começar
+                </button>
+        );
 }
 
 // Rectangular leaf button used to select filters 
@@ -201,11 +188,11 @@ function StatisticsBox() {
     );
 }
 
-function getAnswerStatusFilter(review: boolean, reviewType: string): AnswerStatusConstants {
-	if (!review) {
-		return AnswerStatus.Unanswered
-	}
-	return reviewType === "all" ? AnswerStatus.Answered : AnswerStatus.Incorrect
+function getAnswerStatusFilter(review: boolean, reviewType: string): 'new' | 'all' | 'wrong' {
+        if (!review) {
+                return "new"
+        }
+        return reviewType === "all" ? "all" : "wrong"
 }
 
 // Main box for question selection
