@@ -10,6 +10,7 @@ import QuestionPreview from './components/QuestionPreview.tsx'
 import UserSettings from './components/UserSettings.tsx'
 import useUser from './hooks/useUser.ts'
 import TopNavBar from './components/TopNavBar.tsx'
+import Footer from './components/Footer.tsx'
 
 function App() {
 	const { user, logout } = useUser()
@@ -21,14 +22,14 @@ function App() {
     }
 
     return (
-        <div className='app-shell'>
+        <div className='app-shell min-h-screen flex flex-col'>
             
             <TopNavBar
                 isLoggedIn={user.isLoggedIn}
                 handleLogout={handleLogout}
             />
 
-            <main className='w-full mx-auto mt-5 max-w-6xl flex justify-center align-center'>
+            <main className='flex-1 w-full mx-auto mt-5 max-w-6xl flex justify-center align-center'>
                 <section
                     className='mx-auto px-4 w-full'
                     aria-live='polite'>
@@ -71,6 +72,7 @@ function App() {
                     </div>
                 </section>
             </main>
+            <Footer />
         </div>
     )
 }

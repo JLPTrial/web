@@ -38,7 +38,7 @@ function SecondaryInfo({ alignment, infoText }) {
 			justify-center`
 		)}
                 >
-                        <div>
+                        <div className='m-10'>
                                 {infoText}
                         </div>
 
@@ -46,13 +46,6 @@ function SecondaryInfo({ alignment, infoText }) {
         );
 }
 
-function Footer() {
-        return (
-                <div className="bg-black w-full h-20 text-center text-white flex items-center justify-center">
-                        <p> Disponível para Web e Android </p>
-                </div>
-        );
-}
 
 function StartButton() {
         const navigate = useNavigate();
@@ -92,7 +85,6 @@ export default function LandingPage() {
                                 <SecondaryInfo alignment="right" infoText={secondaryInfo3} />
                                 <StartButton />
                         </div>
-                        <Footer />
 
                 </>
         );
