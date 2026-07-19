@@ -15,6 +15,7 @@ export type QuestionFilters = {
     topic: SimpleTopic
     answer_status: SimpleAnswerStatus
     limit: SimpleLimit
+    page?: number
 }
 
 // Traduz o formato simples dos botões para o formato que a API espera
@@ -32,13 +33,14 @@ function translateFilters(filters: QuestionFilters) {
 
     const limit = Number(filters.limit)
     const topic = filters.topic === 'all' ? undefined : filters.topic
+    const page = filters.page
 
-    return { levelId, answerStatus, limit, topic }
+    return { levelId, answerStatus, limit, topic, page }
 }
 
 async function fetchQuestions(filters: QuestionFilters) {
-    const { levelId, answerStatus, limit, topic } = translateFilters(filters)
-    const params = { answerStatus, limit }
+    const { levelId, answerStatus, limit, topic, page } = translateFilters(filters)
+    const params = { answerStatus, limit, page }
 
     return topic
         ? getLevelTopicQuestions(levelId, topic, params)
@@ -47,6 +49,7 @@ async function fetchQuestions(filters: QuestionFilters) {
 
 export function useQuestions() {
     const [questions, setQuestions] = useState<QuestionModel[]>([])
+    const [total, setTotal] = useState(0)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [selectedAlternative, setSelectedAlternative] = useState<number | null>(null)
     const [answerStatus, setAnswerStatus] = useState<boolean | null>(null)
@@ -69,7 +72,7 @@ export function useQuestions() {
         }
     }, [])
 
-    // Busca a lista de questões para os filtros escolhidos e inicia a sessão
+    // Busca a lista de questões para os filtros escolhidos e inicia/atualiza a sessão
     const getQuestionList = useCallback(async (filters: QuestionFilters): Promise<void> => {
         setIsLoading(true)
         setError(null)
@@ -77,6 +80,7 @@ export function useQuestions() {
         try {
             const response = await fetchQuestions(filters)
             setQuestions(response.items)
+            setTotal(response.total)
             setCurrentIndex(0)
             setSelectedAlternative(null)
             setAnswerStatus(null)
@@ -95,19 +99,23 @@ export function useQuestions() {
         })
     }, [answerStatus])
 
-    const submitAnswer = useCallback(async () => {
-        if (selectedAlternative === null || !currentQuestion) return
+    const submitAnswer = useCallback(async (): Promise<boolean | null> => {
+        if (selectedAlternative === null || !currentQuestion) return null
 
         try {
             const response = await registerQuestion({
                 question_uid: currentQuestion.uid,
                 selected_alternative: selectedAlternative,
             })
-            setAnswerStatus(response.status === 'correct')
+            const isCorrect = response.status === 'correct'
+            setAnswerStatus(isCorrect)
+            return isCorrect
         } catch (err) {
             console.error('Erro ao registrar resposta:', err)
             // fallback: valida localmente caso o backend esteja indisponível
-            setAnswerStatus(selectedAlternative === currentQuestion.alternatives.correct_alternative)
+            const isCorrect = selectedAlternative === currentQuestion.alternatives.correct_alternative
+            setAnswerStatus(isCorrect)
+            return isCorrect
         }
     }, [selectedAlternative, currentQuestion])
 
@@ -128,6 +136,7 @@ export function useQuestions() {
     return {
         // estado
         questions,
+        total,
         currentQuestion,
         currentIndex,
         totalQuestions,
