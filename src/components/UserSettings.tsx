@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import useUser from '../hooks/useUser.ts';
 import { useThemeContext } from '../contexts/ThemeContext.ts';
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
+import { Button } from './Button.tsx'
 
 export default function UserSettings() {
     const { user } = useUser();
@@ -58,15 +59,9 @@ export default function UserSettings() {
                     />
                 </div>
 
-                <button 
-                    className="
-                        bg-black dark:bg-gray-100 shadow-2xl text-white dark:text-black rounded-lg px-10 py-3 mt-4 
-                        text-l cursor-pointer hover:bg-[rgb(255,0,0)] dark:hover:bg-[rgb(255,0,0)] dark:hover:text-white transition-all 
-                        w-full sm:w-[400px] font-medium
-                    "
-                >
+                <Button size="lg" className="w-full sm:w-[400px] mt-4">
                     Salvar Usuário
-                </button>
+                </Button>
             </div>
 
             {/* Account Security Section */}
@@ -83,9 +78,9 @@ export default function UserSettings() {
                             Seu e-mail atual é <strong className="!text-gray-800 dark:!text-gray-200">{user.email || 'não definido'}</strong>.
                         </p>
                     </div>
-                    <button className="px-6 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 !text-gray-900 dark:!text-gray-100 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors font-medium shadow-sm">
+                    <Button size="md">
                         Alterar E-mail
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Change Password */}
@@ -96,9 +91,9 @@ export default function UserSettings() {
                             Certifique-se de que sua conta esteja usando uma senha segura.
                         </p>
                     </div>
-                    <button className="px-6 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 !text-gray-900 dark:!text-gray-100 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors font-medium shadow-sm">
+                    <Button size="md">
                         Atualizar Senha
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Delete Account */}
@@ -109,9 +104,9 @@ export default function UserSettings() {
                             Remover permanentemente sua conta pessoal e todos os seus dados.
                         </p>
                     </div>
-                    <button className="px-6 py-2 bg-[rgb(255,0,0)] text-white rounded-md hover:bg-red-800 dark:hover:bg-red-700 transition-colors font-bold shadow-md">
+                    <Button tone="danger" size="md">
                         Excluir Conta
-                    </button>
+                    </Button>
                 </div>
             </div>
 
