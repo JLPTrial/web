@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { useQuestions } from '../hooks/useQuestions.ts'
@@ -7,6 +7,7 @@ import type { QuestionFilters } from '../hooks/useQuestions.ts'
 import { box } from '../ui/box.ts'
 import { leaf_button } from '../ui/leaf-button-variants.ts';
 import AudioPlayer from "./AudioPlayer";
+import JapaneseTextParser from "./JapaneseTextParser.tsx";
 
 
 export default function Question() {
@@ -135,7 +136,7 @@ export default function Question() {
 
                                 {/* COMANDO DA QUESTÃO (e.g. 'Leia', 'Escute', etc. */}
                                 <div className='m-2 my-3 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
-                                        {currentQuestion.statement.question_command}
+                                        {<JapaneseTextParser text={currentQuestion.statement.question_command} />}
                                 </div>
 
                                 {/* MÍDIA (obs: estamos verificando se não é null antes de mostrar) */}
@@ -163,7 +164,7 @@ export default function Question() {
 
                                 {/* PERGUNTA DA QUESTÃO (e.g. 'Onde fulano trabalha?') */}
                                 <div className='m-2 mb-8 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
-                                        {currentQuestion.question_text}
+                                        {<JapaneseTextParser text={currentQuestion.question_text} />}
                                 </div>
 
                                 {/* ALTERNATIVAS */}
@@ -206,7 +207,7 @@ export default function Question() {
                                                                                         onClick={() => selectAlternative(alternativeNumber)}
                                                                                 />
 
-                                                                                <p className='pl-2'>{alternative}</p>
+                                                                                <p className='pl-2'>{<JapaneseTextParser text={alternative} />}</p>
 
                                                                         </label>
                                                                 )

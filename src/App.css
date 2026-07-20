@@ -36,6 +36,30 @@
 }
 
 
+/* Estilização dos marcadores de formatação das questões */
+
+.blank {
+  display: inline-block;
+  width: 60px;
+}
+
+.underline-blank {
+  display: inline-block;
+  width: 60px;
+  border-bottom: 2px solid #000;
+}
+
+.star-underline {
+  display: inline-block;
+  width: 80px;
+  text-align: center;
+  border-bottom: 2px solid #000;
+}
+
+.underline {
+  border-bottom: 2px solid #000;
+}
+
 
 /* Styling of the logo at the top navigation bar */
 
