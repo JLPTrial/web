@@ -65,6 +65,13 @@
 .brand .text-circle   { fill: rgb(0,0,0); }
 .brand .cursor        { fill: rgb(0,0,0); }
 
+.dark .brand .wordmark      { fill: rgb(255,255,255); }
+.dark .brand .text-ring     { fill: rgba(0,0,0,0); }
+.dark .brand .emblem-circle { fill: rgb(255, 0, 0); }
+.dark .brand .text-circle   { fill: rgb(255, 255, 255); }
+.dark .brand .cursor        { fill: rgb(255, 255, 255); }
+
+
 .brand       .text-spin-animation { transform: rotate(0deg); }
 .brand:hover .text-spin-animation { transform: rotate(360deg); }
 

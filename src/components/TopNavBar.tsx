@@ -12,7 +12,7 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
     const [open, setOpen] = useState(false);
     return (
         <>
-        <header className="relative z-50 bg-white h-[64px] px-4 border-b border-[var(--nav-border)] flex items-center justify-between">
+        <header className="relative z-50 bg-white dark:bg-[#111827] h-[64px] px-4 border-b border-[var(--nav-border)] flex items-center justify-between">
 
             <NavLink to="/">
                 <Logo />
