@@ -30,13 +30,6 @@ const NavBarLogo = (properties: SVGProps<SVGSVGElement>) => (
 				transform="translate(-12.4 -8.202)"
 			/>
 
-			<g className="cursor-spin-animation">
-				<path
-					className="cursor"
-					d="M85.068 104.021c-.095.084-13.162 15.563-13.207 15.619-.015-.094-7.106-48.268-8.11-55.89.078-.08 49.478 26.802 49.812 26.908-.962.337-18.674 6.58-18.984 6.734 4.603 6.947 9.333 13.81 14.014 20.705-.074.056-9.183 6.348-9.336 6.454-.097-.105-13.655-20.027-14.19-20.53z"
-				/>
-			</g>
-
 			<g className="text-spin-animation">
 				<path
 					className="text-circle"
@@ -45,6 +38,12 @@ const NavBarLogo = (properties: SVGProps<SVGSVGElement>) => (
 				/>
 			</g>
 
+			<g className="cursor-spin-animation">
+				<path
+					className="cursor"
+					d="M85.068 104.021c-.095.084-13.162 15.563-13.207 15.619-.015-.094-7.106-48.268-8.11-55.89.078-.08 49.478 26.802 49.812 26.908-.962.337-18.674 6.58-18.984 6.734 4.603 6.947 9.333 13.81 14.014 20.705-.074.056-9.183 6.348-9.336 6.454-.097-.105-13.655-20.027-14.19-20.53z"
+				/>
+			</g>
 		</g>
 
     </svg>
