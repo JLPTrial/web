@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router'
 import { box } from '../ui/box';
 import clsx from 'clsx';
-import japanBg from '../assets/japan.svg';
+
+import { JapanBackground } from "./JapanBackground";
 
 
 function MainInfo() {
@@ -73,10 +74,7 @@ function StartButton() {
 export default function LandingPage() {
         return (
                 <>
-                        <div
-				className="fixed z-0 opacity-33 pointer-events-none inset-0 bg-center bg-no-repeat bg-[length:125vmin] lg:bg-[length:150vmin] transition-transform duration-300 -rotate-30 lg:rotate-0"
-				style={{ backgroundImage: `url(${japanBg})` }}
-			/>
+                        <JapanBackground />
 
                         <div className="relative z-50 mt-10 flex flex-col gap-10 w-full max-w-[1200px] mx-auto sm:px-10">
                                 <MainInfo />

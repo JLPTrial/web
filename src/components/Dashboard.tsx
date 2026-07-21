@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router'
 import { useState } from 'react'
 import { Button } from './Button.tsx'
-import japanBg from '../assets/japan.svg'
 import {
 	getLevelQuestions,
 	getLevelTopicQuestions,
@@ -14,6 +13,9 @@ import type {
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { useQuestions } from '../hooks/useQuestions.ts'
 import type { QuestionFilters } from '../hooks/useQuestions.ts'
+
+import { JapanBackground } from "./JapanBackground.tsx";
+
 
 // Box that displays statistics data
 function StatDisplayBox({ title, data, type }) {
@@ -559,10 +561,7 @@ export default function Dashboard() {
 
 	return (
 		<>
-			<div
-				className='fixed z-0 opacity-33 pointer-events-none inset-0 bg-center bg-no-repeat bg-[length:125vmin] lg:bg-[length:150vmin] transition-transform duration-300 -rotate-30 lg:rotate-0'
-				style={{ backgroundImage: `url(${japanBg})` }}
-			/>
+			<JapanBackground />
 
 			<div className='relative z-50 w-full flex flex-col items-center justify-center pb-[200px]'>
 				<StatisticsBox />
