@@ -3,10 +3,10 @@ import useUser from '../hooks/useUser.ts'
 import { useNavigate } from 'react-router'
 import { leaf_button } from '../ui/leaf-button-variants.ts';
 import { text } from '../ui/text.ts';
-import { form_input } from '../ui/form-input-variants.ts';
 import japanBg from '../assets/japan.svg';
 
 import { FormLabel } from '../components/FormLabel.tsx';
+import { FormInput } from '../components/FormInput.tsx';
 
 
 function SignupHeader() {
@@ -37,8 +37,7 @@ function SignupForm({
         <div className="flex flex-col justify-center items-center gap-4">
             <div>
                 <FormLabel>Nome</FormLabel>
-                <input
-                    className={form_input()}
+                <FormInput
                     type="text"
                     placeholder="Seu nome"
                     value={name}
@@ -48,8 +47,7 @@ function SignupForm({
 
             <div>
                 <FormLabel>Endereço de email</FormLabel>
-                <input
-                    className={form_input()}
+                <FormInput
                     type="email"
                     placeholder="você@exemplo.com"
                     value={email}
@@ -59,8 +57,7 @@ function SignupForm({
 
             <div>
                 <FormLabel>Senha</FormLabel>
-                <input
-                    className={form_input()}
+                <FormInput
                     type="password"
                     placeholder="Crie uma senha"
                     value={password}

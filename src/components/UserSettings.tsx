@@ -5,6 +5,7 @@ import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { Button } from './Button.tsx'
 
 import { FormLabel } from '../components/FormLabel.tsx';
+import { FormInput } from '../components/FormInput.tsx';
 
 
 export default function UserSettings() {
@@ -47,13 +48,7 @@ export default function UserSettings() {
                 
                 <div>
                     <FormLabel>Nome de Usuário</FormLabel>
-                    <input
-                        className="
-                            w-full sm:w-[400px] px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 
-                            rounded-md shadow-sm focus:outline-none focus:ring-2 
-                            focus:ring-black dark:focus:ring-white focus:border-transparent transition duration-150
-                            !text-gray-900 dark:!text-gray-100
-                        "
+                    <FormInput
                         type="text"
                         defaultValue={user.name || ''}
                         placeholder="Seu nome de usuário"

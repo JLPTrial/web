@@ -3,10 +3,10 @@ import useUser from '../hooks/useUser.ts'
 import { useNavigate } from 'react-router'
 import { leaf_button } from '../ui/leaf-button-variants.ts';
 import { text } from '../ui/text.ts';
-import { form_input } from '../ui/form-input-variants.ts';
 import japanBg from '../assets/japan.svg';
 
 import { FormLabel } from '../components/FormLabel.tsx';
+import { FormInput } from '../components/FormInput.tsx';
 
 
 function LoginHeader() {
@@ -33,8 +33,7 @@ function LoginForm({
         <div className="flex flex-col justify-center items-center gap-4">
             <div>
                 <FormLabel htmlFor="email">Endereço de email</FormLabel>
-                <input
-                    className={form_input()}
+                <FormInput
                     type="email"
                     placeholder="você@exemplo.com"
                     id="email"
@@ -42,12 +41,12 @@ function LoginForm({
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete="email"
                 />
+                
             </div>
 
             <div>
                 <FormLabel htmlFor="password">Endereço de email</FormLabel>
-                <input
-                    className={form_input()}
+                <FormInput
                     type="password"
                     placeholder="Insira a sua senha"
                     id="password"
