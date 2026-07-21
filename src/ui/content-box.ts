@@ -1,16 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
-// SETTINGS
-// flex flex-col gap-4
-
-// DASHBOARD
-// flex flex-col justify-around items-center text-center border-2 border-stone-200 rounded-xl m-2
-// bg-white text-[#6b6375] dark:bg-gray-900 dark:text-gray-50'>
-
-// QUESTIONS
-// rounded-md p-5 my-3
-
-
 // Aqui, vamos definir as variantes da componente
 export const ContentBoxVariants = cva
 (
