@@ -17,7 +17,7 @@ export const FormInputVariants = cva
 		variants: {
 			// Por sua vez, cada propriedade pode ter vários valores diferentes
 			color: {
-				primary: `bg-[rgb(255,255,255)]               dark:bg-[rgb(42,42,42)]
+				primary: `bg-[rgb(255,255,255)]               dark:bg-[rgb(17,24,39)]
 						  border-[rgb(210,210,210)]           dark:border-[rgb(86,86,86)]
 						  focus:ring-[rgb(0,0,0)]             dark:focus:ring-[rgb(255,255,255)]
 						  text-[rgb(27,27,27)]                dark:text-[rgb(244,244,244)]
