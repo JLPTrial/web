@@ -6,6 +6,7 @@ import { Button } from './Button.tsx'
 
 import { FormLabel } from '../components/FormLabel.tsx';
 import { FormInput } from '../components/FormInput.tsx';
+import { ContentBox } from './ContentBox.tsx';
 
 
 export default function UserSettings() {
@@ -41,7 +42,7 @@ export default function UserSettings() {
             </div>
 
             {/* Profile Section */}
-            <div className="flex flex-col gap-4 p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-md shadow-sm transition-colors duration-200">
+            <ContentBox className="flex flex-col gap-4">
                 <h2 className="font-bold text-2xl mb-2 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
                     Perfil
                 </h2>
@@ -58,10 +59,10 @@ export default function UserSettings() {
                 <Button size="lg" className="w-full sm:w-[400px] mt-4">
                     Salvar Usuário
                 </Button>
-            </div>
+            </ContentBox>
 
             {/* Account Security Section */}
-            <div className="flex flex-col p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-md shadow-sm transition-colors duration-200">
+            <ContentBox className="flex flex-col gap-4">
                 <h2 className="font-bold text-2xl mb-6 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
                     Segurança da Conta
                 </h2>
@@ -104,10 +105,10 @@ export default function UserSettings() {
                         Excluir Conta
                     </Button>
                 </div>
-            </div>
+            </ContentBox>
 
             {/* Preferences Section */}
-            <div className="flex flex-col gap-4 p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-md shadow-sm transition-colors duration-200">
+            <ContentBox className="flex flex-col gap-4">
                 <h2 className="font-bold text-2xl mb-2 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
                     Preferências
                 </h2>
@@ -136,7 +137,7 @@ export default function UserSettings() {
                         {theme === 'dark' ? 'Modo Escuro' : 'Modo Claro'}
                     </span>
                 </div>
-            </div>
+            </ContentBox>
 
         </div>
     );

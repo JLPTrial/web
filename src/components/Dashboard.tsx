@@ -15,20 +15,18 @@ import { useQuestions } from '../hooks/useQuestions.ts'
 import type { QuestionFilters } from '../hooks/useQuestions.ts'
 
 import { JapanBackground } from "./JapanBackground.tsx";
+import { ContentBox } from  './ContentBox.tsx';
 
 
 // Box that displays statistics data
 function StatDisplayBox({ title, data, type }) {
 	return (
-		<div
-			className='flex flex-col justify-around items-center
-						text-center border-2 border-stone-200 rounded-xl p-2 m-2
-						bg-white text-[#6b6375] dark:bg-gray-900 dark:text-gray-50'>
+		<ContentBox className="flex flex-col justify-around items-center text-center m-2" color={"primary"} usage={"card"}>
 			<div className='font-bold text-md'>
 				{title} {type}
 			</div>
 			<div className='font-bold text-3xl'>{data}</div>
-		</div>
+		</ContentBox>
 	)
 }
 
