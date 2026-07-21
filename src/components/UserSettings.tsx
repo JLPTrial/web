@@ -4,6 +4,9 @@ import { useThemeContext } from '../contexts/ThemeContext.ts';
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { Button } from './Button.tsx'
 
+import { FormLabel } from '../components/FormLabel.tsx';
+
+
 export default function UserSettings() {
     const { user } = useUser();
     const { theme, toggleTheme } = useThemeContext();
@@ -43,9 +46,7 @@ export default function UserSettings() {
                 </h2>
                 
                 <div>
-                    <label className="block text-sm font-medium mb-1 !text-gray-700 dark:!text-gray-300 transition-colors duration-200">
-                        Nome de Usuário
-                    </label>
+                    <FormLabel>Nome de Usuário</FormLabel>
                     <input
                         className="
                             w-full sm:w-[400px] px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 

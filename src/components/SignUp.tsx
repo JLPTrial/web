@@ -6,6 +6,9 @@ import { text } from '../ui/text.ts';
 import { form_input } from '../ui/form-input-variants.ts';
 import japanBg from '../assets/japan.svg';
 
+import { FormLabel } from '../components/FormLabel.tsx';
+
+
 function SignupHeader() {
     return (
         <div className="flex flex-col justify-center text-left w-full p-5 self-center">
@@ -33,9 +36,7 @@ function SignupForm({
     return (
         <div className="flex flex-col justify-center items-center gap-4">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nome
-                </label>
+                <FormLabel>Nome</FormLabel>
                 <input
                     className={form_input()}
                     type="text"
@@ -46,9 +47,7 @@ function SignupForm({
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Endereço de email
-                </label>
+                <FormLabel>Endereço de email</FormLabel>
                 <input
                     className={form_input()}
                     type="email"
@@ -59,9 +58,7 @@ function SignupForm({
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Senha
-                </label>
+                <FormLabel>Senha</FormLabel>
                 <input
                     className={form_input()}
                     type="password"
