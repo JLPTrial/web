@@ -8,6 +8,6 @@ import { TextVariants, type TextStyles } from "../ui/text.ts";
 // Também estamos omitindo o atributo "color" do elemento HTML porque estamos usando esse nome na nossa componente
 interface TextProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "color">, TextStyles {}
 
-export const Text = ({ usage, weight, color, align, truncate, className, ...props }: TextProps) => { 
-    return (<div className={twMerge(TextVariants({ usage, weight, color, align, truncate }), className)} {...props} />); 
+export const Text = ({ usage, align, className, ...props }: TextProps) => { 
+    return (<div className={twMerge(TextVariants({ usage, align }), className)} {...props} />); 
 };
