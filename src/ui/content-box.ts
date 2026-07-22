@@ -1,8 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
 // Aqui, vamos definir as variantes da componente
-export const ContentBoxVariants = cva
-(
+export const ContentBoxVariants = cva(
     // Estilos que devem ser aplicados à componente independentemente da variante (classes-base)
     "border-2 shadow-sm transition-colors duration-200",
     {
