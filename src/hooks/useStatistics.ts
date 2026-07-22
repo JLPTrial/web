@@ -105,7 +105,7 @@ export function useStatistics() {
     // checks if new fetch is needed
     const checkStats = async (period: string): Promise<StatisticResponseModel> => {
         let response: StatisticResponseModel;
-        if (statistics == null || currentPeriod != period) {
+        if (statistics == null || currentPeriod !== period) {
             response = await loadStatistics(period)
         }
         else {
