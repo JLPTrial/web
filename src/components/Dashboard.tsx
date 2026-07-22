@@ -2,15 +2,6 @@ import { useNavigate } from 'react-router'
 import { useState } from 'react'
 import { Button } from './Button.tsx'
 import japanBg from '../assets/japan.svg'
-import {
-	getLevelQuestions,
-	getLevelTopicQuestions,
-} from '../services/questions/QuestionService.ts'
-import { AnswerStatus, QuestionLevel } from '../models/questionParams'
-import type {
-	AnswerStatusConstants,
-	QuestionTopicConstants,
-} from '../models/questionParams'
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { useQuestions } from '../hooks/useQuestions.ts'
 import type { QuestionFilters } from '../hooks/useQuestions.ts'
@@ -103,7 +94,7 @@ function StartButton({
 }: StartButtonProps) {
 	const navigate = useNavigate()
 	const [popup, setPopup] = useState(false) // variable that defines if warning PopUp is active
-	const [text, setText] = useState('Não existem questões para estes filtros') // variable that defines the PopUp text
+	const [text] = useState('Não existem questões para estes filtros') // variable that defines the PopUp text
 
 	const { getQuestionCount } = useQuestions()
 	return (
