@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router'
-import { box } from '../ui/box';
 import clsx from 'clsx';
 
 import { JapanBackground } from "./JapanBackground";
+import Brushstroke from './Brushstroke.tsx';
 
 
 function MainInfo() {
@@ -16,33 +16,22 @@ function MainInfo() {
 }
 
 const secondaryInfo1: string = "Estude com questões de gramática, kanji, audição, leitura e vocabulário!";
-const secondaryInfo2: string = "Prepare-se para o exame com simulados!";
-const secondaryInfo3: string = "Monitore seu progresso! Veja estatísticas do seu desempenho e reveja questões nas quais teve dificuldade.";
+const secondaryInfo2: string = "Prepare-se para o JLPT com simulados!";
+const secondaryInfo3: string = "Monitore seu progresso! Veja estatísticas sobre o seu desempenho e revise questões nas quais teve dificuldade!";
 
 function SecondaryInfo({ alignment, infoText }) {
         return (
-                <div className={clsx(box({
-                        direction: alignment,
-                        radius: "hero",
-                }),`
-		        min-h-50			
-			w-[95%]
-			sm:max-w-[600px]
-			${alignment === 'right' ?
-			'sm:self-end' :
-			'sm:self-start'}
-			p-10
-			flex
-			flex-col
-			items-center
-			self-center
-			justify-center`
-		)}
+                
+                <div
+                        className={clsx("relative", "w-[750px]", "aspect-[2/1]",
+                                alignment === "right" ? "self-end" : "self-start"
+                        )}
                 >
-                        <div className='m-10'>
+                        <Brushstroke className="absolute inset-0 w-full h-full" />
+
+                        <div className="absolute inset-0 flex items-center justify-center text-center p-30">
                                 {infoText}
                         </div>
-
                 </div>
         );
 }
@@ -76,7 +65,7 @@ export default function LandingPage() {
                 <>
                         <JapanBackground />
 
-                        <div className="relative z-50 mt-10 flex flex-col gap-10 w-full max-w-[1200px] mx-auto sm:px-10">
+                        <div className="relative z-50 mt-10 flex flex-col w-full max-w-[1200px] mx-auto sm:px-10">
                                 <MainInfo />
                                 <SecondaryInfo alignment="right" infoText={secondaryInfo1} />
                                 <SecondaryInfo alignment="left" infoText={secondaryInfo2} />
