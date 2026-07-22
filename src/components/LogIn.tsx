@@ -2,18 +2,18 @@ import { useState } from 'react'
 import useUser from '../hooks/useUser.ts'
 import { useNavigate } from 'react-router'
 import { leaf_button } from '../ui/leaf-button-variants.ts';
-import { text } from '../ui/text.ts';
 
 import { JapanBackground } from "./JapanBackground";
 import { FormLabel } from '../components/FormLabel.tsx';
 import { FormInput } from '../components/FormInput.tsx';
+import { Text } from './Text.tsx';
 
 
 function LoginHeader() {
     return (
         <div className="flex flex-col justify-center text-left w-full p-5 self-center">
-            <div className={text({tone:"jlpt",size:"5xl",weight:"semibold",align:"center" })}>Entrar</div>
-            <div className='p-2 self-center'>Entre na sua conta JLPTrial</div>
+            <Text usage={"page_title"} align={"center"}>Entrar</Text>
+            <Text usage={"subtitle"} align={"center"}>Entre na sua conta JLPTrial</Text>
         </div>
     );
 }
@@ -144,7 +144,7 @@ export default function LogInPage() {
                                 {isLoading ? 'Entrando...' : 'Entrar'}
                             </button>
 
-                            <p>ou</p>
+                            <Text>ou</Text>
 
                             <button
                                 type="button"

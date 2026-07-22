@@ -7,6 +7,7 @@ import { Button } from './Button.tsx'
 import { FormLabel } from '../components/FormLabel.tsx';
 import { FormInput } from '../components/FormInput.tsx';
 import { ContentBox } from './ContentBox.tsx';
+import { Text } from './Text.tsx';
 
 
 export default function UserSettings() {
@@ -33,19 +34,13 @@ export default function UserSettings() {
                 >
                     &larr; Voltar ao Dashboard
                 </Link>
-                <h1 className="font-bold text-5xl p-1 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Configurações da Conta
-                </h1>
-                <p className="p-2 !text-gray-600 dark:!text-gray-400 transition-colors duration-200">
-                    Gerencie suas informações pessoais e preferências gerais.
-                </p>
+                <Text usage={"page_title"}>Configurações da Conta</Text>
+                <Text usage={"subtitle"}>Gerencie suas informações pessoais e preferências gerais.</Text>
             </div>
 
             {/* Profile Section */}
             <ContentBox className="flex flex-col gap-4">
-                <h2 className="font-bold text-2xl mb-2 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Perfil
-                </h2>
+                <Text usage={"title"}>Perfil</Text>
                 
                 <div>
                     <FormLabel>Nome de Usuário</FormLabel>
@@ -63,14 +58,12 @@ export default function UserSettings() {
 
             {/* Account Security Section */}
             <ContentBox className="flex flex-col gap-4">
-                <h2 className="font-bold text-2xl mb-6 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Segurança da Conta
-                </h2>
+                <Text usage={"title"}>Segurança da Conta</Text>
 
                 {/* Change Email */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700 pb-6 mb-6 transition-colors duration-200">
                     <div>
-                        <h3 className="font-semibold text-lg !text-gray-900 dark:!text-gray-100">Endereço de E-mail</h3>
+                        <Text usage={"subtitle"}>Endereço de E-mail</Text>
                         <p className="text-sm !text-gray-600 dark:!text-gray-400 mt-1">
                             Seu e-mail atual é <strong className="!text-gray-800 dark:!text-gray-200">{user.email || 'não definido'}</strong>.
                         </p>
@@ -83,10 +76,8 @@ export default function UserSettings() {
                 {/* Change Password */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700 pb-6 mb-6 transition-colors duration-200">
                     <div>
-                        <h3 className="font-semibold text-lg !text-gray-900 dark:!text-gray-100">Senha</h3>
-                        <p className="text-sm !text-gray-600 dark:!text-gray-400 mt-1">
-                            Certifique-se de que sua conta esteja usando uma senha segura.
-                        </p>
+                        <Text usage={"subtitle"}>Senha</Text>
+                        <Text usage={"normal"}>Certifique-se de que sua conta esteja usando uma senha segura.</Text>
                     </div>
                     <Button size="md">
                         Atualizar Senha
@@ -96,10 +87,8 @@ export default function UserSettings() {
                 {/* Delete Account */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors duration-200">
                     <div>
-                        <h3 className="font-semibold text-lg !text-red-600 dark:!text-red-500">Excluir Conta</h3>
-                        <p className="text-sm !text-red-700 dark:!text-red-400 mt-1">
-                            Remover permanentemente sua conta pessoal e todos os seus dados.
-                        </p>
+                        <Text usage={"subtitle"}>Excluir Conta</Text>
+                        <Text usage={"normal"}>Remover permanentemente sua conta pessoal e todos os seus dados.</Text>
                     </div>
                     <Button tone="danger" size="md">
                         Excluir Conta
@@ -109,12 +98,8 @@ export default function UserSettings() {
 
             {/* Preferences Section */}
             <ContentBox className="flex flex-col gap-4">
-                <h2 className="font-bold text-2xl mb-2 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Preferências
-                </h2>
-                <p className="text-sm !text-gray-600 dark:!text-gray-400 mb-4 transition-colors duration-200">
-                    Personalize a sua experiência na plataforma.
-                </p>
+                <Text usage={"title"}>Preferências</Text>
+                <Text usage={"normal"}>Personalize a sua experiência na plataforma.</Text>
                 
                 <div className="flex items-center gap-3">
                     <button 
