@@ -1,23 +1,23 @@
 import { useNavigate } from 'react-router'
 import { useState } from 'react'
 import { Button } from './Button.tsx'
-import japanBg from '../assets/japan.svg'
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { useQuestions } from '../hooks/useQuestions.ts'
 import type { QuestionFilters } from '../hooks/useQuestions.ts'
 
+import { JapanBackground } from "./JapanBackground.tsx";
+import { ContentBox } from  './ContentBox.tsx';
+
+
 // Box that displays statistics data
 function StatDisplayBox({ title, data, type }) {
 	return (
-		<div
-			className='flex flex-col justify-around items-center
-						text-center border-2 border-stone-200 rounded-xl p-2 m-2
-						bg-white text-[#6b6375] dark:bg-gray-900 dark:text-gray-50'>
+		<ContentBox className="flex flex-col justify-around items-center text-center m-2" color={"primary"} usage={"card"}>
 			<div className='font-bold text-md'>
 				{title} {type}
 			</div>
 			<div className='font-bold text-3xl'>{data}</div>
-		</div>
+		</ContentBox>
 	)
 }
 
@@ -550,10 +550,7 @@ export default function Dashboard() {
 
 	return (
 		<>
-			<div
-				className='fixed z-0 opacity-33 pointer-events-none inset-0 bg-center bg-no-repeat bg-[length:125vmin] lg:bg-[length:150vmin] transition-transform duration-300 -rotate-30 lg:rotate-0'
-				style={{ backgroundImage: `url(${japanBg})` }}
-			/>
+			<JapanBackground />
 
 			<div className='relative z-50 w-full flex flex-col items-center justify-center pb-[200px]'>
 				<StatisticsBox />

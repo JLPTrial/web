@@ -2,15 +2,18 @@ import { useState } from 'react'
 import useUser from '../hooks/useUser.ts'
 import { useNavigate } from 'react-router'
 import { leaf_button } from '../ui/leaf-button-variants.ts';
-import { text } from '../ui/text.ts';
-import { form_input } from '../ui/form-input-variants.ts';
-import japanBg from '../assets/japan.svg';
+
+import { JapanBackground } from "./JapanBackground";
+import { FormLabel } from '../components/FormLabel.tsx';
+import { FormInput } from '../components/FormInput.tsx';
+import { Text } from './Text.tsx';
+
 
 function LoginHeader() {
     return (
         <div className="flex flex-col justify-center text-left w-full p-5 self-center">
-            <div className={text({tone:"jlpt",size:"5xl",weight:"semibold",align:"center" })}>Entrar</div>
-            <div className='p-2 self-center'>Entre na sua conta JLPTrial</div>
+            <Text usage={"page_title"} align={"center"}>Entrar</Text>
+            <Text usage={"subtitle"} align={"center"}>Entre na sua conta JLPTrial</Text>
         </div>
     );
 }
@@ -29,15 +32,8 @@ function LoginForm({
     return (
         <div className="flex flex-col justify-center items-center gap-4">
             <div>
-                <label
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                    htmlFor="email"
-                >
-                    Endereço de email
-                </label>
-
-                <input
-                    className={form_input()}
+                <FormLabel htmlFor="email">Endereço de email</FormLabel>
+                <FormInput
                     type="email"
                     placeholder="você@exemplo.com"
                     id="email"
@@ -45,18 +41,12 @@ function LoginForm({
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete="email"
                 />
+                
             </div>
 
             <div>
-                <label
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                    htmlFor="password"
-                >
-                    Senha
-                </label>
-
-                <input
-                    className={form_input()}
+                <FormLabel htmlFor="password">Endereço de email</FormLabel>
+                <FormInput
                     type="password"
                     placeholder="Insira a sua senha"
                     id="password"
@@ -120,10 +110,8 @@ export default function LogInPage() {
 
     return (
         <div className="min-h-[calc(100vh-92px)] flex justify-center items-stretch">
-            <div
-                className="fixed z-0 opacity-33 pointer-events-none inset-0 bg-center bg-no-repeat bg-[length:125vmin] lg:bg-[length:150vmin] transition-transform duration-300 -rotate-30 lg:rotate-0"
-                style={{ backgroundImage: `url(${japanBg})` }}
-            />
+            
+            <JapanBackground />
 
             <div className="relative z-50 flex flex-1 flex-col justify-start items-center gap-3">
                 <LoginHeader />
@@ -156,7 +144,7 @@ export default function LogInPage() {
                                 {isLoading ? 'Entrando...' : 'Entrar'}
                             </button>
 
-                            <p>ou</p>
+                            <Text>ou</Text>
 
                             <button
                                 type="button"

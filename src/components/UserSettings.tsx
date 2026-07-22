@@ -4,6 +4,12 @@ import { useThemeContext } from '../contexts/ThemeContext.ts';
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { Button } from './Button.tsx'
 
+import { FormLabel } from '../components/FormLabel.tsx';
+import { FormInput } from '../components/FormInput.tsx';
+import { ContentBox } from './ContentBox.tsx';
+import { Text } from './Text.tsx';
+
+
 export default function UserSettings() {
     const { user } = useUser();
     const { theme, toggleTheme } = useThemeContext();
@@ -28,31 +34,17 @@ export default function UserSettings() {
                 >
                     &larr; Voltar ao Dashboard
                 </Link>
-                <h1 className="font-bold text-5xl p-1 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Configurações da Conta
-                </h1>
-                <p className="p-2 !text-gray-600 dark:!text-gray-400 transition-colors duration-200">
-                    Gerencie suas informações pessoais e preferências gerais.
-                </p>
+                <Text usage={"page_title"}>Configurações da Conta</Text>
+                <Text usage={"subtitle"}>Gerencie suas informações pessoais e preferências gerais.</Text>
             </div>
 
             {/* Profile Section */}
-            <div className="flex flex-col gap-4 p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-md shadow-sm transition-colors duration-200">
-                <h2 className="font-bold text-2xl mb-2 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Perfil
-                </h2>
+            <ContentBox className="flex flex-col gap-4">
+                <Text usage={"title"}>Perfil</Text>
                 
                 <div>
-                    <label className="block text-sm font-medium mb-1 !text-gray-700 dark:!text-gray-300 transition-colors duration-200">
-                        Nome de Usuário
-                    </label>
-                    <input
-                        className="
-                            w-full sm:w-[400px] px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 
-                            rounded-md shadow-sm focus:outline-none focus:ring-2 
-                            focus:ring-black dark:focus:ring-white focus:border-transparent transition duration-150
-                            !text-gray-900 dark:!text-gray-100
-                        "
+                    <FormLabel>Nome de Usuário</FormLabel>
+                    <FormInput
                         type="text"
                         defaultValue={user.name || ''}
                         placeholder="Seu nome de usuário"
@@ -62,18 +54,16 @@ export default function UserSettings() {
                 <Button size="lg" className="w-full sm:w-[400px] mt-4">
                     Salvar Usuário
                 </Button>
-            </div>
+            </ContentBox>
 
             {/* Account Security Section */}
-            <div className="flex flex-col p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-md shadow-sm transition-colors duration-200">
-                <h2 className="font-bold text-2xl mb-6 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Segurança da Conta
-                </h2>
+            <ContentBox className="flex flex-col gap-4">
+                <Text usage={"title"}>Segurança da Conta</Text>
 
                 {/* Change Email */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700 pb-6 mb-6 transition-colors duration-200">
                     <div>
-                        <h3 className="font-semibold text-lg !text-gray-900 dark:!text-gray-100">Endereço de E-mail</h3>
+                        <Text usage={"subtitle"}>Endereço de E-mail</Text>
                         <p className="text-sm !text-gray-600 dark:!text-gray-400 mt-1">
                             Seu e-mail atual é <strong className="!text-gray-800 dark:!text-gray-200">{user.email || 'não definido'}</strong>.
                         </p>
@@ -86,10 +76,8 @@ export default function UserSettings() {
                 {/* Change Password */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700 pb-6 mb-6 transition-colors duration-200">
                     <div>
-                        <h3 className="font-semibold text-lg !text-gray-900 dark:!text-gray-100">Senha</h3>
-                        <p className="text-sm !text-gray-600 dark:!text-gray-400 mt-1">
-                            Certifique-se de que sua conta esteja usando uma senha segura.
-                        </p>
+                        <Text usage={"subtitle"}>Senha</Text>
+                        <Text usage={"normal"}>Certifique-se de que sua conta esteja usando uma senha segura.</Text>
                     </div>
                     <Button size="md">
                         Atualizar Senha
@@ -99,25 +87,19 @@ export default function UserSettings() {
                 {/* Delete Account */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors duration-200">
                     <div>
-                        <h3 className="font-semibold text-lg !text-red-600 dark:!text-red-500">Excluir Conta</h3>
-                        <p className="text-sm !text-red-700 dark:!text-red-400 mt-1">
-                            Remover permanentemente sua conta pessoal e todos os seus dados.
-                        </p>
+                        <Text usage={"subtitle"}>Excluir Conta</Text>
+                        <Text usage={"normal"}>Remover permanentemente sua conta pessoal e todos os seus dados.</Text>
                     </div>
                     <Button tone="danger" size="md">
                         Excluir Conta
                     </Button>
                 </div>
-            </div>
+            </ContentBox>
 
             {/* Preferences Section */}
-            <div className="flex flex-col gap-4 p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-md shadow-sm transition-colors duration-200">
-                <h2 className="font-bold text-2xl mb-2 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Preferências
-                </h2>
-                <p className="text-sm !text-gray-600 dark:!text-gray-400 mb-4 transition-colors duration-200">
-                    Personalize a sua experiência na plataforma.
-                </p>
+            <ContentBox className="flex flex-col gap-4">
+                <Text usage={"title"}>Preferências</Text>
+                <Text usage={"normal"}>Personalize a sua experiência na plataforma.</Text>
                 
                 <div className="flex items-center gap-3">
                     <button 
@@ -140,7 +122,7 @@ export default function UserSettings() {
                         {theme === 'dark' ? 'Modo Escuro' : 'Modo Claro'}
                     </span>
                 </div>
-            </div>
+            </ContentBox>
 
         </div>
     );

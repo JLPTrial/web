@@ -9,6 +9,8 @@ import { leaf_button } from '../ui/leaf-button-variants.ts';
 import AudioPlayer from "./AudioPlayer";
 import JapaneseTextParser from "./JapaneseTextParser.tsx";
 
+import { ContentBox } from './ContentBox.tsx';
+
 
 export default function Question() {
 
@@ -116,7 +118,8 @@ export default function Question() {
         // mostrando a questão
         return(
                 <div className='space-y-5'>
-                        <div className='border-2 border-stone-200 rounded-md p-5 my-3'>
+                        
+                        <ContentBox>
 
                                 {/* NÚMERO DA QUESTÃO (obs: não é o id da questão) */}
                                 <div className='font-bold text-2xl p-2 self-center'>Questão {currentIndex + 1}</div>
@@ -284,7 +287,7 @@ export default function Question() {
                                         )
                                 }
 
-                        </div>
+                        </ContentBox>
                 </div>
         )
 }
