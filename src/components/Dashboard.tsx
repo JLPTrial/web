@@ -278,7 +278,7 @@ function getAnswerStatusFilter(
 	questionType: string,
 	reviewType: string,
 ): 'new' | 'all' | 'wrong' {
-	if (questionType == 'new') {
+	if (questionType === 'new') {
 		return 'new'
 	}
 	return reviewType
