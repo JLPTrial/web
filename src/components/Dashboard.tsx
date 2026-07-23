@@ -1,23 +1,23 @@
 import { useNavigate } from 'react-router'
 import { useState } from 'react'
 import { Button } from './Button.tsx'
+import japanBg from '../assets/japan.svg'
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { useQuestions } from '../hooks/useQuestions.ts'
 import type { QuestionFilters } from '../hooks/useQuestions.ts'
 
-import { JapanBackground } from "./JapanBackground.tsx";
-import { ContentBox } from  './ContentBox.tsx';
-
-
 // Box that displays statistics data
 function StatDisplayBox({ title, data, type }) {
 	return (
-		<ContentBox className="flex flex-col justify-around items-center text-center m-2" color={"primary"} usage={"card"}>
+		<div
+			className='flex flex-col justify-around items-center
+						text-center border-2 border-stone-200 rounded-xl p-2 m-2
+						bg-white text-[#6b6375] dark:bg-gray-900 dark:text-gray-50'>
 			<div className='font-bold text-md'>
 				{title} {type}
 			</div>
 			<div className='font-bold text-3xl'>{data}</div>
-		</ContentBox>
+		</div>
 	)
 }
 
@@ -94,7 +94,7 @@ function StartButton({
 }: StartButtonProps) {
 	const navigate = useNavigate()
 	const [popup, setPopup] = useState(false) // variable that defines if warning PopUp is active
-	const [text] = useState('Não existem questões para estes filtros') // variable that defines the PopUp text
+	const [text, setText] = useState('Não existem questões para estes filtros') // variable that defines the PopUp text
 
 	const { getQuestionCount } = useQuestions()
 	return (
@@ -109,9 +109,11 @@ function StartButton({
 					}
 					getQuestionCount(filters).then((response) => {
 						if (response === 0) {
-							alert('Não existem questões para estes filtros')
+							setText("Não existem questões para estes filtros");
+							setPopup(!popup);
 						} else if (response === -1) {
-							alert('Erro ao buscar questôes')
+							setText("Erro ao buscar questôes");
+							setPopup(!popup);
 						} else {
 							const query = new URLSearchParams({
 								level,
@@ -273,13 +275,13 @@ function StatisticsBox() {
 }
 
 function getAnswerStatusFilter(
-	review: boolean,
+	questionType: string,
 	reviewType: string,
 ): 'new' | 'all' | 'wrong' {
-	if (!review) {
+	if (questionType === 'new') {
 		return 'new'
 	}
-	return reviewType === 'all' ? 'all' : 'wrong'
+	return reviewType
 }
 
 // Main box for question selection
@@ -550,7 +552,10 @@ export default function Dashboard() {
 
 	return (
 		<>
-			<JapanBackground />
+			<div
+				className='fixed z-0 opacity-33 pointer-events-none inset-0 bg-center bg-no-repeat bg-[length:125vmin] lg:bg-[length:150vmin] transition-transform duration-300 -rotate-30 lg:rotate-0'
+				style={{ backgroundImage: `url(${japanBg})` }}
+			/>
 
 			<div className='relative z-50 w-full flex flex-col items-center justify-center pb-[200px]'>
 				<StatisticsBox />
