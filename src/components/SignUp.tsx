@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import useUser from '../hooks/useUser.ts'
 import { useNavigate } from 'react-router'
-import { leaf_button } from '../ui/leaf-button-variants.ts';
 
 import { JapanBackground } from "./JapanBackground";
 import { FormLabel } from '../components/FormLabel.tsx';
 import { FormInput } from '../components/FormInput.tsx';
 import { Text } from './Text.tsx';
+import { LeafButton } from './LeafButton.tsx';
 
 
 function SignupHeader() {
@@ -147,24 +147,24 @@ export default function SignUpPage() {
 
 
                         <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
-                            <button
+                            <LeafButton
                                 type="submit"
                                 disabled={isLoading}
-                                className={leaf_button({ shape: 'rectangle'})}
+                                shape={"rectangle"}
                                 >
                                 {isLoading ? 'Criando...' : 'Criar conta'}
-                            </button>
+                            </LeafButton>
 
                             <Text>ou</Text>
 
-                            <button
+                            <LeafButton
                                 type="button"
                                 onClick={handleGoogleSignup}
                                 disabled={isLoading}
-                                className={leaf_button({ shape: 'rectangle' })}
+                                shape={"rectangle"}
                                 >
                                 Entrar com Google
-                            </button>
+                            </LeafButton>
                         </div>
                     </form>
                 </div>

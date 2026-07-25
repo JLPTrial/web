@@ -2,12 +2,12 @@ import { Link } from 'react-router';
 import useUser from '../hooks/useUser.ts';
 import { useThemeContext } from '../contexts/ThemeContext.ts';
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
-import { Button } from './Button.tsx'
 
 import { FormLabel } from '../components/FormLabel.tsx';
 import { FormInput } from '../components/FormInput.tsx';
 import { ContentBox } from './ContentBox.tsx';
 import { Text } from './Text.tsx';
+import { LeafButton } from './LeafButton.tsx';
 
 
 export default function UserSettings() {
@@ -51,9 +51,9 @@ export default function UserSettings() {
                     />
                 </div>
 
-                <Button size="lg" className="w-full sm:w-[400px] mt-4">
+                <LeafButton className="w-full sm:w-[400px] mt-4">
                     Salvar Usuário
-                </Button>
+                </LeafButton>
             </ContentBox>
 
             {/* Account Security Section */}
@@ -68,9 +68,9 @@ export default function UserSettings() {
                             Seu e-mail atual é <strong className="!text-gray-800 dark:!text-gray-200">{user.email || 'não definido'}</strong>.
                         </p>
                     </div>
-                    <Button size="md">
+                    <LeafButton>
                         Alterar E-mail
-                    </Button>
+                    </LeafButton>
                 </div>
 
                 {/* Change Password */}
@@ -79,9 +79,9 @@ export default function UserSettings() {
                         <Text usage={"subtitle"}>Senha</Text>
                         <Text usage={"normal"}>Certifique-se de que sua conta esteja usando uma senha segura.</Text>
                     </div>
-                    <Button size="md">
+                    <LeafButton>
                         Atualizar Senha
-                    </Button>
+                    </LeafButton>
                 </div>
 
                 {/* Delete Account */}
@@ -90,9 +90,9 @@ export default function UserSettings() {
                         <Text usage={"subtitle"}>Excluir Conta</Text>
                         <Text usage={"normal"}>Remover permanentemente sua conta pessoal e todos os seus dados.</Text>
                     </div>
-                    <Button tone="danger" size="md">
+                    <LeafButton>
                         Excluir Conta
-                    </Button>
+                    </LeafButton>
                 </div>
             </ContentBox>
 

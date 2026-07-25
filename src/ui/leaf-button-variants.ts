@@ -1,6 +1,6 @@
-import { cva } from "class-variance-authority"
+import { cva, type VariantProps } from "class-variance-authority"
 
-export const leaf_button = cva(
+export const LeafButtonVariants = cva(
     `
     text-white
     text-shadow-md
@@ -18,14 +18,19 @@ export const leaf_button = cva(
                 right: `rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none `
             },
             status: {
-                enabled: `bg-[rgb(255,0,0)] text-shadow-red-700 cursor-pointer transition-transform duration-300 hover:scale-105`,
+                selected: `bg-black`,
+                enabled: `bg-red-500`,
                 disabled: `bg-[rgb(152,152,152)] text-shadow-[rgb(100,100,100)] cursor-not-allowed`
             },
             shape: {
                 square: `h-[50px] w-[50px]`,                              // used at the audio player at Question.tsx
-                rectangle: `h-[40px] w-[300px] md:h-[50px] md:w-[200px]`  // used at Question.tsx and at login/signup screens
+                rectangle: `h-[40px] w-[300px] md:h-[50px] md:w-[200px]`,  // used at Question.tsx and at login/signup screens
+                filter: `h-[60px] w-[450px]`,
+                competency: `h-[40px] w-[300px] sm:w-[160px]`,
+                tag: `h-[40px] px-5`
             },
             text_size: {
+                smaller: `text-sm`,
                 default: `text-base`,
                 larger: `text-xl`
             }
@@ -39,3 +44,4 @@ export const leaf_button = cva(
         }
     }
 )
+export type LeafButtonStyles = VariantProps<typeof LeafButtonVariants>

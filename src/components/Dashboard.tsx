@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router'
 import { useState } from 'react'
-import { Button } from './Button.tsx'
 import japanBg from '../assets/japan.svg'
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { useQuestions } from '../hooks/useQuestions.ts'
@@ -10,6 +9,8 @@ import { ContentBox } from './ContentBox.tsx';
 import { Text } from './Text.tsx';
 import { BrushstrokeButton } from './BrushstrokeButton.tsx';
 import { DropdownButton } from './DropdownButton.tsx';
+import { LeafButton } from './LeafButton.tsx';
+import { SelectableLeafButton } from './SelectableLeafButton.tsx';
 
 // Box that displays statistics data
 function StatDisplayBox({ title, data, type }) {
@@ -62,18 +63,19 @@ function StatisticsDisplay({ type }) {
 // Navigation buttons in the statistics section (Meu progresso)
 function StatisticsNavButton({ active2, buttonId, setActive2, text }) {
 	return (
-		<Button
-			tone={active2 === buttonId ? 'active' : 'default'}
+		<SelectableLeafButton
+			status={active2 === buttonId ? "selected" : "enabled"}
 			onClick={() => setActive2(buttonId)}
+			shape={"competency"}
 			id={buttonId}>
 			{text}
-		</Button>
+		</SelectableLeafButton>
 	)
 }
 
 function ButtonText({ kanji, text }) {
 	return (
-		<div className='relative flex items-center justify-between w-full px-2'>
+		<div className='relative flex items-center justify-between w-full px-5'>
 			<div className='text-xl'>{kanji}</div>
 			<div>{text}</div>
 			<div></div>
@@ -142,39 +144,39 @@ function StartButton({
 // Rectangular leaf button used to select filters
 function QuestionsButton({ active, buttonId, setActive, text, alignment }) {
 	return (
-		<Button
-			tone={active === buttonId ? 'active' : 'default'}
+		<SelectableLeafButton
+			status={active === buttonId ? "selected" : "enabled"}
 			onClick={() => setActive(buttonId)}
-			size='lg'
+			shape={"filter"}
 			direction={alignment}
 			className='w-full'>
 			{text}
-		</Button>
+		</SelectableLeafButton>
 	)
 }
 
 // Square leaf button used to select filters
 function FilterLeafButton({ active, buttonId, setActive, text }) {
 	return (
-		<Button
-			tone={active === buttonId ? 'active' : 'default'}
+		<SelectableLeafButton
+			status={active === buttonId ? "selected" : "enabled"}
 			onClick={() => setActive(buttonId)}
-			size='sq'
+			shape={"square"}
 			direction='right'>
 			{text}
-		</Button>
+		</SelectableLeafButton>
 	)
 }
 
 // Square leaf button used in the popup
 function PopUpLeafButton({ active, setActive }) {
 	return (
-		<Button
+		<LeafButton
 			onClick={() => setActive(!active)}
-			size='sq'
+			shape={"square"}
 			direction='right'>
 			OK
-		</Button>
+		</LeafButton>
 	)
 }
 
@@ -222,7 +224,7 @@ function StatisticsBox() {
 				${active1 ? 'max-h-[1000px] opacity-100' : 'max-h-[0px] pointer-events-none opacity-0'}`}>
 				{/* Navigation bar */}
 				<div
-					className={`w-[90%] sm:w-[170px] mr-2 shrink-0 text-wrap flex flex-col`}>
+					className={`w-[90%] sm:w-[170px] mr-2 shrink-0 text-wrap flex flex-col items-center`}>
 					<StatisticsNavButton
 						active2={active2}
 						buttonId='kanji'
