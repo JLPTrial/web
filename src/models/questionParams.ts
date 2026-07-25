@@ -21,6 +21,7 @@ export type GetQuestionsQueryParams = {
     answerStatus?: AnswerStatusConstants
     page?: number
     limit?: number
+    random?: boolean
 }
 
 export type GetStatisticsQueryParams = {
