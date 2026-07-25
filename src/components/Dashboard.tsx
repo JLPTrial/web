@@ -192,12 +192,15 @@ function MainButton({ title, active1, setActive1 }) {
 			<div className='font-bold font-sans text-[20px] sm:text-[30px] text-left flex items-center gap-3 justify-start'>
 				{/* Dropdown triangle */}
 				<div
-					className={`w-0 h-0 m-2 
-					${
-						active1
-							? 'border-l-[10px] border-l-transparent border-t-[13px] border-t-red-600 border-r-[10px] border-r-transparent'
-							: 'border-t-[10px] border-t-transparent border-l-[13px] border-l-red-600 border-b-[10px] border-b-transparent'
-					}`}></div>
+					className={`
+						w-0 h-0 ml-5 mr-2
+						border-t-[10px] border-t-transparent
+						border-b-[10px] border-b-transparent
+						border-l-[13px] border-l-red-600
+						transition-transform duration-200
+						${active1 ? 'rotate-90' : 'rotate-0'}
+					`}
+				/>
 
 				{/* Main button text */}
 				<div>{title}</div>
