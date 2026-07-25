@@ -6,18 +6,19 @@ import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { useQuestions } from '../hooks/useQuestions.ts'
 import type { QuestionFilters } from '../hooks/useQuestions.ts'
 
+import { ContentBox } from './ContentBox.tsx';
+import { Text } from './Text.tsx';
+import { BrushstrokeButton } from './BrushstrokeButton.tsx';
+
 // Box that displays statistics data
 function StatDisplayBox({ title, data, type }) {
 	return (
-		<div
-			className='flex flex-col justify-around items-center
-						text-center border-2 border-stone-200 rounded-xl p-2 m-2
-						bg-white text-[#6b6375] dark:bg-gray-900 dark:text-gray-50'>
-			<div className='font-bold text-md'>
+		<ContentBox usage={"card"}>
+			<Text usage={"subtitle"} align={"center"}>
 				{title} {type}
-			</div>
-			<div className='font-bold text-3xl'>{data}</div>
-		</div>
+			</Text>
+			<Text usage={"title"} align={"center"}>{data}</Text>
+		</ContentBox>
 	)
 }
 
@@ -26,7 +27,7 @@ function StatisticsDisplay({ type }) {
 	const navigate = useNavigate()
 	return (
 		<div className='max-w-[300px] sm:max-w-[1000px] flex flex-col items-center'>
-			<div className='grid grid-cols-1 sm:grid-cols-2 gap-1'>
+			<div className='grid grid-cols-1 sm:grid-cols-2 gap-2'>
 				<StatDisplayBox
 					title='Porcentagem de acertos'
 					data='50%'
@@ -57,7 +58,7 @@ function StatisticsDisplay({ type }) {
 	)
 }
 
-// Navigation buttons in the statistics section
+// Navigation buttons in the statistics section (Meu progresso)
 function StatisticsNavButton({ active2, buttonId, setActive2, text }) {
 	return (
 		<Button
@@ -99,7 +100,7 @@ function StartButton({
 	const { getQuestionCount } = useQuestions()
 	return (
 		<>
-			<button
+			<BrushstrokeButton size={"md"}
 				onClick={() => {
 					const filters: QuestionFilters = {
 						level: level as QuestionFilters['level'],
@@ -109,10 +110,10 @@ function StartButton({
 					}
 					getQuestionCount(filters).then((response) => {
 						if (response === 0) {
-							setText("Não existem questões para estes filtros");
+							setText("Não há questões para os filtros selecionados.");
 							setPopup(!popup);
 						} else if (response === -1) {
-							setText("Erro ao buscar questôes");
+							setText("Ocorreu um erro ao tentar buscar questões.");
 							setPopup(!popup);
 						} else {
 							const query = new URLSearchParams({
@@ -125,13 +126,9 @@ function StartButton({
 						}
 					})
 				}}
-				className='m-2 px-10 py-5 rounded-xl text-xl
-				bg-red-700 text-white font-bold
-				hover:scale-115 cursor-pointer
-				shadow-md shadow-stone-400 dark:shadow-none
-				transition-all duration-300'>
-				Começar
-			</button>
+			>
+				<Text usage={"brushstroke_button_text"} align={"center"}>Começar</Text>
+			</BrushstrokeButton>
 			<WarningPopUp
 				text={text}
 				active={popup}

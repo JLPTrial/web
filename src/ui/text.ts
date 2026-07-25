@@ -17,6 +17,10 @@ export const TextVariants = cva(
 					'text-[20px] text-[rgb(25,25,25)] dark:text-[rgb(220,220,220)] font-[500] my-2',
 				normal:
 					'text-[15px] text-[rgb(50,50,50)] dark:text-[rgb(175,175,175)] font-[250] my-1',
+				brushstroke_button_text:
+					'text-[30px] text-[rgb(255,255,255)] font-[750] my-2',
+				brushstroke_info_text:
+					'text-[20px] text-[rgb(255,255,255)] font-[500] my-2'
 			},
 
 			align: {
