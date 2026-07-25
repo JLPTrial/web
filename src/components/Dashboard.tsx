@@ -9,6 +9,7 @@ import type { QuestionFilters } from '../hooks/useQuestions.ts'
 import { ContentBox } from './ContentBox.tsx';
 import { Text } from './Text.tsx';
 import { BrushstrokeButton } from './BrushstrokeButton.tsx';
+import { DropdownButton } from './DropdownButton.tsx';
 
 // Box that displays statistics data
 function StatDisplayBox({ title, data, type }) {
@@ -180,16 +181,9 @@ function PopUpLeafButton({ active, setActive }) {
 // Dropdown button for each main section of the dashboard
 function MainButton({ title, active1, setActive1 }) {
 	return (
-		<button
-			onClick={() => setActive1(!active1)}
-			className='border-b-4 border-red-600 py-4 rounded-xl dark:border-t-2 dark:border-x-2 dark:border-t-gray-700 dark:border-x-gray-700
-			shadow-stone-400 shadow-[0_0_20px_-5px_rgba(230,230,230,0.1)] dark:shadow-none
-			h-[70px] my-1 sm:mt-10 sm:mb-7 w-full
-			bg-white text-[#6b6375] dark:bg-gray-900 dark:text-gray-50
-			cursor-pointer bg-white
-			flex items-center justify-start'>
+		<DropdownButton onClick={() => setActive1(!active1)} >
 			{/* Text div */}
-			<div className='font-bold font-sans text-[20px] sm:text-[30px] text-left flex items-center gap-3 justify-start'>
+			<div className='flex items-center gap-3 justify-start'>
 				{/* Dropdown triangle */}
 				<div
 					className={`
@@ -203,9 +197,9 @@ function MainButton({ title, active1, setActive1 }) {
 				/>
 
 				{/* Main button text */}
-				<div>{title}</div>
+				<Text usage={"title"}>{title}</Text>
 			</div>
-		</button>
+		</DropdownButton>
 	)
 }
 
