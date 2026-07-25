@@ -6,8 +6,8 @@ import type { StatisticResponseModel } from '../models/StatisticsModels.ts'
 
 // Filters used in getSkillsGraphInfo
 export type StatsFilters = {
-    //level?: string -> not implemented yet
     period: string
+    level: string
     skill?: string
 }
 
@@ -16,6 +16,7 @@ export function useStatistics() {
 
     const [statistics, setStatistics] = useState<StatisticResponseModel | null>(null); // object with all information
     const [currentPeriod, setCurrentPeriod] = useState<string>(""); // period being considered
+    const [currentLevel, setCurrentLevel] = useState<string>(""); // period being considered
 
     // Skills statistics
     const [skills, setSkills] = useState<string[]>([]) // array with the names of the skills (Kanji, Grammar, etc)
@@ -49,9 +50,10 @@ export function useStatistics() {
     const [error, setError] = useState<string | null>(null)
 
     // Fetches statistics - this function should always be called when the statistics page loads for the first time
-    const loadStatistics = async (period: string) => {
-        const response = await getStatistics(period);
-        setCurrentPeriod(period);
+    const loadStatistics = async (filters: StatsFilters) => {
+        const response = await getStatistics(filters.period, filters.level);
+        setCurrentPeriod(filters.period);
+        setCurrentLevel(filters.level);
         setStatistics(response);
 
         return response;
@@ -103,10 +105,10 @@ export function useStatistics() {
     }
 
     // checks if new fetch is needed
-    const checkStats = async (period: string): Promise<StatisticResponseModel> => {
+    const checkStats = async (filters: StatsFilters): Promise<StatisticResponseModel> => {
         let response: StatisticResponseModel;
-        if (statistics == null || currentPeriod !== period) {
-            response = await loadStatistics(period)
+        if (statistics == null || currentPeriod !== filters.period || currentLevel !== filters.level) {
+            response = await loadStatistics(filters)
         }
         else {
             response = statistics;
@@ -121,7 +123,7 @@ export function useStatistics() {
         setError(null)
 
         try {
-            const response = await checkStats(filters.period)
+            const response = await checkStats(filters)
             setSkillsGraphInfo(response)
 
         } catch (err) {
@@ -140,7 +142,7 @@ export function useStatistics() {
             if (!filters.skill) {
                 throw new Error("Skill não informada");
             }
-            const response = await checkStats(filters.period)
+            const response = await checkStats(filters)
             setTagsInfo(response, String(filters.skill));
 
         } catch (err) {
@@ -156,7 +158,7 @@ export function useStatistics() {
         setError(null)
 
         try {
-            const response = await checkStats(filters.period)
+            const response = await checkStats(filters)
 
             setPeriodList(response.timeline.map(t => String(t.period)));
             setCorrectList(response.timeline.map(t => Number(t.correct)));
@@ -175,7 +177,7 @@ export function useStatistics() {
         setError(null)
 
         try {
-            const response = await checkStats(filters.period)
+            const response = await checkStats(filters)
             setGeneralInfo(response)
 
         } catch (err) {
