@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
 import { useQuestions } from '../../src/hooks/useQuestions'
+import { QuestionLevel } from '../../src/models/questionParams'
 import {
 	getLevelQuestions,
 	getLevelTopicQuestions,
@@ -235,4 +236,50 @@ describe('useQuestions', () => {
 		expect(getLevelTopicQuestions).toHaveBeenCalledOnce()
 		expect(getLevelQuestions).not.toHaveBeenCalled()
 	})
+		it('forwards the random flag to the API params', async () => {
+                vi.mocked(getLevelQuestions).mockResolvedValue({
+                        items: [],
+                        total: 0,
+                })
+
+                const { result } = renderHook(() => useQuestions())
+
+                await act(async () => {
+                        await result.current.getQuestionList({
+                                level: 'n5',
+                                topic: 'all',
+                                answer_status: 'all',
+                                limit: '10',
+                                random: true,
+                        })
+                })
+
+                expect(getLevelQuestions).toHaveBeenCalledWith(
+                        QuestionLevel.N5,
+                        expect.objectContaining({ random: true }),
+                )
+        })
+
+        it('does not send the random flag when not provided', async () => {
+                vi.mocked(getLevelQuestions).mockResolvedValue({
+                        items: [],
+                        total: 0,
+                })
+
+                const { result } = renderHook(() => useQuestions())
+
+                await act(async () => {
+                        await result.current.getQuestionList({
+                                level: 'n5',
+                                topic: 'all',
+                                answer_status: 'all',
+                                limit: '10',
+                        })
+                })
+
+                expect(getLevelQuestions).toHaveBeenCalledWith(
+                        QuestionLevel.N5,
+                        expect.objectContaining({ random: undefined }),
+                )
+        })
 })

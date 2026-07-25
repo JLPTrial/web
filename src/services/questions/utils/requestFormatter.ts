@@ -39,6 +39,9 @@ function buildQueryPath(basePath: string, params: GetQuestionsQueryParams) {
 	setQueryParam(query, 'answer_status', params.answerStatus)
 	setQueryParam(query, 'page', params.page)
 	setQueryParam(query, 'limit', params.limit)
+	if (params.random !== undefined) {
+		query.set('random', String(params.random))
+	}
 
 	return appendQueryString(basePath, query)
 }

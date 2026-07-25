@@ -16,6 +16,7 @@ export type QuestionFilters = {
     answer_status: SimpleAnswerStatus
     limit: SimpleLimit
     page?: number
+    random?: boolean
 }
 
 // Traduz o formato simples dos botões para o formato que a API espera
@@ -34,13 +35,14 @@ function translateFilters(filters: QuestionFilters) {
     const limit = Number(filters.limit)
     const topic = filters.topic === 'all' ? undefined : filters.topic
     const page = filters.page
+    const random = filters.random
 
-    return { levelId, answerStatus, limit, topic, page }
+    return { levelId, answerStatus, limit, topic, page, random }
 }
 
 async function fetchQuestions(filters: QuestionFilters) {
-    const { levelId, answerStatus, limit, topic, page } = translateFilters(filters)
-    const params = { answerStatus, limit, page }
+    const { levelId, answerStatus, limit, topic, page, random } = translateFilters(filters)
+    const params = { answerStatus, limit, page, random }
 
     return topic
         ? getLevelTopicQuestions(levelId, topic, params)
