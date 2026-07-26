@@ -61,8 +61,6 @@ export function useStatistics() {
     // Updates information about skills
     const setSkillsGraphInfo = (stat: StatisticResponseModel) => {
 
-        console.log("skills", stat.skills);
-
         setSkills(stat.skills.map(s => String(s.skill)));
 
         setSkillsCorrect(stat.skills.map(s => Number(s.correct)));
