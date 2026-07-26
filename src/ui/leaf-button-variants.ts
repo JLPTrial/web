@@ -2,12 +2,12 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 export const LeafButtonVariants = cva(
     `
-    text-white text-shadow-md text-shadow-red-[rgb(150,0,0)] font-bold sm:font-medium m-1
+    text-white text-shadow-md font-bold sm:font-medium m-1
     shadow-md shadow-[rgb(163,163,163)] dark:shadow-none 
     flex items-center justify-center gap-2
-
-    bg-gradient-to-r from-black to-black bg-no-repeat hover:bg-left bg-[length:0%_100%]
-    transition-all 
+    
+    bg-gradient-to-r from-black to-black bg-no-repeat bg-left bg-[length:0%_100%]
+    transition-all duration-500
     `,
 
     {
@@ -17,9 +17,10 @@ export const LeafButtonVariants = cva(
                 right: `rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none `
             },
             status: {
-                selected: `bg-[rgb(0,0,0)] bg-gradient-to-r from-black to-black bg-[length:100%_100%] scale-105 text-shadow-none`,
-                enabled: `bg-[rgb(255,0,0)] duration-400 hover:scale-105 cursor-pointer`,
-                disabled: `bg-[rgb(152,152,152)] text-shadow-[rgb(100,100,100)] cursor-not-allowed`
+                selected: `bg-[rgb(255,0,0)] bg-[length:100%_100%] scale-105 text-shadow-none hover:scale-105 cursor-pointer`,
+                enabled: `bg-[rgb(255,0,0)] text-shadow-[rgb(150,0,0)] hover:scale-105`,
+                disabled: `bg-[rgb(152,152,152)] text-shadow-[rgb(100,100,100)] cursor-not-allowed`,
+                not_a_button: `bg-[rgb(255,0,0)]`
             },
             shape: {
                 square: `h-[50px] w-[50px]`,                              // used at the audio player at Question.tsx

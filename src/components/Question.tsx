@@ -127,7 +127,7 @@ export default function Question() {
                                 {/* TAGS DA QUESTÃO */}
                                 <div className="flex flex-wrap gap-4 p-1">
                                         {currentQuestion.tags.map((tag, index) => (
-                                                <LeafBox shape={"tag"} text_size={"smaller"} key={index}>
+                                                <LeafBox shape={"tag"} status={"not_a_button"} text_size={"smaller"} key={index}>
                                                         {tag}
                                                 </LeafBox>
                                         ))}
