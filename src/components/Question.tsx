@@ -159,6 +159,13 @@ export default function Question() {
                                                                         )}
                                                                 </div>)
                                                         }
+                                                        {media.text_content && (
+                                                                <div className='flex justify-center m-2 my-5'>
+                                                                        <div className='m-2 my-3 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
+                                                                                {<JapaneseTextParser text={media.text_content} />}
+                                                                        </div>
+                                                                </div>)
+                                                        }
                                                 </>
                                         )
                                 }
