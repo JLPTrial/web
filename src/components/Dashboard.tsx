@@ -61,9 +61,10 @@ function StatisticsDisplay({ type }) {
 }
 
 // Navigation buttons in the statistics section (Meu progresso)
-function StatisticsNavButton({ active2, buttonId, setActive2, text }) {
+function StatisticsNavButton({ active2, buttonId, setActive2, text, direction }) {
 	return (
 		<SelectableLeafButton
+			direction={direction}
 			status={active2 === buttonId ? "selected" : "enabled"}
 			onClick={() => setActive2(buttonId)}
 			shape={"competency"}
@@ -75,10 +76,10 @@ function StatisticsNavButton({ active2, buttonId, setActive2, text }) {
 
 function ButtonText({ kanji, text }) {
 	return (
-		<div className='relative flex items-center justify-between w-full px-5'>
-			<div className='text-xl'>{kanji}</div>
+		<div className='relative flex flex-col-reverse sm:flex-row items-center justify-between w-full px-2 sm:px-5'>
+			<div className='text-xs sm:text-xl'>{kanji}</div>
 			<div>{text}</div>
-			<div></div>
+			<div className='sm:flex'></div>
 		</div>
 	)
 }
@@ -88,6 +89,7 @@ type StartButtonProps = Readonly<{
 	topic?: string
 	level?: string
 	limit?: string
+	mocktest?: string
 }>
 
 function StartButton({
@@ -95,6 +97,7 @@ function StartButton({
 	topic = 'kanji',
 	level = 'N4',
 	limit = '5',
+	mocktest = 'false'
 }: StartButtonProps) {
 	const navigate = useNavigate()
 	const [popup, setPopup] = useState(false) // variable that defines if warning PopUp is active
@@ -111,23 +114,32 @@ function StartButton({
 						answer_status,
 						limit: limit as QuestionFilters['limit'],
 					}
-					getQuestionCount(filters).then((response) => {
-						if (response === 0) {
-							setText("Não há questões para os filtros selecionados.");
-							setPopup(!popup);
-						} else if (response === -1) {
-							setText("Ocorreu um erro ao tentar buscar questões.");
-							setPopup(!popup);
-						} else {
-							const query = new URLSearchParams({
-								level,
-								topic,
-								answer_status,
-								limit,
-							})
-							navigate(`question?${query.toString()}`)
-						}
-					})
+					if (mocktest === "true") {
+						const query = new URLSearchParams({
+							mocktest,
+							level,
+						})
+						navigate(`question?${query.toString()}`)
+					}
+					else {
+						getQuestionCount(filters).then((response) => {
+							if (response === 0) {
+								setText("Não há questões para os filtros selecionados.");
+								setPopup(!popup);
+							} else if (response === -1) {
+								setText("Ocorreu um erro ao tentar buscar questões.");
+								setPopup(!popup);
+							} else {
+								const query = new URLSearchParams({
+									level,
+									topic,
+									answer_status,
+									limit,
+								})
+								navigate(`question?${query.toString()}`)
+							}
+						})
+					}
 				}}
 			>
 				<Text usage={"brushstroke_button_text"} align={"center"}>Começar</Text>
@@ -224,7 +236,7 @@ function StatisticsBox() {
 				${active1 ? 'max-h-[1000px] opacity-100' : 'max-h-[0px] pointer-events-none opacity-0'}`}>
 				{/* Navigation bar */}
 				<div
-					className={`w-[90%] sm:w-[170px] mr-2 shrink-0 text-wrap flex flex-col items-center`}>
+					className={`w-[90%] sm:w-[170px] mr-2 mb-5 shrink-0 text-wrap sm:flex sm:flex-col grid grid-cols-2 items-center gap-x-3 gap-y-1 sm:gap-0`}>
 					<StatisticsNavButton
 						active2={active2}
 						buttonId='kanji'
@@ -232,6 +244,7 @@ function StatisticsBox() {
 						text='Kanji'
 					/>
 					<StatisticsNavButton
+						direction={"right"}
 						active2={active2}
 						buttonId='vocabulary'
 						setActive2={setActive2}
@@ -244,6 +257,7 @@ function StatisticsBox() {
 						text='Leitura'
 					/>
 					<StatisticsNavButton
+						direction={"right"}
 						active2={active2}
 						buttonId='grammar'
 						setActive2={setActive2}
@@ -256,6 +270,7 @@ function StatisticsBox() {
 						text='Escuta'
 					/>
 					<StatisticsNavButton
+						direction={"right"}
 						active2={active2}
 						buttonId='all'
 						setActive2={setActive2}
@@ -292,7 +307,7 @@ function QuestionBox() {
 	// Texts for each button
 	const title1 = (
 		<ButtonText
-			kanji='漢字'
+			kanji='文字'
 			text='Kanji'
 		/>
 	)
@@ -304,7 +319,7 @@ function QuestionBox() {
 	)
 	const title3 = (
 		<ButtonText
-			kanji='読み方'
+			kanji='読解'
 			text='Leitura'
 		/>
 	)
@@ -316,13 +331,13 @@ function QuestionBox() {
 	)
 	const title5 = (
 		<ButtonText
-			kanji='聴取'
+			kanji='聴解'
 			text='Audição'
 		/>
 	)
 	const title6 = (
 		<ButtonText
-			kanji='全て'
+			kanji='全部'
 			text='Tudo'
 		/>
 	)
@@ -342,7 +357,7 @@ function QuestionBox() {
 					${active1 ? 'max-h-[2000px] opacity-100' : 'max-h-[0px] pointer-events-none opacity-0'}`}>
 				{/* Review filter */}
 				<div className='text-xl font-bold p-1'>Tipo de questão</div>
-				<div className={`grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5`}>
+				<div className={`grid grid-cols-2 gap-5 mb-5`}>
 					<QuestionsButton
 						active={active2}
 						buttonId='new'
@@ -363,7 +378,7 @@ function QuestionBox() {
 				<div
 					className={`transition-all duration-500 ${active2 === 'review' ? 'max-h-[2000px] opacity-100' : 'max-h-[0px] pointer-events-none opacity-0'}`}>
 					<div className='text-xl font-bold p-1'>Tipo de revisão</div>
-					<div className={`grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5`}>
+					<div className={`grid grid-cols-2 gap-5 mb-5`}>
 						<QuestionsButton
 							active={active3}
 							buttonId='all'
@@ -400,7 +415,7 @@ function QuestionBox() {
 
 				{/* Competency filter */}
 				<div className='text-xl font-bold p-1'>Competência</div>
-				<div className={`grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5`}>
+				<div className={`grid grid-cols-2 gap-5 mb-5`}>
 					<QuestionsButton
 						active={active5}
 						buttonId='kanji'
@@ -489,7 +504,10 @@ function QuestionBox() {
 
 // Main box for mock test
 function MockTestBox({ title }) {
+
 	const [active1, setActive1] = useState(false)
+	const [active2, setActive2] = useState('N4') // variable that defines which number of questions is selected
+
 	return (
 		<div className='flex flex-col w-[95%] p-2 sm:p-0 sm:max-w-[700px]'>
 			{/* Main button */}
@@ -501,9 +519,32 @@ function MockTestBox({ title }) {
 
 			{/* Content section */}
 			<div
-				className={`mt-3 flex align-center justify-center sm:grid-cols-2 gap-5 transition-all duration-500 ease-out
+				className={`mt-3 flex flex-col align-center justify-center sm:grid-cols-2 gap-5 transition-all duration-500 ease-out
 			${active1 ? 'max-h-[1000px] opacity-100' : 'max-h-[0px] pointer-events-none opacity-0'}`}>
-				<StartButton />
+
+				{/* Level filter */}
+				<div className='text-xl font-bold p-1'>Nível</div>
+				<div className={`flex flex-row gap-x-1 gap-y-5 mb-5`}>
+					<FilterLeafButton
+						active={active2}
+						buttonId='N4'
+						setActive={setActive2}
+						text='N4'
+					/>
+					<FilterLeafButton
+						active={active2}
+						buttonId='N5'
+						setActive={setActive2}
+						text='N5'
+					/>
+				</div>
+
+				<div className='flex items-center justify-center'>
+					<StartButton
+						mocktest="true"
+						level={active2}
+					/>
+				</div>
 			</div>
 		</div>
 	)
