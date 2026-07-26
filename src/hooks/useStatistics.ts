@@ -27,7 +27,6 @@ export function useStatistics() {
     // Tags statistics (filtered by skill)
     const [tags, setTags] = useState<string[]>([]) // array with the names of the tags
     const [tagsPercentages, setTagsPercentages] = useState<number[]>([]) // array with the percentages of correct answers for each tag
-    const [tagsTotals, setTagsTotals] = useState<number[]>([]) // array with the total number of questions for each tag tag
     const [tagsAnswered, setTagsAnswered] = useState<number[]>([]) // array with the total number of answered questions for each tag
     const [tagsCorrect, setTagsCorrect] = useState<number[]>([]) // array with the number of correct answered questions for each tag
 
@@ -61,15 +60,23 @@ export function useStatistics() {
 
     // Updates information about skills
     const setSkillsGraphInfo = (stat: StatisticResponseModel) => {
+
+        console.log("skills", stat.skills);
+
         setSkills(stat.skills.map(s => String(s.skill)));
 
         setSkillsCorrect(stat.skills.map(s => Number(s.correct)));
 
-        setSkillsAnswered(stat.skills.map(s => Number(s.correct) + Number(s.wrong)));
+        setSkillsAnswered(stat.skills.map(s => Number(s.correct) + Number(s.incorrect)));
 
         setSkillsPercentages(
-            stat.skills.map(s =>
-                (100 * Number(s.correct) ) / (Number(s.correct) + Number(s.wrong))
+            stat.skills.map(s => {
+                    const correct = Number(s.correct);
+                    const wrong = Number(s.incorrect);
+                    const total = correct + wrong;
+                
+                    return total === 0 ? 0 : (100 * correct) / total;
+                }
             )
         );
     }
@@ -83,13 +90,17 @@ export function useStatistics() {
 
         setTagsCorrect(tagInfo.map(t => Number(t.correct) ));
 
-        setTagsAnswered(tagInfo.map(t => Number(t.correct) + Number(t.wrong) ));
-
-        setTagsTotals(tagInfo.map(t => Number(t.correct) + Number(t.wrong)));
+        setTagsAnswered(tagInfo.map(t => Number(t.correct) + Number(t.incorrect) ));
 
         setTagsPercentages(
-            tagInfo.map(t =>
-                (100 * Number(t.correct)) / (Number(t.correct) + Number(t.wrong))
+            tagInfo.map(t => {
+                    const correct = Number(t.correct);
+                    const wrong = Number(t.incorrect);
+                    const total = correct + wrong;
+                
+                    return total === 0 ? 0 : (100 * correct) / total;
+                }
+                
             )
         );
     }
@@ -97,9 +108,18 @@ export function useStatistics() {
     // Updates general information
     const setGeneralInfo = (stat: StatisticResponseModel) => {
 
-        setTotalQuestions(stat.database["totalQuestions"]);
+        let total = 0;
+
+        const question_type_totals = Object.values(stat.database.question_types)
+
+
+        for (const valor of question_type_totals) {
+            total += valor;
+        }
+
+        setTotalQuestions(total);
         setTotalCorrect(stat.summary["correct"]);
-        setTotalWrong(stat.summary["wrong"]);
+        setTotalWrong(stat.summary["incorrect"]);
         setTotalAccuracy(stat.summary["accuracy"]);
         setStreak(stat.summary["streak"]);
     }
@@ -140,7 +160,7 @@ export function useStatistics() {
 
         try {
             if (!filters.skill) {
-                throw new Error("Skill não informada");
+                throw new Error("Skill não informada.");
             }
             const response = await checkStats(filters)
             setTagsInfo(response, String(filters.skill));
@@ -162,7 +182,7 @@ export function useStatistics() {
 
             setPeriodList(response.timeline.map(t => String(t.period)));
             setCorrectList(response.timeline.map(t => Number(t.correct)));
-            setWrongList(response.timeline.map(t => Number(t.wrong)));
+            setWrongList(response.timeline.map(t => Number(t.incorrect)));
 
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Não foi possível carregar as questões.')
@@ -197,7 +217,6 @@ export function useStatistics() {
     
         tags,
         tagsPercentages,
-        tagsTotals,
         tagsAnswered,
         tagsCorrect,
     
