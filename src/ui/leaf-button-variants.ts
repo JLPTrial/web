@@ -18,7 +18,7 @@ export const LeafButtonVariants = cva(
             },
             status: {
                 selected: `bg-[rgb(255,0,0)] bg-[length:100%_100%] scale-105 text-shadow-none hover:scale-105 cursor-pointer`,
-                enabled: `bg-[rgb(255,0,0)] text-shadow-[rgb(150,0,0)] hover:scale-105`,
+                enabled: `bg-[rgb(255,0,0)] text-shadow-[rgb(150,0,0)] hover:scale-105 cursor-pointer`,
                 disabled: `bg-[rgb(152,152,152)] text-shadow-[rgb(100,100,100)] cursor-not-allowed`,
                 not_a_button: `bg-[rgb(255,0,0)]`
             },

@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import japanBg from '../assets/japan.svg'
 import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { useQuestions } from '../hooks/useQuestions.ts'
+import { useStatistics } from '../hooks/useStatistics.ts'
 import type { QuestionFilters } from '../hooks/useQuestions.ts'
 
 import { ContentBox } from './ContentBox.tsx';
@@ -13,42 +14,121 @@ import { LeafButton } from './LeafButton.tsx';
 import { SelectableLeafButton } from './SelectableLeafButton.tsx';
 
 // Box that displays statistics data
-function StatDisplayBox({ title, data, type }) {
+function StatDisplayBox({ title, data, skill, period }) {
+
+	const {
+        statistics,
+
+        skills,
+        skillsPercentages,
+        skillsAnswered,
+    
+        totalQuestions,
+        totalCorrect,
+        totalWrong,
+        totalAccuracy,
+    
+        loadStatistics,
+        getSkillsGraphInfo,
+        getTagsGraphInfo,
+        getTimeLine,
+        getGeneralInfo,
+    } = useStatistics()
+
+	let info: string;
+
+	useEffect(() => {
+		async function load(period) {
+
+
+			const a = await loadStatistics({
+				period: period,
+				level: "all",
+			});
+	
+			await getSkillsGraphInfo({
+				period: period,
+				level: "all",
+			});
+	
+			await getGeneralInfo({
+				period: period,
+				level: "all",
+			});
+		}
+	
+		load(period);
+	}, []);
+
+	if (data === "percentage" && skill === "all") {
+		info = `${totalAccuracy}%`
+	}
+	else if (data === "percentage") {
+		let i=0;
+		for (const s of skills) {
+			let skill2 = String(skill);
+			if (s === skill2) {
+				break;
+			}
+			i++;
+		}
+		info = `${skillsPercentages[i]}%`
+	}
+	else if (data === "answered" && skill === "all") {
+		info = `${Number(totalCorrect) + Number(totalWrong)}/${totalQuestions}`
+	}
+	else {
+		let i=0;
+		for (const s of skills) {
+			let skill2 = String(skill);
+			if (s === skill2) {
+				break;
+			}
+			i++;
+		}
+		info = `${skillsAnswered[i]}/${statistics?.database["question_types"][skill]}`
+	}
+
 	return (
-		<ContentBox usage={"card"}>
-			<Text usage={"subtitle"} align={"center"}>
-				{title} {type}
-			</Text>
-			<Text usage={"title"} align={"center"}>{data}</Text>
-		</ContentBox>
+			<ContentBox usage={"card"}>
+				<Text usage={"subtitle"} align={"center"}>
+					{title} {skill}
+				</Text>
+				<Text usage={"title"} align={"center"}>{info}</Text>
+			</ContentBox>
 	)
 }
 
+
 // Display that contains all boxes with statistics
-function StatisticsDisplay({ type }) {
+function StatisticsDisplay({ skill }) {
 	const navigate = useNavigate()
 	return (
 		<div className='max-w-[300px] sm:max-w-[1000px] flex flex-col items-center'>
 			<div className='grid grid-cols-1 sm:grid-cols-2 gap-2'>
 				<StatDisplayBox
 					title='Porcentagem de acertos'
-					data='50%'
-					type={type}
+					data='percentage'
+					skill={skill}
+					period="all"
 				/>
 				<StatDisplayBox
 					title='Questões respondidas'
-					data='30/200'
-					type={type}
+					data='answered'
+					skill={skill}
+					period="all"
 				/>
 				<StatDisplayBox
 					title='Porcentagem de acertos hoje'
-					data='80%'
-					type={type}
+					data='percentage'
+					skill={skill}
+					period="day"
 				/>
 				<StatDisplayBox
 					title='Questões respondidas hoje'
-					data='10'
-					type={type}
+					data='answered'
+					skill={skill}
+					period="day"
 				/>
 			</div>
 			<button
@@ -220,7 +300,7 @@ function MainButton({ title, active1, setActive1 }) {
 // Main statistics box
 function StatisticsBox() {
 	const [active1, setActive1] = useState(false) // variable that defines if main button is active
-	const [active2, setActive2] = useState('vocabulary') // variable that defines which navigation button is selected
+	const [active2, setActive2] = useState('kanji') // variable that defines which navigation button is selected
 	return (
 		<div className='flex flex-col w-[95%] p-2 sm:p-0 w-[90%] sm:max-w-[700px]'>
 			{/* Main button */}
@@ -267,7 +347,7 @@ function StatisticsBox() {
 						active2={active2}
 						buttonId='listening'
 						setActive2={setActive2}
-						text='Escuta'
+						text='Audição'
 					/>
 					<StatisticsNavButton
 						direction={"right"}
@@ -279,7 +359,7 @@ function StatisticsBox() {
 				</div>
 
 				{/* Data display */}
-				<StatisticsDisplay type={active2} />
+				<StatisticsDisplay skill={active2} />
 			</div>
 		</div>
 	)
