@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { getLevelQuestions, getLevelTopicQuestions, registerQuestion } from '../services/questions/QuestionService.ts'
+import { getLevelQuestions, getLevelTopicQuestions, getMockTest, registerQuestion } from '../services/questions/QuestionService.ts'
 import { AnswerStatus, QuestionLevel } from '../models/questionParams'
 import type { AnswerStatusConstants, QuestionTopicConstants } from '../models/questionParams'
 import type { QuestionModel } from '../models/QuestionModel.ts'
@@ -17,6 +17,7 @@ export type QuestionFilters = {
     limit: SimpleLimit
     page?: number
     random?: boolean
+    mocktest?: boolean
 }
 
 // Traduz o formato simples dos botões para o formato que a API espera
@@ -36,17 +37,24 @@ function translateFilters(filters: QuestionFilters) {
     const topic = filters.topic === 'all' ? undefined : filters.topic
     const page = filters.page
     const random = filters.random
+    const mocktest = filters.mocktest
 
-    return { levelId, answerStatus, limit, topic, page, random }
+    return { levelId, answerStatus, limit, topic, page, random, mocktest }
 }
 
 async function fetchQuestions(filters: QuestionFilters) {
-    const { levelId, answerStatus, limit, topic, page, random } = translateFilters(filters)
+    const { levelId, answerStatus, limit, topic, page, random, mocktest } = translateFilters(filters)
     const params = { answerStatus, limit, page, random }
 
-    return topic
-        ? getLevelTopicQuestions(levelId, topic, params)
-        : getLevelQuestions(levelId, params)
+    if (mocktest) {
+        return getMockTest(levelId)
+    }
+    else if (topic) {
+        return getLevelTopicQuestions(levelId, topic, params)
+    }
+    else {
+        return getLevelQuestions(levelId, params)
+    }
 }
 
 export function useQuestions() {

@@ -30,8 +30,6 @@ function StatDisplayBox({ title, data, skill, period }) {
     
         loadStatistics,
         getSkillsGraphInfo,
-        getTagsGraphInfo,
-        getTimeLine,
         getGeneralInfo,
     } = useStatistics()
 
@@ -61,7 +59,7 @@ function StatDisplayBox({ title, data, skill, period }) {
 	}, []);
 
 	if (data === "percentage" && skill === "all") {
-		info = `${totalAccuracy}%`
+		info = `${(Number(totalAccuracy)).toFixed(2)}%`
 	}
 	else if (data === "percentage") {
 		let i=0;
@@ -72,7 +70,7 @@ function StatDisplayBox({ title, data, skill, period }) {
 			}
 			i++;
 		}
-		info = `${skillsPercentages[i]}%`
+		info = `${skillsPercentages[i].toFixed(2)}%`
 	}
 	else if (data === "answered" && skill === "all") {
 		info = `${Number(totalCorrect) + Number(totalWrong)}/${totalQuestions}`
@@ -92,7 +90,7 @@ function StatDisplayBox({ title, data, skill, period }) {
 	return (
 			<ContentBox usage={"card"}>
 				<Text usage={"subtitle"} align={"center"}>
-					{title} {skill}
+					{title}
 				</Text>
 				<Text usage={"title"} align={"center"}>{info}</Text>
 			</ContentBox>

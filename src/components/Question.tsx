@@ -58,8 +58,10 @@ export default function Question() {
                 const topic = (searchParams.get('topic') ?? 'all') as QuestionFilters['topic']
                 const answer_status = (searchParams.get('answer_status') ?? 'new') as QuestionFilters['answer_status']
                 const limit = (searchParams.get('limit') ?? '5') as QuestionFilters['limit']
+                const random = true
+                const mocktest = searchParams.get('mocktest') === 'true';
 
-                void getQuestionList({ level, topic, answer_status, limit })
+                void getQuestionList({ level, topic, answer_status, limit, random, mocktest })
                 // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [])
 
