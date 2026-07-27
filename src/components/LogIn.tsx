@@ -45,7 +45,7 @@ function LoginForm({
             </div>
 
             <div>
-                <FormLabel htmlFor="password">Endereço de email</FormLabel>
+                <FormLabel htmlFor="password">Senha</FormLabel>
                 <FormInput
                     type="password"
                     placeholder="Insira a sua senha"

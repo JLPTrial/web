@@ -7,7 +7,7 @@ interface BrushstrokeBoxProps extends React.HTMLAttributes<HTMLDivElement>, Brus
 export function BrushstrokeBox({ className, inkColor, textColor, size, children, ...props }: BrushstrokeBoxProps) {
     return (
         <div className={BrushstrokeVariants({inkColor, textColor, size, interactive: false, className})} {...props} >
-            <Brushstroke className="w-full h-[150px] sm:h-auto" />
+            <Brushstroke className="w-full h-[150px] md:h-auto" />
 
             <div className="absolute inset-0 flex items-center justify-center text-center px-[14%] py-[9%]">
                 {children}
