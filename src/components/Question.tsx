@@ -4,12 +4,12 @@ import { useRequireAuth } from '../hooks/useRequireAuth.ts'
 import { useQuestions } from '../hooks/useQuestions.ts'
 import type { QuestionFilters } from '../hooks/useQuestions.ts'
 
-import { box } from '../ui/box.ts'
-import { leaf_button } from '../ui/leaf-button-variants.ts';
 import AudioPlayer from "./AudioPlayer";
 import JapaneseTextParser from "./JapaneseTextParser.tsx";
 
 import { ContentBox } from './ContentBox.tsx';
+import { LeafButton } from './LeafButton.tsx';
+import { LeafBox } from './LeafBox.tsx';
 
 
 export default function Question() {
@@ -84,11 +84,11 @@ export default function Question() {
                         <div className='flex flex-col items-center gap-4'>
                                 <div className='font-bold text-2xl p-2 self-center'>Questões finalizadas!</div>
 
-                                <button
-                                        className={leaf_button()}
-                                        onClick={ handleQuestionsFinished }>
+                                <LeafButton
+                                        onClick={ handleQuestionsFinished }
+                                >
                                         Voltar ao Dashboard
-                                </button>
+                                </LeafButton>
                         </div>
                 )
         }
@@ -127,11 +127,9 @@ export default function Question() {
                                 {/* TAGS DA QUESTÃO */}
                                 <div className="flex flex-wrap gap-4 p-1">
                                         {currentQuestion.tags.map((tag, index) => (
-                                                <div
-                                                        key={index}
-                                                        className={box()}                                               >
+                                                <LeafBox shape={"tag"} status={"not_a_button"} text_size={"smaller"} key={index}>
                                                         {tag}
-                                                </div>
+                                                </LeafBox>
                                         ))}
                                 </div>
 
@@ -159,6 +157,13 @@ export default function Question() {
                                                                                         className="w-full md:w-1/2 my-3 p-2 border-2 border-[rgb(230,230,230)] rounded-md"
                                                                                 />
                                                                         )}
+                                                                </div>)
+                                                        }
+                                                        {media.text_content && (
+                                                                <div className='flex justify-center m-2 my-5'>
+                                                                        <div className='m-2 my-3 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
+                                                                                {<JapaneseTextParser text={media.text_content} />}
+                                                                        </div>
                                                                 </div>)
                                                         }
                                                 </>
@@ -221,8 +226,8 @@ export default function Question() {
 
                                 {/* BOTÃO - VERIFICAR RESPOSTA */}
                                 <div className='flex justify-between gap-3 m-2 mt-5'>
-                                        <button
-                                                className={answerStatus === null && selectedAlternative !== null ? leaf_button() : leaf_button({ status: "disabled"})}
+                                        <LeafButton
+                                                status={answerStatus === null && selectedAlternative !== null ? undefined : "disabled"}
                                                 onClick={() => {
                                                         void submitAnswer().then((isCorrect) => {
                                                                 if (isCorrect === null) { return }
@@ -235,16 +240,13 @@ export default function Question() {
                                                 disabled={selectedAlternative === null || answerStatus !== null}
                                         >
                                                 Verificar Resposta
-                                        </button>
+                                        </LeafButton>
 
                                         {
                                                 answerStatus !== null && (
-                                                        <button
-                                                                className={leaf_button()}
-                                                                onClick={nextQuestion}
-                                                        >
+                                                        <LeafButton onClick={nextQuestion} >
                                                                 {isLastQuestion ? 'Finalizar' : 'Próxima Questão'}
-                                                        </button>
+                                                        </LeafButton>
                                                 )
                                         }
                                 </div>
