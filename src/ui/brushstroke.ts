@@ -5,7 +5,8 @@ export const BrushstrokeVariants = cva(
     {
         variants: {
             inkColor: {
-                red: "[&_svg]:text-[rgb(255,0,0)]"
+                red: "[&_svg]:text-[rgb(255,0,0)]",
+                black: "[&_svg]:text-[rgb(0,0,0)]"
             },
 
             textColor: {
@@ -13,12 +14,12 @@ export const BrushstrokeVariants = cva(
             },
 
             size: {
-                md: "w-75",
-                lg: "w-150"
+                md: "w-60 sm:w-75",
+                lg: "w-full md:w-150"
             },
 
             interactive: {
-                true: "cursor-pointer hover:scale-105 hover:[&_svg]:text-[rgb(150,0,0)]",
+                true: "cursor-pointer hover:scale-105 hover:[&_svg]:text-[rgb(40,40,40)]",
                 false: ""
             }
         },

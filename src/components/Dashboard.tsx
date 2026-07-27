@@ -106,7 +106,7 @@ function StartButton({
 	const { getQuestionCount } = useQuestions()
 	return (
 		<>
-			<BrushstrokeButton size={"md"}
+			<BrushstrokeButton size={"md"} inkColor={"black"}
 				onClick={() => {
 					const filters: QuestionFilters = {
 						level: level as QuestionFilters['level'],

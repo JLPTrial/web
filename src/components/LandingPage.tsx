@@ -25,8 +25,8 @@ function SecondaryInfo({ alignment, infoText }) {
         return (
                 
                 <div
-                        className={clsx("relative", "aspect-[2/1]",
-                                alignment === "right" ? "self-end" : "self-start"
+                        className={clsx("relative", "aspect-[2/1]", "self-center",
+                                alignment === "right" ? "sm:self-end" : "sm:self-start"
                         )}
                 >
                         <BrushstrokeBox size={"lg"}>
@@ -41,7 +41,7 @@ function StartButton() {
         const navigate = useNavigate();
 
         return (
-                <BrushstrokeButton className="self-center" size={"md"} onClick={() => navigate('/signup')}>
+                <BrushstrokeButton className="self-center" size={"md"} inkColor={"black"} onClick={() => navigate('/signup')}>
                         <Text usage={"brushstroke_button_text"} align={"center"}>Vamos lá!</Text>
                 </BrushstrokeButton>
         );

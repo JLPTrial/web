@@ -3,6 +3,7 @@ import "../App.css";
 
 const Brushstroke = (properties: SVGProps<SVGSVGElement>) => (
     <svg
+        preserveAspectRatio="none"
         className="brushstroke"
         xmlns="http://www.w3.org/2000/svg"
         xmlSpace="preserve"
