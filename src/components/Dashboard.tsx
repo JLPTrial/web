@@ -275,7 +275,7 @@ function PopUpLeafButton({ active, setActive }) {
 // Dropdown button for each main section of the dashboard
 function MainButton({ title, active1, setActive1 }) {
 	return (
-		<DropdownButton onClick={() => setActive1(!active1)} >
+		<DropdownButton usage={"dashboard"} onClick={() => setActive1(!active1)} >
 			{/* Text div */}
 			<div className='flex items-center gap-3 justify-start'>
 				{/* Dropdown triangle */}
