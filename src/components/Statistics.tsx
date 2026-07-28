@@ -1,84 +1,115 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SelectableLeafButton } from "./SelectableLeafButton.tsx";
 import { JapanBackground } from './JapanBackground.tsx';
 import { Text } from './Text.tsx';
 import { DropdownButton } from './DropdownButton.tsx';
-
+import { useStatistics } from '../hooks/useStatistics.ts';
 import {
-	BarChart,
-	Bar,
-	XAxis,
-	YAxis,
-	CartesianGrid,
-	Tooltip,
-	Legend,
-	RadarChart,
-	PolarGrid,
-	PolarAngleAxis,
-	PolarRadiusAxis,
-	Radar,
+	BarChart, Bar,
+	XAxis, YAxis,
+	CartesianGrid, Tooltip, Legend,
+	RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
 	ResponsiveContainer,
-} from 'recharts'
+} from 'recharts';
 
-const barData = [
-  { name: 'Jan', Corretas: 42, Incorretas: 28, amt: 70, },
-  { name: 'Feb', Corretas: 39, Incorretas: 31, amt: 70, },
-  { name: 'Mar', Corretas: 51, Incorretas: 34, amt: 85, },
-  { name: 'Apr', Corretas: 47, Incorretas: 36, amt: 83, },
-  { name: 'May', Corretas: 58, Incorretas: 39, amt: 97, },
-  { name: 'Jun', Corretas: 62, Incorretas: 41, amt: 103, }
-];
+const skillNamesRadar: Record<string, string> = {
+    grammar: "Gram.",
+    vocabulary: "Vocab.",
+    kanji: "Kanji",
+    reading: "Leit.",
+    listening: "Aud.",
+};
 
-const radarData = [
-	{ subject: 'Gramática', value: 90 },
-	{ subject: 'Leitura', value: 65 },
-	{ subject: 'Vocabulário', value: 80 },
-	{ subject: 'Kanji', value: 50 },
-	{ subject: 'Audição', value: 75 },
-]
+const skillNamesButtons: Record<string, string> = {
+    grammar: "Gramática",
+    vocabulary: "Vocabulário",
+    kanji: "Kanji",
+    reading: "Leitura",
+    listening: "Audição",
+};
 
-function BarGraph() {
-	return (
-		<div className='h-80 min-w-[500px] rounded-md p-4'>
-			<Text usage={"normal"}>Progresso</Text>
+function BarGraph({ tags, percentages }) {
 
-			<ResponsiveContainer width='80%' height='80%'>
-				<BarChart
-					data={barData}
-					margin={{ top: 20, right: 20, left: 20, bottom: 5 }}
-				>
-					<CartesianGrid strokeDasharray="3 3" />
-					<XAxis dataKey="name" />
-					<YAxis />
-					<Tooltip />
-					<Legend />
-					<Bar dataKey="Corretas" stackId="a" fill="#15ab12" />
-					<Bar dataKey="Incorretas" stackId="a" fill="#ff0000" />
-				</BarChart>
-			</ResponsiveContainer>
-		</div>
-	)
+    const barData = tags.map((tag, index) => ({
+        name: tag,
+        percentage: percentages[index] ?? 0,
+    }))
+
+    return (
+        <div className='h-80 min-w-[500px] rounded-md p-4 flex items-center'>
+            <ResponsiveContainer width='80%' height='80%'>
+
+                <BarChart
+                    data={barData}
+                    margin={{ top: 20, right: 20, left: 20, bottom: 5 }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis domain={[0,100]} />
+                    <Tooltip />
+                    <Bar dataKey="percentage" fill="#ff0000" />
+                </BarChart>
+
+            </ResponsiveContainer>
+        </div>
+    )
 }
 
-function RadarGraph() {
-	return (
-		<div className='h-80 min-w-[500px] rounded-md p-4'>
-			<Text usage={"normal"}>Habilidades</Text>
+function StackedBarGraph({ periods, correct, wrong }) {
 
-			<ResponsiveContainer width='80%' height='80%'>
-				<RadarChart data={radarData}>
-					<PolarGrid />
-					<PolarAngleAxis dataKey='subject' />
-					<PolarRadiusAxis />
-					<Radar dataKey='value' stroke='#dc2626' fill='#dc2626' fillOpacity={0.35} />
-					<Tooltip />
-				</RadarChart>
-			</ResponsiveContainer>
-		</div>
-	)
+    const stackedBarData = periods.map((period, index) => ({
+        name: period,
+        Corretas: correct[index] ?? 0,
+        Incorretas: wrong[index] ?? 0,
+    }))
+
+    return (
+        <div className='h-80 min-w-[500px] rounded-md p-4 flex items-center'>
+            <ResponsiveContainer width='80%' height='80%'>
+
+                <BarChart
+                    data={stackedBarData}
+                    margin={{ top: 20, right: 20, left: 20, bottom: 5 }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="Corretas" stackId="a" fill="#15ab12" />
+                    <Bar dataKey="Incorretas" stackId="a" fill="#ff0000" />
+                </BarChart>
+
+            </ResponsiveContainer>
+        </div>
+    )
 }
 
-// Dropdown button for each main section of the dashboard
+function RadarGraph({ skills, percentages }) {
+
+    const radarData = skills.map((skill, index) => ({
+        subject: skillNamesRadar[skill] ?? skill,
+        percentage: percentages[index] ?? 0,
+    }))
+
+    return (
+        <div className="h-80 min-w-[500px] rounded-md p-4 flex items-center">
+            <ResponsiveContainer width="80%" height="80%">
+
+                <RadarChart data={radarData}>
+                    <PolarGrid />
+                    <PolarAngleAxis dataKey="subject" />
+                    <PolarRadiusAxis domain={[0, 100]} />
+                    <Radar dataKey="percentage" stroke="#dc2626" fill="#dc2626" fillOpacity={0.35} />
+                    <Tooltip />
+                </RadarChart>
+
+            </ResponsiveContainer>
+        </div>
+    )
+}
+
+// Dropdown button for each main section of the statistics
 function MainButton({title, active, setActive}) {
 	return (
 		<DropdownButton onClick={() => setActive(!active)} >
@@ -116,46 +147,150 @@ function StatisticsNavButton({active, buttonId, setActive, text}) {
 	);
 }
 
-// Box with Statistics
-function StatisticsByGraphBox({title, graph}) {
+function GeneralCompetenciesStatisticsBox({ title, graph, period, setPeriod, level, setLevel }) {
+    return (
+        <div className="flex flex-col w-full min-h-[425px] border-black mb-2 p-1">
 
-	const [active1, setActive1] = useState("week") 
-	const [active2, setActive2] = useState("n4") 
+            <Text usage="title" align="center">{title}</Text>
 
-	return (
-		<div className='flex flex-col w-full min-h-[500px] border-black mb-10 p-1'>
+            <div className="flex flex-col items-center min-[700px]:flex-row min-[700px]:max-w-[700px]">
 
-			<Text usage={"title"} align={"center"}>{title}</Text>
+                <div className="mr-2 shrink-0 flex flex-col flex-1">
 
-			<div className='flex flex-col min-[700px]:flex-row min-[700px]:max-w-[700px]'>
-
-				{/* Navigation bar */}
-				<div className={`mr-2 shrink-0 text-wrap flex flex-col flex-1`}>
-					<Text usage={"subtitle"}>Tempo</Text>
-						<StatisticsNavButton active={active1} buttonId="week" setActive={setActive1} text="Última semana" />
-						<StatisticsNavButton active={active1} buttonId="months" setActive={setActive1} text="Últimos 30 dias" />
-						<StatisticsNavButton active={active1} buttonId="all" setActive={setActive1} text="Todo o período" />
-
-					<Text usage={"subtitle"}>Nível</Text>
-					<div className='flex flex-row sm:flex-col gap-1 sm:gap-0'>
-						<StatisticsNavButton active={active2} buttonId="n4" setActive={setActive2} text="N4" />
-						<StatisticsNavButton active={active2} buttonId="n5" setActive={setActive2} text="N5" />
-						<StatisticsNavButton active={active2} buttonId="all" setActive={setActive2} text="Tudo" />
+                    <Text usage="subtitle">Tempo</Text>
+					<div className='flex flex-row gap-1 sm:flex-col sm:gap-0'>
+						<StatisticsNavButton active={period} buttonId="week"   setActive={setPeriod} text="Última semana" />
+						<StatisticsNavButton active={period} buttonId="months" setActive={setPeriod} text="Últimos 30 dias" />
+						<StatisticsNavButton active={period} buttonId="all"    setActive={setPeriod} text="Todo o período" />
 					</div>
-				</div>
 
-				{graph}
+                    <Text usage="subtitle">Nível</Text>
+					<div className='flex flex-row gap-1 sm:flex-col sm:gap-0'>
+						<StatisticsNavButton active={level} buttonId="N4"  setActive={setLevel} text="N4" />
+						<StatisticsNavButton active={level} buttonId="N5"  setActive={setLevel} text="N5" />
+						<StatisticsNavButton active={level} buttonId="all" setActive={setLevel} text="Todos" />
+					</div>
 
-			</div>
-		</div>
-	);
+                </div>
+
+                {graph}
+
+            </div>
+        </div>
+    )
 }
 
+function SpecificCompetenciesStatisticsBox({ title, graph, skills, selectedSkill, setSelectedSkill }) {
+    return (
+        <div className="flex flex-col w-full min-h-[425px] border-black mb-10 p-1">
+
+            <Text usage="title" align="center">{title}</Text>
+
+            <div className="flex flex-col items-center min-[700px]:flex-row min-[700px]:max-w-[700px]">
+
+                <div className="mr-2 shrink-0 flex flex-col flex-1">
+
+                    <Text usage="subtitle">Competência</Text>
+
+                    <div className="flex flex-wrap gap-1">
+
+                        {skills.map(skill => (
+
+                            <SelectableLeafButton
+                                key={skill}
+                                status={selectedSkill === skill ? "selected" : "enabled"}
+                                shape="competency"
+                                onClick={() => setSelectedSkill(skill)}
+                            >
+                                {skillNamesButtons[skill] ?? skill}
+                            </SelectableLeafButton>
+                        ))}
+
+                    </div>
+                </div>
+
+                {graph}
+
+            </div>
+        </div>
+    )
+}
+
+function TimelineStatisticsBox({ title, graph, period, setPeriod, level, setLevel }) {
+    return (
+        <div className="flex flex-col w-full min-h-[425px] border-black mb-10 p-1">
+
+            <Text usage="title" align="center">{title}</Text>
+
+            <div className="flex flex-col items-center min-[700px]:flex-row min-[700px]:max-w-[700px]">
+
+                <div className="mr-2 shrink-0 flex flex-col flex-1">
+
+                    <Text usage="subtitle">Tempo</Text>
+					<div className='flex flex-row gap-1 sm:flex-col sm:gap-0'>
+						<StatisticsNavButton active={period} buttonId="week" setActive={setPeriod} text="Última semana" />
+						<StatisticsNavButton active={period} buttonId="months" setActive={setPeriod} text="Últimos 30 dias" />
+						<StatisticsNavButton active={period} buttonId="all" setActive={setPeriod} text="Todo o período" />
+					</div>
+
+                    <Text usage="subtitle">Nível</Text>
+					<div className='flex flex-row gap-1 sm:flex-col sm:gap-0'>
+						<StatisticsNavButton active={level} buttonId="N4" setActive={setLevel} text="N4" />
+						<StatisticsNavButton active={level} buttonId="N5" setActive={setLevel} text="N5" />
+						<StatisticsNavButton active={level} buttonId="all" setActive={setLevel} text="Todos" />
+					</div>
+
+                </div>
+
+                {graph}
+
+            </div>
+        </div>
+    )
+}
 
 export default function Statistics() {
-	const [active1, setActive1] = useState(false) 
-	const [active2, setActive2] = useState(false) 
-	const [active3, setActive3] = useState(false) 
+
+	const [competencyOpen, setCompetencyOpen] = useState(false)
+	const [timelineOpen, setTimelineOpen] = useState(false)
+
+	const [competencyPeriod, setCompetencyPeriod] = useState("week")
+	const [competencyLevel, setCompetencyLevel] = useState("all")
+
+	const [timelinePeriod, setTimelinePeriod] = useState("week")
+	const [timelineLevel, setTimelineLevel] = useState("all")
+
+	const [skill, setSkill] = useState("kanji")
+
+    const {
+        skills, skillsPercentages,
+		tags, tagsPercentages,
+        periodList, correctList, wrongList,
+        getSkillsGraphInfo,
+        getTagsGraphInfo,
+        getTimeLine,
+        getGeneralInfo,
+    } = useStatistics()
+
+	useEffect(() => {
+		async function loadCompetencyStats() {
+			await Promise.all([
+				getSkillsGraphInfo({ period: competencyPeriod, level: competencyLevel        }),
+				getTagsGraphInfo  ({ period: competencyPeriod, level: competencyLevel, skill }),
+				getGeneralInfo    ({ period: competencyPeriod, level: competencyLevel        }),
+			])
+		}
+		loadCompetencyStats()
+	},
+	[competencyPeriod, competencyLevel, skill])
+
+	useEffect(() => {
+		async function loadTimelineStats() {
+			await getTimeLine({ period: timelinePeriod, level: timelineLevel })
+		}
+		loadTimelineStats()
+	},
+	[timelinePeriod, timelineLevel])
 
 	return (
 		<>
@@ -167,36 +302,65 @@ export default function Statistics() {
 						
 					{/* First row of boxes */}
 					<div className='flex flex-col justify-center items-center w-full'>
-						<MainButton title="Progresso por competências" active={active1} setActive={setActive1} />
+						<MainButton title="Progresso por competências" active={competencyOpen} setActive={setCompetencyOpen} />
 						<div className={`grid grid-cols-1 place-items-center gap-1 w-full min-[1200px]:grid-cols-2
-							transition-all duration-500 ${active1? "max-h-[2000px] opacity-100" : "max-h-[0px] opacity-0 pointer-events-none min-[1200px]:max-h-[2000px] min-[1200px]:pointer-events-auto min-[1200px]:opacity-100"}`}
+							transition-all duration-500 ${competencyOpen? "max-h-[2000px] opacity-100" : "max-h-[0px] opacity-0 pointer-events-none min-[1200px]:max-h-[2000px] min-[1200px]:pointer-events-auto min-[1200px]:opacity-100"}`}
 						>
-							<StatisticsByGraphBox title="Competências Gerais" graph={<RadarGraph/>} />
-							<StatisticsByGraphBox title="Competências Específicas" graph={<RadarGraph/>} />
+							<GeneralCompetenciesStatisticsBox
+								title="Competências Gerais"
+								period={competencyPeriod}
+								setPeriod={setCompetencyPeriod}
+								level={competencyLevel}
+								setLevel={setCompetencyLevel}
+								graph={
+									<RadarGraph
+										skills={skills}
+										percentages={skillsPercentages}
+										selectedSkill={skill}
+										setSelectedSkill={setSkill}
+        							/>
+								}
+							/>
+
+							<SpecificCompetenciesStatisticsBox
+								title="Competências Específicas"
+								skills={skills}
+								selectedSkill={skill}
+								setSelectedSkill={setSkill}
+								graph={
+									<BarGraph
+										tags={tags}
+										percentages={tagsPercentages}
+									/>
+								}
+							/>
 						</div>
 					</div>
-
 
 					{/* Second row of boxes */}
 					<div className='grid grid-cols-1 place-items-center gap-5 w-full min-[1200px]:grid-cols-2'>
 						<div className='w-full flex flex-col items-center justify-center'>
-							<MainButton title="Progresso por competências" active={active2} setActive={setActive2} />
+							<MainButton title="Progresso ao longo do tempo" active={timelineOpen} setActive={setTimelineOpen} />
 							<div className={`w-full transition-all duration-500
-								${active2? "max-h-[2000px] opacity-100" : "max-h-[0px] opacity-0 pointer-events-none min-[1200px]:max-h-[2000px] min-[1200px]:pointer-events-auto min-[1200px]:opacity-100"}`}
+								${timelineOpen? "max-h-[2000px] opacity-100" : "max-h-[0px] opacity-0 pointer-events-none min-[1200px]:max-h-[2000px] min-[1200px]:pointer-events-auto min-[1200px]:opacity-100"}`}
 							>
-								<StatisticsByGraphBox title="Competências Gerais" graph={<BarGraph/>} />
+								<TimelineStatisticsBox
+									title="Por Nível"
+									period={timelinePeriod}
+									setPeriod={setTimelinePeriod}							
+									level={timelineLevel}
+									setLevel={setTimelineLevel}
+									graph={
+										<StackedBarGraph
+											periods={periodList}
+											correct={correctList}
+											wrong={wrongList}
+										/>
+									}
+								/>
+
 							</div>
 						</div>
-
-						<div className='w-full flex flex-col items-center justify-center'>
-							<MainButton title="Progresso por competências" active={active3} setActive={setActive3} />
-							<div className={`w-full transition-all duration-500 bg-yellow mb-10 h-[500px]
-								${active3? "max-h-[2000px] opacity-100" : "max-h-[0px] opacity-0 pointer-events-none min-[1200px]:max-h-[2000px] min-[1200px]:pointer-events-auto min-[1200px]:opacity-100"}`}
-							>
-								<StatisticsByGraphBox title="Competências Gerais" graph={<BarGraph/>} />
-							</div>
-						</div>
-
 					</div>
 				</div>
 			</div>
