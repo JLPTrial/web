@@ -34,6 +34,7 @@ function LoginForm({
             <div>
                 <FormLabel htmlFor="email">Endereço de email</FormLabel>
                 <FormInput
+                    usage={"login_signup"}
                     type="email"
                     placeholder="você@exemplo.com"
                     id="email"
@@ -47,6 +48,7 @@ function LoginForm({
             <div>
                 <FormLabel htmlFor="password">Senha</FormLabel>
                 <FormInput
+                    usage={"login_signup"}
                     type="password"
                     placeholder="Insira a sua senha"
                     id="password"
@@ -119,7 +121,7 @@ export default function LogInPage() {
                 <div className='flex flex-col justify-center items-center gap-7'>
                     <form
                         onSubmit={handleEmailLogin}
-                        className="flex flex-col items-center gap-4"
+                        className="flex flex-col items-center gap-8"
                     >
                         <LoginForm
                             email={email}

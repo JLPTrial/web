@@ -4,7 +4,6 @@ import { cva, type VariantProps } from 'class-variance-authority'
 export const FormInputVariants = cva(
 	// Estilos que devem ser aplicados à componente independentemente da variante (classes-base)
 	`
-	w-[300px] md:w-[475px]
 	px-3 py-2
 	border rounded-md
 	shadow-sm
@@ -22,6 +21,10 @@ export const FormInputVariants = cva(
 						  text-[rgb(27,27,27)]                dark:text-[rgb(244,244,244)]
 						  placeholder:text-[rgb(163,163,163)] dark:placeholder:text-[rgb(116,116,116)]`,
 			},
+			usage: {
+				settings: "w-full sm:w-[300px]",
+				login_signup: "w-[300px] md:w-[475px]"
+			}
 		},
 
 		// Variantes de cada propriedade da componente caso nenhuma seja especificada

@@ -10,13 +10,13 @@ export const TextVariants = cva(
 			// Por sua vez, cada propriedade pode ter vários valores diferentes
 			usage: {
 				page_title:
-					'text-[50px] text-[rgb(255,0,0)] dark:text-[rgb(255,0,0)] font-[900] my-5',
+					'text-[35px] sm:text-[50px] text-[rgb(255,0,0)] dark:text-[rgb(255,0,0)] font-[900] my-5 leading-10',
 				title:
-					'text-[30px] text-[rgb(25,25,25)] dark:text-[rgb(255,255,255)] font-[750] my-2',
+					'text-[30px] text-[rgb(25,25,25)] dark:text-[rgb(255,255,255)] font-[750] my-2 leading-8',
 				subtitle:
 					'text-[20px] text-[rgb(25,25,25)] dark:text-[rgb(220,220,220)] font-[500] my-2',
 				normal:
-					'text-[15px] text-[rgb(50,50,50)] dark:text-[rgb(175,175,175)] font-[250] my-1',
+					'text-[15px] text-[rgb(50,50,50)] dark:text-[rgb(175,175,175)] font-[350] my-1',
 				brushstroke_button_text:
 					'text-[20px] sm:text-[30px] text-[rgb(255,255,255)] font-[750] my-2',
 				brushstroke_info_text:

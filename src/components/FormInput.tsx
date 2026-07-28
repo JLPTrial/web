@@ -7,6 +7,6 @@ import { FormInputVariants, type FormInputStyles } from "../ui/form-input.ts";
 // Também estamos omitindo o atributo "color" do elemento HTML porque estamos usando esse nome na nossa componente
 interface FormInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "color">, FormInputStyles {}
 
-export const FormInput = ({ color, ...props }: FormInputProps) => {
-    return <input className={FormInputVariants({ color })} {...props} />;
+export const FormInput = ({ color, usage, ...props }: FormInputProps) => {
+    return <input className={FormInputVariants({ color, usage })} {...props} />;
 };

@@ -38,6 +38,7 @@ function SignupForm({
             <div>
                 <FormLabel>Nome</FormLabel>
                 <FormInput
+                    usage={"login_signup"}
                     type="text"
                     placeholder="Seu nome"
                     value={name}
@@ -48,6 +49,7 @@ function SignupForm({
             <div>
                 <FormLabel>Endereço de email</FormLabel>
                 <FormInput
+                    usage={"login_signup"}
                     type="email"
                     placeholder="você@exemplo.com"
                     value={email}
@@ -58,6 +60,7 @@ function SignupForm({
             <div>
                 <FormLabel>Senha</FormLabel>
                 <FormInput
+                    usage={"login_signup"}
                     type="password"
                     placeholder="Crie uma senha"
                     value={password}
@@ -128,7 +131,7 @@ export default function SignUpPage() {
                 <div className='flex flex-col justify-center items-center gap-7'>
                     <form
                         onSubmit={handleSignup}
-                        className="flex flex-col items-center gap-4"
+                        className="flex flex-col items-center gap-8"
                     >
                         <SignupForm
                             name={name}

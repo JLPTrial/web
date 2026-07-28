@@ -46,12 +46,13 @@ export default function UserSettings() {
                     <FormLabel>Nome de Usuário</FormLabel>
                     <FormInput
                         type="text"
+                        usage={"settings"}
                         defaultValue={user.name || ''}
                         placeholder="Seu nome de usuário"
                     />
                 </div>
 
-                <LeafButton className="w-full sm:w-[400px] mt-4">
+                <LeafButton shape={"settings"} >
                     Salvar Usuário
                 </LeafButton>
             </ContentBox>
@@ -62,35 +63,35 @@ export default function UserSettings() {
 
                 {/* Change Email */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700 pb-6 mb-6 transition-colors duration-200">
-                    <div>
+                    <div className='w-[67%]'>
                         <Text usage={"subtitle"}>Endereço de E-mail</Text>
                         <p className="text-sm !text-gray-600 dark:!text-gray-400 mt-1">
                             Seu e-mail atual é <strong className="!text-gray-800 dark:!text-gray-200">{user.email || 'não definido'}</strong>.
                         </p>
                     </div>
-                    <LeafButton>
+                    <LeafButton shape={"settings"} >
                         Alterar E-mail
                     </LeafButton>
                 </div>
 
                 {/* Change Password */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700 pb-6 mb-6 transition-colors duration-200">
-                    <div>
+                    <div className='w-[67%]'>
                         <Text usage={"subtitle"}>Senha</Text>
                         <Text usage={"normal"}>Certifique-se de que sua conta esteja usando uma senha segura.</Text>
                     </div>
-                    <LeafButton>
+                    <LeafButton shape={"settings"} >
                         Atualizar Senha
                     </LeafButton>
                 </div>
 
                 {/* Delete Account */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors duration-200">
-                    <div>
+                    <div className='w-[67%]'>
                         <Text usage={"subtitle"}>Excluir Conta</Text>
                         <Text usage={"normal"}>Remover permanentemente sua conta pessoal e todos os seus dados.</Text>
                     </div>
-                    <LeafButton>
+                    <LeafButton shape={"settings"} >
                         Excluir Conta
                     </LeafButton>
                 </div>

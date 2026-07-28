@@ -81,7 +81,7 @@ export default function AudioPlayer({ src }: AudioPlayerProps) {
 
 
     return (
-        <div className="w-full rounded-md border-2 border-[rgb(230,230,230)] bg-white p-4 shadow">
+        <div className="w-full rounded-md border-2 border-[rgb(230,230,230)] dark:border-gray-600 bg-white dark:bg-gray-800 p-4 shadow">
 
             <audio
                 ref={audioRef}
