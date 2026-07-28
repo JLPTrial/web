@@ -21,16 +21,16 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
             {/* Navigation bar shown on desktop (i.e. large screens) */}
             <div className="hidden lg:flex gap-3">
                 
-                <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/question">Questões</NavLink>
-                <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/question-preview">Teste da API</NavLink>
-                <a className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" href="#">Meu Progresso</a>
-                <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/settings">Minha Conta</NavLink>
 
                 {
                     isLoggedIn ? (
-                        <button onClick={handleLogout} className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out">
-                            Sair
-                        </button>
+                        <>
+                            <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/stat">Meu progresso</NavLink>
+                            <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/settings">Minha Conta</NavLink>
+                            <button onClick={handleLogout} className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out">
+                                Sair
+                            </button>
+                        </>
                     ) : (
                         <>
                             <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/signup">Registrar-se</NavLink>
