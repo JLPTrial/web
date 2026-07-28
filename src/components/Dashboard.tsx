@@ -70,7 +70,7 @@ function StatDisplayBox({ title, data, skill, period }) {
 			}
 			i++;
 		}
-		info = `${skillsPercentages[i].toFixed(2)}%`
+		info = `${Number(skillsPercentages[i]).toFixed(2)}%`
 	}
 	else if (data === "answered" && skill === "all") {
 		info = `${Number(totalCorrect) + Number(totalWrong)}/${totalQuestions}`

@@ -10,6 +10,7 @@ import JapaneseTextParser from "./JapaneseTextParser.tsx";
 import { ContentBox } from './ContentBox.tsx';
 import { LeafButton } from './LeafButton.tsx';
 import { LeafBox } from './LeafBox.tsx';
+import { buildUrl } from '../services/api/URLUtils.ts'
 
 
 export default function Question() {
@@ -148,14 +149,14 @@ export default function Question() {
                                                 <>
                                                         {media.audio_file_path && (
                                                                 <div className='flex justify-center m-2 my-5'>
-                                                                        <AudioPlayer src={media.audio_file_path} />
+                                                                        <AudioPlayer src={buildUrl(media.audio_file_path)} />
                                                                 </div>)
                                                         }
                                                         {media.image_file_path && (
                                                                 <div className="flex justify-center m-2">
                                                                         {media.image_file_path && (
                                                                                 <img
-                                                                                        src={media.image_file_path}
+                                                                                        src={buildUrl(media.image_file_path)}
                                                                                         className="w-full md:w-1/2 my-3 p-2 border-2 border-[rgb(230,230,230)] rounded-md"
                                                                                 />
                                                                         )}
