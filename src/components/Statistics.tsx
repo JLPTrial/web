@@ -44,9 +44,9 @@ function BarGraph({ tags, percentages }) {
                     margin={{ top: 20, right: 20, left: 20, bottom: 5 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis domain={[0,100]} />
-                    <Tooltip />
+                    <XAxis dataKey="name" tick={false} />
+                    <YAxis domain={[0,100]} tickFormatter={(tick) => `${tick}%`} />
+                    <Tooltip formatter={(value) => [`${value}%`, "Taxa de acerto"]} />
                     <Bar dataKey="percentage" fill="#ff0000" />
                 </BarChart>
 
@@ -72,7 +72,7 @@ function StackedBarGraph({ periods, correct, wrong }) {
                     margin={{ top: 20, right: 20, left: 20, bottom: 5 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                    <XAxis dataKey="name" tick={false} />
                     <YAxis />
                     <Tooltip />
                     <Legend />
@@ -99,9 +99,9 @@ function RadarGraph({ skills, percentages }) {
                 <RadarChart data={radarData}>
                     <PolarGrid />
                     <PolarAngleAxis dataKey="subject" />
-                    <PolarRadiusAxis domain={[0, 100]} />
+                    <PolarRadiusAxis domain={[0, 100]} tickFormatter={(tick) => `${tick}%`} />
                     <Radar dataKey="percentage" stroke="#dc2626" fill="#dc2626" fillOpacity={0.35} />
-                    <Tooltip />
+                    <Tooltip formatter={(value) => [`${value}%`, "Taxa de acerto"]} />
                 </RadarChart>
 
             </ResponsiveContainer>
@@ -216,11 +216,9 @@ function SpecificCompetenciesStatisticsBox({ title, graph, skills, selectedSkill
     )
 }
 
-function TimelineStatisticsBox({ title, graph, period, setPeriod, level, setLevel }) {
+function TimelineStatisticsBox({ graph, period, setPeriod, level, setLevel }) {
     return (
         <div className="flex flex-col w-full min-h-[425px] border-black mb-10 p-1">
-
-            <Text usage="title" align="center">{title}</Text>
 
             <div className="flex flex-col items-center min-[700px]:flex-row min-[700px]:max-w-[700px]">
 
@@ -303,7 +301,7 @@ export default function Statistics() {
 					{/* First row of boxes */}
 					<div className='flex flex-col justify-center items-center w-full'>
 						<MainButton title="Progresso por competências" active={competencyOpen} setActive={setCompetencyOpen} />
-						<div className={`grid grid-cols-1 place-items-center gap-1 w-full min-[1200px]:grid-cols-2
+						<div className={`grid grid-cols-1 place-items-start gap-1 w-full min-[1200px]:grid-cols-2
 							transition-all duration-500 ${competencyOpen? "max-h-[2000px] opacity-100" : "max-h-[0px] opacity-0 pointer-events-none min-[1200px]:max-h-[2000px] min-[1200px]:pointer-events-auto min-[1200px]:opacity-100"}`}
 						>
 							<GeneralCompetenciesStatisticsBox
@@ -345,7 +343,6 @@ export default function Statistics() {
 								${timelineOpen? "max-h-[2000px] opacity-100" : "max-h-[0px] opacity-0 pointer-events-none min-[1200px]:max-h-[2000px] min-[1200px]:pointer-events-auto min-[1200px]:opacity-100"}`}
 							>
 								<TimelineStatisticsBox
-									title="Por Nível"
 									period={timelinePeriod}
 									setPeriod={setTimelinePeriod}							
 									level={timelineLevel}
