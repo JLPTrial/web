@@ -6,11 +6,14 @@ export const DropdownButtonVariants = cva(
 	h-[70px] my-1 sm:mt-10 sm:mb-7 w-full
 	bg-white text-[#6b6375] dark:bg-gray-900 dark:text-gray-50
     transition-colors duration-200
-	cursor-pointer hover:bg-[rgb(200,200,200)] dark:hover:bg-[rgb(43,48,80)]
 	flex items-center justify-start`,
     {
         // Sem variantes por enquanto
         variants: {
+            usage: {
+                dashboard: "cursor-pointer hover:bg-[rgb(200,200,200)] dark:hover:bg-[rgb(43,48,80)]",
+                statistics: ""
+            }
         },
 
         defaultVariants: {

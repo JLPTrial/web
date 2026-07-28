@@ -5,6 +5,6 @@ import { DropdownButtonVariants, type DropdownButtonStyles } from "../ui/dropdow
 
 interface DropdownButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">, DropdownButtonStyles {}
 
-export const DropdownButton = ({ className, ...props }: DropdownButtonProps) => {
-    return <button className={twMerge(DropdownButtonVariants({ }), className)} {...props} />;
+export const DropdownButton = ({ usage, className, ...props }: DropdownButtonProps) => {
+    return <button className={twMerge(DropdownButtonVariants({ usage }), className)} {...props} />;
 };
