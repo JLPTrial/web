@@ -27,7 +27,7 @@ export const LeafButtonVariants = cva(
                 rectangle: `h-[40px] w-[300px] md:h-[50px] md:w-[200px]`,  // used at Question.tsx and at login/signup screens
                 filter: `h-[60px] px-5`,
                 competency: `h-[40px] sm:w-[160px] w-full sm:rounded-tl-none sm:rounded-br-none sm:rounded-tr-2xl sm:rounded-bl-2xl`,
-                stat: `sm:h-[40px] h-[60px] sm:w-[160px] w-full sm:rounded-tl-none sm:rounded-br-none sm:rounded-tr-2xl sm:rounded-bl-2xl`,
+                stat: `sm:h-[40px] h-[60px] sm:w-[160px] px-2 w-full sm:rounded-tl-none sm:rounded-br-none sm:rounded-tr-2xl sm:rounded-bl-2xl`,
                 tag: `h-[40px] px-5`
             },
             text_size: {

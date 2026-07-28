@@ -36,8 +36,8 @@ function BarGraph({ tags, percentages }) {
     }))
 
     return (
-        <div className='h-80 min-w-[500px] rounded-md p-4 flex items-center'>
-            <ResponsiveContainer width='80%' height='80%'>
+        <div className='h-80 w-full min-w-[300px] rounded-md p-4 flex items-center'>
+            <ResponsiveContainer width='100%' height='100%'>
 
                 <BarChart
                     data={barData}
@@ -46,7 +46,7 @@ function BarGraph({ tags, percentages }) {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" tick={false} />
                     <YAxis domain={[0,100]} tickFormatter={(tick) => `${tick}%`} />
-                    <Tooltip formatter={(value) => [`${value}%`, "Taxa de acerto"]} />
+                    <Tooltip formatter={(value) => [`${value}%`, "Taxa de acerto"]} labelStyle={{color: "#6b6375"}}/>
                     <Bar dataKey="percentage" fill="#ff0000" />
                 </BarChart>
 
@@ -64,8 +64,8 @@ function StackedBarGraph({ periods, correct, wrong }) {
     }))
 
     return (
-        <div className='h-80 min-w-[500px] rounded-md p-4 flex items-center'>
-            <ResponsiveContainer width='80%' height='80%'>
+        <div className='h-80 w-full min-w-[300px] rounded-md p-4 flex items-center'>
+            <ResponsiveContainer width='100%' height='100%'>
 
                 <BarChart
                     data={stackedBarData}
@@ -74,7 +74,7 @@ function StackedBarGraph({ periods, correct, wrong }) {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" tick={false} />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip labelStyle={{color: "#6b6375"}}/>
                     <Legend />
                     <Bar dataKey="Corretas" stackId="a" fill="#15ab12" />
                     <Bar dataKey="Incorretas" stackId="a" fill="#ff0000" />
@@ -93,15 +93,15 @@ function RadarGraph({ skills, percentages }) {
     }))
 
     return (
-        <div className="h-80 min-w-[500px] rounded-md p-4 flex items-center">
-            <ResponsiveContainer width="80%" height="80%">
+        <div className="h-80 w-full min-w-[300px] rounded-md p-4 flex items-center">
+            <ResponsiveContainer width="100%" height="100%">
 
                 <RadarChart data={radarData}>
                     <PolarGrid />
                     <PolarAngleAxis dataKey="subject" />
                     <PolarRadiusAxis domain={[0, 100]} tickFormatter={(tick) => `${tick}%`} />
                     <Radar dataKey="percentage" stroke="#dc2626" fill="#dc2626" fillOpacity={0.35} />
-                    <Tooltip formatter={(value) => [`${value}%`, "Taxa de acerto"]} />
+                    <Tooltip formatter={(value) => [`${value}%`, "Taxa de acerto"]} labelStyle={{color: "#6b6375"}} />
                 </RadarChart>
 
             </ResponsiveContainer>
@@ -140,7 +140,7 @@ function StatisticsNavButton({active, buttonId, setActive, text}) {
         <SelectableLeafButton
             status={active === buttonId ? "selected" : "enabled"}
             onClick={() => setActive(buttonId)}
-            shape={"competency"}
+            shape={"stat"}
             id={buttonId}>
             {text}
         </SelectableLeafButton>
@@ -160,7 +160,7 @@ function GeneralCompetenciesStatisticsBox({ title, graph, period, setPeriod, lev
                     <Text usage="subtitle">Tempo</Text>
 					<div className='flex flex-row gap-1 sm:flex-col sm:gap-0'>
 						<StatisticsNavButton active={period} buttonId="week"   setActive={setPeriod} text="Última semana" />
-						<StatisticsNavButton active={period} buttonId="months" setActive={setPeriod} text="Últimos 30 dias" />
+						<StatisticsNavButton active={period} buttonId="month" setActive={setPeriod} text="Este mês" />
 						<StatisticsNavButton active={period} buttonId="all"    setActive={setPeriod} text="Todo o período" />
 					</div>
 
@@ -199,7 +199,7 @@ function SpecificCompetenciesStatisticsBox({ title, graph, skills, selectedSkill
                             <SelectableLeafButton
                                 key={skill}
                                 status={selectedSkill === skill ? "selected" : "enabled"}
-                                shape="competency"
+                                shape="stat"
                                 onClick={() => setSelectedSkill(skill)}
                             >
                                 {skillNamesButtons[skill] ?? skill}
@@ -227,7 +227,7 @@ function TimelineStatisticsBox({ graph, period, setPeriod, level, setLevel }) {
                     <Text usage="subtitle">Tempo</Text>
 					<div className='flex flex-row gap-1 sm:flex-col sm:gap-0'>
 						<StatisticsNavButton active={period} buttonId="week" setActive={setPeriod} text="Última semana" />
-						<StatisticsNavButton active={period} buttonId="months" setActive={setPeriod} text="Últimos 30 dias" />
+						<StatisticsNavButton active={period} buttonId="month" setActive={setPeriod} text="Este mês" />
 						<StatisticsNavButton active={period} buttonId="all" setActive={setPeriod} text="Todo o período" />
 					</div>
 
@@ -301,7 +301,7 @@ export default function Statistics() {
 					{/* First row of boxes */}
 					<div className='flex flex-col justify-center items-center w-full'>
 						<MainButton title="Progresso por competências" active={competencyOpen} setActive={setCompetencyOpen} />
-						<div className={`grid grid-cols-1 place-items-start gap-1 w-full min-[1200px]:grid-cols-2
+						<div className={`grid grid-cols-1 place-items-center sm:place-items-start gap-1 w-full min-[1200px]:grid-cols-2
 							transition-all duration-500 ${competencyOpen? "max-h-[2000px] opacity-100" : "max-h-[0px] opacity-0 pointer-events-none min-[1200px]:max-h-[2000px] min-[1200px]:pointer-events-auto min-[1200px]:opacity-100"}`}
 						>
 							<GeneralCompetenciesStatisticsBox
