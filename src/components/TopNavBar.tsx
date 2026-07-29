@@ -15,7 +15,7 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
         <header className="relative z-50 bg-white dark:bg-[#111827] h-[64px] px-4 border-b border-[var(--nav-border)] flex items-center justify-between">
 
             <NavLink to="/">
-                <Logo />
+                <Logo height={42} />
             </NavLink>
 
             {/* Navigation bar shown on desktop (i.e. large screens) */}

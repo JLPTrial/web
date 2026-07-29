@@ -64,7 +64,6 @@
 /* Styling of the logo at the top navigation bar */
 
 .brand {
-  height: 42px;
   width: auto;
   cursor: pointer;
   overflow: visible !important;

@@ -5,6 +5,7 @@ import { JapanBackground } from "./JapanBackground";
 import { BrushstrokeButton } from './BrushstrokeButton.tsx';
 import { BrushstrokeBox } from './BrushstrokeBox.tsx';
 import { Text } from './Text.tsx';
+import Logo from './NavBarLogo.tsx';
 
 
 function MainInfo() {
@@ -53,6 +54,7 @@ export default function LandingPage() {
                         <JapanBackground />
 
                         <div className="relative z-50 mt-10 flex flex-col w-full max-w-[1200px] mx-auto sm:px-10 whitespace-pre-line">
+                                <div className='w-[75%] sm:w-[50%] mb-5 sm:mb-20 self-center'><Logo /></div>
                                 <MainInfo />
                                 <SecondaryInfo alignment="right" infoText={secondaryInfo1} />
                                 <SecondaryInfo alignment="left" infoText={secondaryInfo2} />

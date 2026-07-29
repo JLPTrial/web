@@ -6,8 +6,6 @@ const NavBarLogo = (properties: SVGProps<SVGSVGElement>) => (
         className="brand"
         xmlns="http://www.w3.org/2000/svg"
         xmlSpace="preserve"
-        width={139.129}
-        height={42.0}
         viewBox="0 0 422.355 127.5"
         {...properties}
     >
