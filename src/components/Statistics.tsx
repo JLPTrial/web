@@ -326,8 +326,6 @@ export default function Statistics() {
 									<RadarGraph
 										skills={skills}
 										percentages={skillsPercentages}
-										selectedSkill={skill}
-										setSelectedSkill={setSkill}
         							/>
 								}
 							/>
