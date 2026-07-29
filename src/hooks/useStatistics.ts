@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { getStatistics } from '../services/statistics/StatisticsService.ts'
 import type { StatisticResponseModel } from '../models/StatisticsModels.ts'
 
@@ -47,13 +47,20 @@ export function useStatistics() {
     // Loading and Error
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const pendingRequest = useRef<Promise<StatisticResponseModel> | null>(null);
 
     // Fetches statistics - this function should always be called when the statistics page loads for the first time
     const loadStatistics = async (filters: StatsFilters) => {
-        const response = await getStatistics(filters.period, filters.level);
+        if (pendingRequest.current) {
+            return pendingRequest.current;
+        }
+        pendingRequest.current = getStatistics(filters.period, filters.level);
+        const response = await pendingRequest.current;
         setCurrentPeriod(filters.period);
         setCurrentLevel(filters.level);
         setStatistics(response);
+
+        pendingRequest.current = null;
 
         return response;
     }
