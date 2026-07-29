@@ -123,7 +123,7 @@ function MainButton({title, active, setActive}) {
                         border-b-[10px] border-b-transparent
                         border-l-[13px] border-l-red-600
                         transition-transform duration-200
-                        ${active ? 'rotate-90' : 'sm:rotate-90 rotate-0'}
+                        ${active ? 'rotate-90' : 'min-[1200px]:rotate-90 rotate-0'}
                     `}
                 />
 
@@ -149,7 +149,7 @@ function StatisticsNavButton({active, buttonId, setActive, text}) {
 
 function GeneralCompetenciesStatisticsBox({ title, graph, period, setPeriod, level, setLevel }) {
     return (
-        <div className="flex flex-col w-full min-h-[425px] border-black mb-2 p-1">
+        <div className="flex flex-col w-full min-h-[425px] mb-2 p-1">
 
             <Text usage="title" align="center">{title}</Text>
 
@@ -158,14 +158,14 @@ function GeneralCompetenciesStatisticsBox({ title, graph, period, setPeriod, lev
                 <div className="mr-2 shrink-0 flex flex-col flex-1">
 
                     <Text usage="subtitle">Tempo</Text>
-					<div className='flex flex-row gap-1 sm:flex-col sm:gap-0'>
+					<div className='flex flex-row gap-1 min-[700px]:flex-col sm:gap-0'>
 						<StatisticsNavButton active={period} buttonId="week"   setActive={setPeriod} text="Última semana" />
 						<StatisticsNavButton active={period} buttonId="month" setActive={setPeriod} text="Este mês" />
 						<StatisticsNavButton active={period} buttonId="all"    setActive={setPeriod} text="Todo o período" />
 					</div>
 
                     <Text usage="subtitle">Nível</Text>
-					<div className='flex flex-row gap-1 sm:flex-col sm:gap-0'>
+					<div className='flex flex-row gap-1 min-[700px]:flex-col sm:gap-0'>
 						<StatisticsNavButton active={level} buttonId="N4"  setActive={setLevel} text="N4" />
 						<StatisticsNavButton active={level} buttonId="N5"  setActive={setLevel} text="N5" />
 						<StatisticsNavButton active={level} buttonId="all" setActive={setLevel} text="Todos" />
@@ -182,7 +182,7 @@ function GeneralCompetenciesStatisticsBox({ title, graph, period, setPeriod, lev
 
 function SpecificCompetenciesStatisticsBox({ title, graph, skills, selectedSkill, setSelectedSkill }) {
     return (
-        <div className="flex flex-col w-full min-h-[425px] border-black mb-10 p-1">
+        <div className="flex flex-col w-full min-h-[425px] mb-10 p-1">
 
             <Text usage="title" align="center">{title}</Text>
 
@@ -218,21 +218,21 @@ function SpecificCompetenciesStatisticsBox({ title, graph, skills, selectedSkill
 
 function TimelineStatisticsBox({ graph, period, setPeriod, level, setLevel }) {
     return (
-        <div className="flex flex-col w-full min-h-[425px] border-black mb-10 p-1">
+        <div className="flex flex-col w-full min-h-[425px] mb-10 p-1">
 
             <div className="flex flex-col items-center min-[700px]:flex-row min-[700px]:max-w-[700px]">
 
                 <div className="mr-2 shrink-0 flex flex-col flex-1">
 
                     <Text usage="subtitle">Tempo</Text>
-					<div className='flex flex-row gap-1 sm:flex-col sm:gap-0'>
+					<div className='flex flex-row gap-1 min-[700px]:flex-col sm:gap-0'>
 						<StatisticsNavButton active={period} buttonId="week" setActive={setPeriod} text="Última semana" />
 						<StatisticsNavButton active={period} buttonId="month" setActive={setPeriod} text="Este mês" />
 						<StatisticsNavButton active={period} buttonId="all" setActive={setPeriod} text="Todo o período" />
 					</div>
 
                     <Text usage="subtitle">Nível</Text>
-					<div className='flex flex-row gap-1 sm:flex-col sm:gap-0'>
+					<div className='flex flex-row gap-1 min-[700px]:flex-col sm:gap-0'>
 						<StatisticsNavButton active={level} buttonId="N4" setActive={setLevel} text="N4" />
 						<StatisticsNavButton active={level} buttonId="N5" setActive={setLevel} text="N5" />
 						<StatisticsNavButton active={level} buttonId="all" setActive={setLevel} text="Todos" />
@@ -247,10 +247,21 @@ function TimelineStatisticsBox({ graph, period, setPeriod, level, setLevel }) {
     )
 }
 
+function StreakBox({ streak }) {
+    return (
+        <div className="flex flex-col justify-center items-center w-full min-h-[425px] rounded-lg border-2 border-gray-300 dark:border-gray-600 mb-10 mt-3 sm:mt-0 p-1">
+            <Text className='text-[150px] p-15'>🔥</Text>
+            <Text className='text-black dark:text-white' usage={"page_title"} align={"center"}>{streak} {streak === 1 ? "dia" : "dias"}</Text>
+        </div>
+    )
+}
+
+
 export default function Statistics() {
 
 	const [competencyOpen, setCompetencyOpen] = useState(false)
 	const [timelineOpen, setTimelineOpen] = useState(false)
+    const [streakOpen, setStreakOpen] = useState(false)
 
 	const [competencyPeriod, setCompetencyPeriod] = useState("week")
 	const [competencyLevel, setCompetencyLevel] = useState("all")
@@ -264,6 +275,7 @@ export default function Statistics() {
         skills, skillsPercentages,
 		tags, tagsPercentages,
         periodList, correctList, wrongList,
+        streak,
         getSkillsGraphInfo,
         getTagsGraphInfo,
         getTimeLine,
@@ -296,7 +308,7 @@ export default function Statistics() {
 
 			<div className='relative z-50 w-full flex flex-col justify-center items-center'>
 
-				<div className='flex flex-col justify-center items-center w-full min-[700px]:max-w-[700px] min-[1200px]:max-w-full'>
+				<div className='flex flex-col justify-center items-center w-full min-[700px]:max-w-[700px] min-[1200px]:max-w-full gap-5'>
 						
 					{/* First row of boxes */}
 					<div className='flex flex-col justify-center items-center w-full'>
@@ -358,6 +370,17 @@ export default function Statistics() {
 
 							</div>
 						</div>
+
+                        <div className='w-full flex flex-col items-center justify-center'>
+                            <MainButton title="Ofensiva" active={streakOpen} setActive={setStreakOpen} />
+                            <div className={`w-full transition-all duration-500
+                                ${streakOpen? "max-h-[2000px] opacity-100" : "max-h-[0px] opacity-0 pointer-events-none min-[1200px]:max-h-[2000px] min-[1200px]:pointer-events-auto min-[1200px]:opacity-100"}`}
+                            >
+                                <StreakBox
+                                    streak={streak}
+                                />
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
