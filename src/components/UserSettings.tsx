@@ -1,10 +1,27 @@
 import { Link } from 'react-router';
 import useUser from '../hooks/useUser.ts';
-import { useThemeContext } from '../contexts/ThemeProvider.tsx';
+import { useThemeContext } from '../contexts/ThemeContext.ts';
+import { useRequireAuth } from '../hooks/useRequireAuth.ts'
+
+import { FormLabel } from '../components/FormLabel.tsx';
+import { FormInput } from '../components/FormInput.tsx';
+import { ContentBox } from './ContentBox.tsx';
+import { Text } from './Text.tsx';
+import { LeafButton } from './LeafButton.tsx';
+
 
 export default function UserSettings() {
     const { user } = useUser();
     const { theme, toggleTheme } = useThemeContext();
+    const { authStatus } = useRequireAuth()
+
+    if (authStatus === 'pending') {
+        return <div className='p-8 text-center'>Carregando sessão...</div>
+    }
+
+    if (authStatus === 'unauthenticated') {
+        return null
+    }
 
     return (
         <div className="flex flex-col gap-10 w-full max-w-[1200px] mx-auto sm:px-10 my-10 text-left transition-colors duration-200">
@@ -17,102 +34,73 @@ export default function UserSettings() {
                 >
                     &larr; Voltar ao Dashboard
                 </Link>
-                <h1 className="font-bold text-5xl p-1 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Configurações da Conta
-                </h1>
-                <p className="p-2 !text-gray-600 dark:!text-gray-400 transition-colors duration-200">
-                    Gerencie suas informações pessoais e preferências gerais.
-                </p>
+                <Text usage={"page_title"}>Configurações da Conta</Text>
+                <Text usage={"subtitle"}>Gerencie suas informações pessoais e preferências gerais.</Text>
             </div>
 
             {/* Profile Section */}
-            <div className="flex flex-col gap-4 p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-md shadow-sm transition-colors duration-200">
-                <h2 className="font-bold text-2xl mb-2 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Perfil
-                </h2>
+            <ContentBox className="flex flex-col gap-4">
+                <Text usage={"title"}>Perfil</Text>
                 
                 <div>
-                    <label className="block text-sm font-medium mb-1 !text-gray-700 dark:!text-gray-300 transition-colors duration-200">
-                        Nome de Usuário
-                    </label>
-                    <input
-                        className="
-                            w-full sm:w-[400px] px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 
-                            rounded-md shadow-sm focus:outline-none focus:ring-2 
-                            focus:ring-black dark:focus:ring-white focus:border-transparent transition duration-150
-                            !text-gray-900 dark:!text-gray-100
-                        "
+                    <FormLabel>Nome de Usuário</FormLabel>
+                    <FormInput
                         type="text"
+                        usage={"settings"}
                         defaultValue={user.name || ''}
                         placeholder="Seu nome de usuário"
                     />
                 </div>
 
-                <button 
-                    className="
-                        bg-black dark:bg-gray-100 shadow-2xl text-white dark:text-black rounded-lg px-10 py-3 mt-4 
-                        text-l cursor-pointer hover:bg-[rgb(255,0,0)] dark:hover:bg-[rgb(255,0,0)] dark:hover:text-white transition-all 
-                        w-full sm:w-[400px] font-medium
-                    "
-                >
+                <LeafButton shape={"settings"} >
                     Salvar Usuário
-                </button>
-            </div>
+                </LeafButton>
+            </ContentBox>
 
             {/* Account Security Section */}
-            <div className="flex flex-col p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-md shadow-sm transition-colors duration-200">
-                <h2 className="font-bold text-2xl mb-6 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Segurança da Conta
-                </h2>
+            <ContentBox className="flex flex-col gap-4">
+                <Text usage={"title"}>Segurança da Conta</Text>
 
                 {/* Change Email */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700 pb-6 mb-6 transition-colors duration-200">
-                    <div>
-                        <h3 className="font-semibold text-lg !text-gray-900 dark:!text-gray-100">Endereço de E-mail</h3>
+                    <div className='w-[67%]'>
+                        <Text usage={"subtitle"}>Endereço de E-mail</Text>
                         <p className="text-sm !text-gray-600 dark:!text-gray-400 mt-1">
                             Seu e-mail atual é <strong className="!text-gray-800 dark:!text-gray-200">{user.email || 'não definido'}</strong>.
                         </p>
                     </div>
-                    <button className="px-6 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 !text-gray-900 dark:!text-gray-100 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors font-medium shadow-sm">
+                    <LeafButton shape={"settings"} >
                         Alterar E-mail
-                    </button>
+                    </LeafButton>
                 </div>
 
                 {/* Change Password */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700 pb-6 mb-6 transition-colors duration-200">
-                    <div>
-                        <h3 className="font-semibold text-lg !text-gray-900 dark:!text-gray-100">Senha</h3>
-                        <p className="text-sm !text-gray-600 dark:!text-gray-400 mt-1">
-                            Certifique-se de que sua conta esteja usando uma senha segura.
-                        </p>
+                    <div className='w-[67%]'>
+                        <Text usage={"subtitle"}>Senha</Text>
+                        <Text usage={"normal"}>Certifique-se de que sua conta esteja usando uma senha segura.</Text>
                     </div>
-                    <button className="px-6 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 !text-gray-900 dark:!text-gray-100 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors font-medium shadow-sm">
+                    <LeafButton shape={"settings"} >
                         Atualizar Senha
-                    </button>
+                    </LeafButton>
                 </div>
 
                 {/* Delete Account */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors duration-200">
-                    <div>
-                        <h3 className="font-semibold text-lg !text-red-600 dark:!text-red-500">Excluir Conta</h3>
-                        <p className="text-sm !text-red-700 dark:!text-red-400 mt-1">
-                            Remover permanentemente sua conta pessoal e todos os seus dados.
-                        </p>
+                    <div className='w-[67%]'>
+                        <Text usage={"subtitle"}>Excluir Conta</Text>
+                        <Text usage={"normal"}>Remover permanentemente sua conta pessoal e todos os seus dados.</Text>
                     </div>
-                    <button className="px-6 py-2 bg-[rgb(255,0,0)] text-white rounded-md hover:bg-red-800 dark:hover:bg-red-700 transition-colors font-bold shadow-md">
+                    <LeafButton shape={"settings"} >
                         Excluir Conta
-                    </button>
+                    </LeafButton>
                 </div>
-            </div>
+            </ContentBox>
 
             {/* Preferences Section */}
-            <div className="flex flex-col gap-4 p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-md shadow-sm transition-colors duration-200">
-                <h2 className="font-bold text-2xl mb-2 !text-gray-900 dark:!text-gray-100 transition-colors duration-200">
-                    Preferências
-                </h2>
-                <p className="text-sm !text-gray-600 dark:!text-gray-400 mb-4 transition-colors duration-200">
-                    Personalize a sua experiência na plataforma.
-                </p>
+            <ContentBox className="flex flex-col gap-4">
+                <Text usage={"title"}>Preferências</Text>
+                <Text usage={"normal"}>Personalize a sua experiência na plataforma.</Text>
                 
                 <div className="flex items-center gap-3">
                     <button 
@@ -135,7 +123,7 @@ export default function UserSettings() {
                         {theme === 'dark' ? 'Modo Escuro' : 'Modo Claro'}
                     </span>
                 </div>
-            </div>
+            </ContentBox>
 
         </div>
     );

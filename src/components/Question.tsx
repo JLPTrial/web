@@ -1,300 +1,298 @@
-import { useState, useEffect } from 'react'
-import { Navigate, useNavigate } from 'react-router'
-import useUser from '../hooks/useUser.ts'
+import React, { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router'
+import { useRequireAuth } from '../hooks/useRequireAuth.ts'
+import { useQuestions } from '../hooks/useQuestions.ts'
+import type { QuestionFilters } from '../hooks/useQuestions.ts'
 
-import {
-	listeningQuestions,
-} from '../constants/SampleQuestions'
-import { box } from '../ui/box.ts'
-import { leaf_button } from '../ui/leaf-button-variants.ts';
 import AudioPlayer from "./AudioPlayer";
+import JapaneseTextParser from "./JapaneseTextParser.tsx";
+
+import { ContentBox } from './ContentBox.tsx';
+import { LeafButton } from './LeafButton.tsx';
+import { LeafBox } from './LeafBox.tsx';
+import { buildUrl } from '../services/api/URLUtils.ts'
 
 
 export default function Question() {
 
-	const navigate = useNavigate()
+        const navigate = useNavigate()
+        const [searchParams] = useSearchParams()
 
-	const { user, isSessionReady } = useUser()
+        const { authStatus } = useRequireAuth()
 
-	// 'definidor' da questão atual em que o usuário se encontra
-	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+        const {
+                currentQuestion,
+                currentIndex,
+                isLastQuestion,
+                isFinished,
+                isLoading,
+                error,
+                selectedAlternative,
+                answerStatus,
+                getQuestionList,
+                selectAlternative,
+                submitAnswer,
+                nextQuestion,
+        } = useQuestions()
 
-	// será verdadeiro se o usuário estiver na última questão do batch de questões
-	const isLastQuestion = currentQuestionIndex + 1 >= listeningQuestions.length
+        type PopupState = {
+                message: string;
+                type: "correct" | "incorrect";
+        } | null;
 
-	// 'definidor' do estado do batch de questões (este estado será verdadeiro quando o user clicar no botão 'finalizar' na última questão do batch)
-	const [isQuestionsFinished, setIsQuestionsFinished] = useState(false)
+        // 'definidor' de popup para quando o usuário responder uma questão
+        const [popup, setPopup] = useState<PopupState>(null);
 
-	// 'definidor' da alternativa atualmente selecionada pelo usuário na questão atual
-	const [selectedAlternative,  setSelectedAlternative]  = useState<number | null>(null)
+        function showPopup(message: string, type: "correct" | "incorrect", duration = 1400) {
+                setPopup({ message, type });
+                setTimeout(() => { setPopup(null); }, duration);
+        }
 
-	// 'definidor' do estado de resposta da questão [não respondido -> null, respondido -> true/false]
-	const [answerStatus, setAnswerStatus] = useState<boolean | null>(null)
+        function handleQuestionsFinished() {
+                navigate('/')
+        }
 
-	type PopupState = {
-		message: string;
-		type: "correct" | "incorrect";
-	} | null;
+        // busca as questões da API usando os filtros vindos da URL
+        // (os mesmos filtros que a Dashboard envia ao clicar em "Começar")
+        useEffect(() => {
+                const level = (searchParams.get('level') ?? 'N5') as QuestionFilters['level']
+                const topic = (searchParams.get('topic') ?? 'all') as QuestionFilters['topic']
+                const answer_status = (searchParams.get('answer_status') ?? 'new') as QuestionFilters['answer_status']
+                const limit = (searchParams.get('limit') ?? '5') as QuestionFilters['limit']
+                const random = true
+                const mocktest = searchParams.get('mocktest') === 'true';
 
-	// 'definidor' de popup para quando o usuário responder uma questão
-	const [popup, setPopup] = useState<PopupState>(null);
+                void getQuestionList({ level, topic, answer_status, limit, random, mocktest })
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [])
 
-	// questão atualmente sendo mostrada
-	const currentQuestion = listeningQuestions[currentQuestionIndex]
-	/* 
-		OBSERVAÇÃO: por enquanto estamos considerando que o batch (lote) de questões são apenas as questões de
-		export const <question_type>Questions: QuestionModel[],
-		que é uma lista pequena de questões de um dado tipo. Essas questões estão sendo lidas de 'SampleQuestions.ts'.
-	*/
+        // voltar para o topo da janela quando o usuário avançar para a próxima questão
+        useEffect(() => { window.scrollTo({ top: 0 }); }, [currentIndex])
 
-	// mídia da questão (imagem, áudio e transcrição do áudio)
-	const media = currentQuestion.media
+        // Quando fazemos login, pode demorar um pouquinho para sincronizar e validar.
+        // Por isso, retornamos antes de verificar se o usuário está logado para ele não voltar
+        // Para a página de login, caso queiram, podem aproveitar esta micro estrutura para implementar uma tela de loading ou algo assim.
+        if (authStatus === 'pending') {
+        return <div className='p-8 text-center'>Carregando sessão...</div>
+        }
 
+        // impede o usuário de acessar esta página se não estiver logado (mudou)
+        if (authStatus === 'unauthenticated') {
+        return null
+        }
 
-	const alternatives = [
-		currentQuestion.alternatives.alternative_1,
-		currentQuestion.alternatives.alternative_2,
-		currentQuestion.alternatives.alternative_3,
-		currentQuestion.alternatives.alternative_4
-	]
+        // quando usuário terminar o batch de questões, ao invés de mostrar a próxima questão (que não existe), mostre o seguinte:
+        if (isFinished) {
+                return (
+                        <div className='flex flex-col items-center gap-4'>
+                                <div className='font-bold text-2xl p-2 self-center'>Questões finalizadas!</div>
 
+                                <LeafButton
+                                        onClick={ handleQuestionsFinished }
+                                >
+                                        Voltar ao Dashboard
+                                </LeafButton>
+                        </div>
+                )
+        }
 
-	function validateAnswer() {
-		if(selectedAlternative === null) { return }  // se nenhuma alternativa for selecionada
+        if (isLoading) {
+                return <div className='p-8 text-center'>Carregando questões...</div>
+        }
 
-		const isCorrect = selectedAlternative === currentQuestion.alternatives.correct_alternative
-		setAnswerStatus(isCorrect)
-		showPopup(
-			isCorrect ? "Correto!" : "Incorreto!",
-			isCorrect ? "correct" : "incorrect"
-		)
-	}
+        if (error) {
+                return <div className='p-8 text-center text-red-600'>{error}</div>
+        }
 
+        if (!currentQuestion) {
+                return <div className='p-8 text-center'>Nenhuma questão encontrada para estes filtros.</div>
+        }
 
-	function nextQuestion() {
-		setCurrentQuestionIndex((previous) => previous + 1)
+        // mídia da questão (imagem, áudio e transcrição do áudio)
+        const media = currentQuestion.media
 
-		setSelectedAlternative(null)  // define que nenhuma alternativa está selecionada
-		setAnswerStatus(null)         // define que a questão ainda não foi respondida
-	}
+        const alternatives = [
+                currentQuestion.alternatives.alternative_1,
+                currentQuestion.alternatives.alternative_2,
+                currentQuestion.alternatives.alternative_3,
+                currentQuestion.alternatives.alternative_4
+        ]
 
+        // mostrando a questão
+        return(
+                <div className='space-y-5'>
+                        
+                        <ContentBox>
 
-	function finishQuestions() {
-		setIsQuestionsFinished(true)
-	}
+                                {/* NÚMERO DA QUESTÃO (obs: não é o id da questão) */}
+                                <div className='font-bold text-2xl p-2 self-center'>Questão {currentIndex + 1}</div>
 
+                                {/* TAGS DA QUESTÃO */}
+                                <div className="flex flex-wrap gap-4 p-1">
+                                        {currentQuestion.tags.map((tag, index) => (
+                                                <LeafBox shape={"tag"} status={"not_a_button"} text_size={"smaller"} key={index}>
+                                                        {tag}
+                                                </LeafBox>
+                                        ))}
+                                </div>
 
-	function handleQuestionsFinished() {
-		navigate('/')
-	}
+                                <br></br>
 
+                                {/* COMANDO DA QUESTÃO (e.g. 'Leia', 'Escute', etc. */}
+                                <div className='m-2 my-3 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
+                                        {<JapaneseTextParser text={currentQuestion.statement.question_command} />}
+                                </div>
 
-	function showPopup(message: string, type: "correct" | "incorrect", duration = 1400) {
-		setPopup({ message, type });
-		setTimeout(() => { setPopup(null); }, duration);
-	}
+                                {/* MÍDIA (obs: estamos verificando se não é null antes de mostrar) */}
+                                {
+                                        (media !== null) && (
+                                                <>
+                                                        {media.audio_file_path && (
+                                                                <div className='flex justify-center m-2 my-5'>
+                                                                        <AudioPlayer src={buildUrl(media.audio_file_path)} />
+                                                                </div>)
+                                                        }
+                                                        {media.image_file_path && (
+                                                                <div className="flex justify-center m-2">
+                                                                        {media.image_file_path && (
+                                                                                <img
+                                                                                        src={buildUrl(media.image_file_path)}
+                                                                                        className="w-full md:w-1/2 my-3 p-2 border-2 border-[rgb(230,230,230)] rounded-md"
+                                                                                />
+                                                                        )}
+                                                                </div>)
+                                                        }
+                                                        {media.text_content && (
+                                                                <div className='flex justify-center m-2 my-5'>
+                                                                        <div className='m-2 my-3 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
+                                                                                {<JapaneseTextParser text={media.text_content} />}
+                                                                        </div>
+                                                                </div>)
+                                                        }
+                                                </>
+                                        )
+                                }
 
-	// voltar para o topo da janela quando o usuário avançar para a próxima questão
-	useEffect(() => {window.scrollTo({ top: 0 }); }, [currentQuestionIndex])
+                                {/* PERGUNTA DA QUESTÃO (e.g. 'Onde fulano trabalha?') */}
+                                <div className='m-2 mb-8 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
+                                        {<JapaneseTextParser text={currentQuestion.question_text} />}
+                                </div>
 
+                                {/* ALTERNATIVAS */}
+                                <div className='flex flex-col gap-2 mt-4'>
+                                        {
+                                                alternatives.map(
+                                                        (alternative, index) => {
 
-	// Quando fazemos login, pode demorar um pouquinho para sincronizar e validar.
-	// Por isso, retornamos antes de verificar se o usuário está logado para ele não voltar
-	// Para a página de login, caso queiram, podem aproveitar esta micro estrutura para implementar uma tela de loading ou algo assim.
-	if (!isSessionReady) {
-		return <div className='p-8 text-center'>Carregando sessão...</div>
-	}
+                                                                if(!alternative) { return(null) }
 
-	// impede o usuário de acessar esta página se não estiver logado (eu imagino que isso aqui mude quando tivermos autenticação de fato)
-	if (!user.isLoggedIn) { 
-		return(<Navigate to='/login' replace />)
-	}
+                                                                const alternativeNumber = index + 1;
 
-	// quando usuário terminar o batch de questões, ao invés de mostrar a próxima questão (que não existe), mostre o seguinte:
-	if(isQuestionsFinished) {
-		return (
-			<div className='flex flex-col items-center gap-4'>
-				<div className='font-bold text-2xl p-2 self-center'>Questões finalizadas!</div>
+                                                                const isSelected = (selectedAlternative === alternativeNumber);
 
-				<button 
-					className={leaf_button()}
-					onClick={ handleQuestionsFinished }>
-					Voltar ao Dashboard
-				</button>
-			</div>
-		)
-	}
+                                                                const isCorrect = (currentQuestion.alternatives.correct_alternative === alternativeNumber);
 
-	// mostrando a questão
-	return(
-		<div className='space-y-5'>
-			<div className='border-2 border-stone-200 rounded-md p-5 my-3'>
+                                                                const alternativeStyling =
+                                                                        answerStatus === null
+                                                                                ? "bg-white dark:bg-gray-800 border-[rgb(230,230,230)] dark:border-gray-600 hover:border-black dark:hover:border-white hover:bg-[rgb(230,230,230)] dark:hover:bg-gray-700 cursor-pointer"
+                                                                                : isCorrect
+                                                                                        ? "border-[rgb(68,170,0)] bg-[rgb(190,233,161)] dark:bg-[rgb(34,85,0)] dark:border-[rgb(68,170,0)]"
+                                                                                        : isSelected
+                                                                                                ? "border-[rgb(255,0,0)] bg-[rgb(255,192,192)] dark:bg-[rgb(100,0,0)] dark:border-[rgb(255,0,0)]"
+                                                                                                : "border-[rgb(230,230,230)] dark:border-gray-600 opacity-60"
 
-				{/* NÚMERO DA QUESTÃO (obs: não é o id da questão) */}
-				<div className='font-bold text-2xl p-2 self-center'>Questão {currentQuestionIndex +1}</div>
+                                                                return(
 
-				{/* TAGS DA QUESTÃO */}
-				<div className="flex flex-wrap gap-4 p-1">
-					{currentQuestion.tags.map((tag, index) => (
-						<div
-							key={index}
-							className={box()}						>
-							{tag}
-						</div>
-					))}
-				</div>
+                                                                        <label
+                                                                                key={index}
+                                                                                className={`flex items-center gap-2 border-2 rounded-md p-2 m-2 my-1 shadow transition-all ${alternativeStyling}`}
+                                                                        >
 
-				<br></br>
+                                                                                <input
+                                                                                        className="h-4 w-4 ml-1 accent-[rgb(255,0,0)] focus:outline-none"
+                                                                                        type='radio'
+                                                                                        name='question'
+                                                                                        disabled={answerStatus !== null}
+                                                                                        checked={selectedAlternative === alternativeNumber}
+                                                                                        onChange={() => {}}
+                                                                                        onClick={() => selectAlternative(alternativeNumber)}
+                                                                                />
 
-				{/* COMANDO DA QUESTÃO (e.g. 'Leia', 'Escute', etc. */}
-				<div className='m-2 my-3 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
-					{currentQuestion.statement.question_command}
-				</div>
+                                                                                <p className='pl-2'>{<JapaneseTextParser text={alternative} />}</p>
 
-				{/* MÍDIA (obs: estamos verificando se não é null antes de mostrar) */}
-				{
-					(media !== null) && (
-						<>
-							{media.audio_file_path && (
-								<div className='flex justify-center m-2 my-5'>
-									<AudioPlayer src={media.audio_file_path} />
-								</div>)
-							}
-							{media.image_file_path && (
-								<div className="flex justify-center m-2">
-									{media.image_file_path && (
-										<img
-											src={media.image_file_path}
-											className="w-full md:w-1/2 my-3 p-2 border-2 border-[rgb(230,230,230)] rounded-md"
-										/>
-									)}
-								</div>)
-							}
-							{/* media.text_content && (<p>{media.text_content}</p>) */} {/* Acho que não é pra mostrar isso aqui */}
-						</>
-					)
-				}
+                                                                        </label>
+                                                                )
+                                                        }
+                                                )
+                                        }
+                                </div>
 
-				{/* PERGUNTA DA QUESTÃO (e.g. 'Onde fulano trabalha?') */}
-				<div className='m-2 mb-8 p-2 pl-4 border-2 border-[rgb(230,230,230)] dark:border-gray-600 rounded-md shadow dark:bg-gray-800'>
-					{currentQuestion.question_text}
-				</div>
+                                {/* BOTÃO - VERIFICAR RESPOSTA */}
+                                <div className='flex justify-between gap-3 m-2 mt-5'>
+                                        <LeafButton
+                                                status={answerStatus === null && selectedAlternative !== null ? undefined : "disabled"}
+                                                onClick={() => {
+                                                        void submitAnswer().then((isCorrect) => {
+                                                                if (isCorrect === null) { return }
+                                                                showPopup(
+                                                                        isCorrect ? "Correto!" : "Incorreto!",
+                                                                        isCorrect ? "correct" : "incorrect"
+                                                                )
+                                                        })
+                                                }}
+                                                disabled={selectedAlternative === null || answerStatus !== null}
+                                        >
+                                                Verificar Resposta
+                                        </LeafButton>
 
-				{/* ALTERNATIVAS */}
-				<div className='flex flex-col gap-2 mt-4'>
-					{	
-						// vamos mapear o campo 'alternatives' das questões para os elementos <input>
-						alternatives.map(
-							(alternative, index) => {
-
-								// nem todas as questões têm a mesma qtde. de alternativas, vamos tratar isso
-								if(!alternative) { return(null) }
-
-								// '+1' pois as alternativas começam em '1' e index começa em '0'
-								const alternativeNumber = index + 1;
-
-								const isSelected = (selectedAlternative === alternativeNumber);
-
-								const isCorrect = (currentQuestion.alternatives.correct_alternative === alternativeNumber);
-
-								// estilização das alternativas dependendo do caso
-								const alternativeStyling =
-									answerStatus === null
-										? "bg-white dark:bg-gray-800 border-[rgb(230,230,230)] dark:border-gray-600 hover:border-black dark:hover:border-white hover:bg-[rgb(230,230,230)] dark:hover:bg-gray-700 cursor-pointer"
-										: isCorrect
-											? "border-[rgb(68,170,0)] bg-[rgb(190,233,161)] dark:bg-[rgb(34,85,0)] dark:border-[rgb(68,170,0)]"
-											: isSelected
-												? "border-[rgb(255,0,0)] bg-[rgb(255,192,192)] dark:bg-[rgb(100,0,0)] dark:border-[rgb(255,0,0)]"
-												: "border-[rgb(230,230,230)] dark:border-gray-600 opacity-60"
-
-								return(
-
-									<label
-										key={index}
-										className={`flex items-center gap-2 border-2 rounded-md p-2 m-2 my-1 shadow transition-all ${alternativeStyling}`}
-									>
-
-										<input
-											className="h-4 w-4 ml-1 accent-[rgb(255,0,0)] focus:outline-none"
-											type='radio'  // é aquele input que permite apenas uma opção ser selecionada por vez
-											name='question'
-											disabled={answerStatus !== null}  // condição para desabilitação dos input
-											checked={selectedAlternative === alternativeNumber}
-											onClick={() => setSelectedAlternative(null)}  // desmarca a alternativa se ela já estiver selecionada
-											onChange={() => setSelectedAlternative(alternativeNumber)}  // marca a nova alternativa selecionada
-										/>
-
-										<p className='pl-2'>{alternative}</p>
-
-									</label>
-								)
-							}
-						)
-					}
-				</div>
-				
-				{/* BOTÃO - VERIFICAR RESPOSTA */}
-				<div className='flex justify-between gap-3 m-2 mt-5'>
-					<button
-						className={answerStatus === null && selectedAlternative !== null ? leaf_button() : leaf_button({ status: "disabled"})}
-						onClick={validateAnswer}  // botão para validar resposta (e consequentemente ele também marca a questão como respondida)
-						disabled={selectedAlternative === null || answerStatus !== null}  // condição para desabilitação do botão
-					>
-						Verificar Resposta
-					</button> 
-
-					{/* condição para mostrar o botão que leva para a próxima questão */}
-					{
-						answerStatus !== null && (
-							<button 
-								className={leaf_button()}
-								onClick={isLastQuestion ? finishQuestions : nextQuestion}
-							>
-								{isLastQuestion ? 'Finalizar' : 'Próxima Questão'}
-							</button>
-						)
-					}
-				</div>
+                                        {
+                                                answerStatus !== null && (
+                                                        <LeafButton onClick={nextQuestion} >
+                                                                {isLastQuestion ? 'Finalizar' : 'Próxima Questão'}
+                                                        </LeafButton>
+                                                )
+                                        }
+                                </div>
 
 
-				{/* POPUP para quando o usuário responder a questão */}
-				{
-					popup && (
-						<div className="fixed inset-0 flex flex-col items-center justify-center bg-black/15 z-50 animate-question-answer-backdrop">
-							{popup.type === "correct" ?
-								(
-									<div className="flex flex-col items-center justify-center gap-10">
-										<img
-											src="src/assets/correct_answer.svg"
-											alt="Correct"
-											className="h-50 w-50 animate-question-answer-icon"
-										/>
+                                {/* POPUP para quando o usuário responder a questão */}
+                                {
+                                        popup && (
+                                                <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/15 z-50 animate-question-answer-backdrop">
+                                                        {popup.type === "correct" ?
+                                                                (
+                                                                        <div className="flex flex-col items-center justify-center gap-10">
+                                                                                <img
+                                                                                        src="src/assets/correct_answer.svg"
+                                                                                        alt="Correct"
+                                                                                        className="h-50 w-50 animate-question-answer-icon"
+                                                                                />
 
-										<div className="text-[50px] font-bold text-[rgb(68,170,0)] animate-question-answer-text">
-											{popup.message}
-										</div>
-									</div>
-								)
-								: 
-								(
-									<div className="flex flex-col items-center justify-center gap-10">
-										<img
-											src="src/assets/wrong_answer.svg"
-											alt="Wrong"
-											className="h-50 w-50 animate-question-answer-icon"
-										/>
+                                                                                <div className="text-[50px] font-bold text-[rgb(68,170,0)] animate-question-answer-text">
+                                                                                        {popup.message}
+                                                                                </div>
+                                                                        </div>
+                                                                )
+                                                                :
+                                                                (
+                                                                        <div className="flex flex-col items-center justify-center gap-10">
+                                                                                <img
+                                                                                        src="src/assets/wrong_answer.svg"
+                                                                                        alt="Wrong"
+                                                                                        className="h-50 w-50 animate-question-answer-icon"
+                                                                                />
 
-										<div className="text-[35px] font-bold text-[rgb(255,0,0)] animate-question-answer-text">
-											{popup.message}
-										</div>
-									</div>
-								)
-							}
-						</div>
-					)
-				}
+                                                                                <div className="text-[35px] font-bold text-[rgb(255,0,0)] animate-question-answer-text">
+                                                                                        {popup.message}
+                                                                                </div>
+                                                                        </div>
+                                                                )
+                                                        }
+                                                </div>
+                                        )
+                                }
 
-			</div>
-		</div>
-	)
+                        </ContentBox>
+                </div>
+        )
 }

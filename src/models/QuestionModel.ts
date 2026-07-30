@@ -4,6 +4,7 @@
 
 export type QuestionModel = {
 	id: number
+	uid: string
 	question_text: string
 	question_type: string
 	statement: {

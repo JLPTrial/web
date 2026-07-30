@@ -1,62 +1,41 @@
-import { cva } from "class-variance-authority"
+import { cva, type VariantProps } from 'class-variance-authority'
 
-export const text = cva(
-  `
-  text-black
-  leading-relaxed
-  tracking-normal
-  `,
-  {
-    variants: {
-      size: {
-        xs: "text-xs",
-        sm: "text-sm",
-        md: "text-base",
-        lg: "text-lg",
-        xl: "text-xl",
-        "2xl": "text-2xl",
-        "3xl": "text-3xl",
-        "4xl": "text-4xl",
-        "5xl": "text-5xl",
-      },
+// Aqui, vamos definir as variantes da componente
+export const TextVariants = cva(
+	// Estilos que devem ser aplicados à componente independentemente da variante (classes-base)
+	'text-black transition-colors duration-200',
+	{
+		// As variantes são as diferentes propriedades (props) que uma componente pode assumir
+		variants: {
+			// Por sua vez, cada propriedade pode ter vários valores diferentes
+			usage: {
+				page_title:
+					'text-[35px] sm:text-[50px] text-[rgb(255,0,0)] dark:text-[rgb(255,0,0)] font-[900] my-5 leading-10',
+				title:
+					'text-[30px] text-[rgb(25,25,25)] dark:text-[rgb(255,255,255)] font-[750] my-2 leading-8',
+				subtitle:
+					'text-[20px] text-[rgb(25,25,25)] dark:text-[rgb(220,220,220)] font-[500] my-2',
+				normal:
+					'text-[15px] text-[rgb(50,50,50)] dark:text-[rgb(175,175,175)] font-[350] my-1',
+				brushstroke_button_text:
+					'text-[20px] sm:text-[30px] text-[rgb(255,255,255)] font-[750] my-2',
+				brushstroke_info_text:
+					'text-[17px] sm:text-[20px] text-[rgb(255,255,255)] font-[500] my-2 leading-none'
+			},
 
-      weight: {
-        light: "font-light",
-        normal: "font-normal",
-        medium: "font-medium",
-        semibold: "font-semibold",
-        bold: "font-bold",
-      },
+			align: {
+				left: 'text-left',
+				center: 'text-center',
+				right: 'text-right',
+			},
+		},
 
-      tone: {
-	jlpt:"text-red-600",
-        default: "text-white",
-        muted: "text-stone-300",
-        subtle: "text-stone-400",
-        danger: "text-red-500",
-        success: "text-green-500",
-        warning: "text-yellow-400",
-        active: "text-red-300",
-      },
-
-      align: {
-        left: "text-left",
-        center: "text-center",
-        right: "text-right",
-      },
-
-      truncate: {
-        true: "truncate",
-        false: "",
-      },
-    },
-
-    defaultVariants: {
-      size: "md",
-      weight: "normal",
-      tone: "default",
-      align: "left",
-      truncate: false,
-    },
-  }
+		defaultVariants: {
+			usage: 'normal',
+			align: 'left',
+		},
+	},
 )
+
+// Usando o tipo VariantProps para extrair o tipo que criamos no bloco de código acima e exportá-lo
+export type TextStyles = VariantProps<typeof TextVariants>

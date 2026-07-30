@@ -12,25 +12,25 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
     const [open, setOpen] = useState(false);
     return (
         <>
-        <header className="relative z-50 bg-white h-[64px] px-4 border-b border-[var(--nav-border)] flex items-center justify-between">
+        <header className="relative z-50 bg-white dark:bg-[#111827] h-[64px] px-4 border-b border-[var(--nav-border)] flex items-center justify-between">
 
             <NavLink to="/">
-                <Logo />
+                <Logo height={42} />
             </NavLink>
 
             {/* Navigation bar shown on desktop (i.e. large screens) */}
             <div className="hidden lg:flex gap-3">
                 
-                <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/question">Questões</NavLink>
-                <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/question-preview">Teste da API</NavLink>
-                <a className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" href="#">Meu Progresso</a>
-                <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/settings">Minha Conta</NavLink>
 
                 {
                     isLoggedIn ? (
-                        <button onClick={handleLogout} className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out">
-                            Sair
-                        </button>
+                        <>
+                            <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/stat">Meu progresso</NavLink>
+                            <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/settings">Minha Conta</NavLink>
+                            <button onClick={handleLogout} className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out">
+                                Sair
+                            </button>
+                        </>
                     ) : (
                         <>
                             <NavLink className="cursor-pointer px-3 py-1 rounded-full hover:bg-[rgb(232,0,0)] hover:text-white transition duration-200 ease-in-out" to="/signup">Registrar-se</NavLink>
@@ -58,19 +58,15 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
         </header>
 
         {/* Navigation bar shown on mobile (i.e. smaller screens) */}
-        {open && (
-            <div className="flex flex-col items-center gap-2 relative z-50 bg-[rgba(225,225,225,0.5)] text-black p-4 lg:hidden">
-                
-                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/question">Questões</NavLink>
-                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/question-preview">Teste da API</NavLink>
-                <a onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" href="#">Meu Progresso</a>
-                <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/settings">Minha Conta</NavLink>
-
+        <div className={`overflow-hidden transition-all duration-300 ease-in-out lg:hidden ${open ? "max-h-64 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-2 pointer-events-none"}`} >
+            <div className="flex flex-col items-center gap-2 bg-[rgba(225,225,225,0.5)] text-black p-4">
                 {
                     isLoggedIn ? (
-                        <button onClick={handleLogout} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center">
-                            Sair
-                        </button>
+                        <>
+                            <NavLink className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/stat">Meu progresso</NavLink>
+                            <NavLink className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/settings">Minha Conta</NavLink>
+                            <button onClick={handleLogout} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center">Sair</button>
+                        </>
                     ) : (
                         <>
                             <NavLink onClick={() => setOpen(false)} className="cursor-pointer w-full py-1 transition-all duration-150 hover:bg-[rgb(200,200,200)] text-center" to="/signup">Registrar-se</NavLink>
@@ -80,7 +76,8 @@ export default function TopNavBar({ isLoggedIn, handleLogout, }: TopNavBarProper
                 }
 
             </div>
-            )}
+        </div>
+
         </>
     );
 }

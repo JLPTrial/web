@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { leaf_button } from '../ui/leaf-button-variants.ts';
+import { LeafButton } from './LeafButton.tsx';
 
 interface AudioPlayerProps {
     src: string;
@@ -81,7 +81,7 @@ export default function AudioPlayer({ src }: AudioPlayerProps) {
 
 
     return (
-        <div className="w-full rounded-md border-2 border-[rgb(230,230,230)] bg-white p-4 shadow">
+        <div className="w-full rounded-md border-2 border-[rgb(230,230,230)] dark:border-gray-600 bg-white dark:bg-gray-800 p-4 shadow">
 
             <audio
                 ref={audioRef}
@@ -92,13 +92,13 @@ export default function AudioPlayer({ src }: AudioPlayerProps) {
             <div className="flex flex-col-reverse md:flex-row items-center gap-4">
 
                 <div className="flex flex-row gap-1">
-                    <button onClick={restartPlay} className={ leaf_button({shape: "square", text_size: "larger"}) }>
+                    <LeafButton onClick={restartPlay} shape={"square"} text_size={"larger"} >
                         ⏮
-                    </button>
+                    </LeafButton>
 
-                    <button onClick={togglePlay} className={ leaf_button({shape: "square", direction: "right"}) }>
+                    <LeafButton onClick={togglePlay} shape={"square"} text_size={"larger"} >
                         {playing ? "❚❚" : "▶"}
-                    </button>
+                    </LeafButton>
                 </div>
 
                 <div className="flex-1 w-full px-2">

@@ -1,16 +1,19 @@
 import { useState } from 'react'
 import useUser from '../hooks/useUser.ts'
 import { useNavigate } from 'react-router'
-import { leaf_button } from '../ui/leaf-button-variants.ts';
-import { text } from '../ui/text.ts';
-import { form_input } from '../ui/form-input-variants.ts';
-import japanBg from '../assets/japan.svg';
+
+import { JapanBackground } from "./JapanBackground";
+import { FormLabel } from '../components/FormLabel.tsx';
+import { FormInput } from '../components/FormInput.tsx';
+import { Text } from './Text.tsx';
+import { LeafButton } from './LeafButton.tsx';
+
 
 function SignupHeader() {
     return (
         <div className="flex flex-col justify-center text-left w-full p-5 self-center">
-            <div className={text({ tone: "jlpt", size: "5xl", weight: "semibold", align: "center" })}>Registrar-se</div>
-            <div className='p-2 self-center'>Crie uma conta JLPTrial</div>
+            <Text usage={"page_title"} align={"center"}>Registrar-se</Text>
+            <Text usage={"subtitle"} align={"center"}>Crie uma conta JLPTrial</Text>
         </div>
     );
 }
@@ -33,11 +36,9 @@ function SignupForm({
     return (
         <div className="flex flex-col justify-center items-center gap-4">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nome
-                </label>
-                <input
-                    className={form_input()}
+                <FormLabel>Nome</FormLabel>
+                <FormInput
+                    usage={"login_signup"}
                     type="text"
                     placeholder="Seu nome"
                     value={name}
@@ -46,11 +47,9 @@ function SignupForm({
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Endereço de email
-                </label>
-                <input
-                    className={form_input()}
+                <FormLabel>Endereço de email</FormLabel>
+                <FormInput
+                    usage={"login_signup"}
                     type="email"
                     placeholder="você@exemplo.com"
                     value={email}
@@ -59,11 +58,9 @@ function SignupForm({
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Senha
-                </label>
-                <input
-                    className={form_input()}
+                <FormLabel>Senha</FormLabel>
+                <FormInput
+                    usage={"login_signup"}
                     type="password"
                     placeholder="Crie uma senha"
                     value={password}
@@ -125,10 +122,8 @@ export default function SignUpPage() {
 
     return (
         <div className="min-h-[calc(100vh-92px)] flex justify-center items-stretch">
-            <div
-                className="fixed z-0 opacity-33 pointer-events-none inset-0 bg-center bg-no-repeat bg-[length:125vmin] lg:bg-[length:150vmin] transition-transform duration-300 -rotate-30 lg:rotate-0"
-                style={{ backgroundImage: `url(${japanBg})` }}
-            />
+            
+            <JapanBackground />
 
             <div className="relative z-50 flex flex-1 flex-col justify-start items-center gap-3">
                 <SignupHeader />
@@ -136,7 +131,7 @@ export default function SignUpPage() {
                 <div className='flex flex-col justify-center items-center gap-7'>
                     <form
                         onSubmit={handleSignup}
-                        className="flex flex-col items-center gap-4"
+                        className="flex flex-col items-center gap-8"
                     >
                         <SignupForm
                             name={name}
@@ -153,28 +148,28 @@ export default function SignUpPage() {
                             </div>
                         )}
 
+
+                        <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
+                            <LeafButton
+                                type="submit"
+                                disabled={isLoading}
+                                shape={"rectangle"}
+                                >
+                                {isLoading ? 'Criando...' : 'Criar conta'}
+                            </LeafButton>
+
+                            <Text>ou</Text>
+
+                            <LeafButton
+                                type="button"
+                                onClick={handleGoogleSignup}
+                                disabled={isLoading}
+                                shape={"rectangle"}
+                                >
+                                Entrar com Google
+                            </LeafButton>
+                        </div>
                     </form>
-
-                    <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className={leaf_button({ shape: 'rectangle'})}
-                        >
-                            {isLoading ? 'Criando...' : 'Criar conta'}
-                        </button>
-
-                        <p>ou</p>
-
-                        <button
-                            type="button"
-                            onClick={handleGoogleSignup}
-                            disabled={isLoading}
-                            className={leaf_button({ shape: 'rectangle' })}
-                        >
-                            Entrar com Google
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
