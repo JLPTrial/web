@@ -6,97 +6,97 @@ import { useQuestions } from '../hooks/useQuestions.ts'
 import { useStatistics } from '../hooks/useStatistics.ts'
 import type { QuestionFilters } from '../hooks/useQuestions.ts'
 
-import { ContentBox } from './ContentBox.tsx';
-import { Text } from './Text.tsx';
-import { BrushstrokeButton } from './BrushstrokeButton.tsx';
-import { DropdownButton } from './DropdownButton.tsx';
-import { LeafButton } from './LeafButton.tsx';
-import { SelectableLeafButton } from './SelectableLeafButton.tsx';
+import { ContentBox } from './ContentBox.tsx'
+import { Text } from './Text.tsx'
+import { BrushstrokeButton } from './BrushstrokeButton.tsx'
+import { DropdownButton } from './DropdownButton.tsx'
+import { LeafButton } from './LeafButton.tsx'
+import { SelectableLeafButton } from './SelectableLeafButton.tsx'
 
 // Box that displays statistics data
 function StatDisplayBox({ title, data, skill, period }) {
-
 	const {
-        statistics,
+		statistics,
 
-        skills,
-        skillsPercentages,
-        skillsAnswered,
-    
-        totalQuestions,
-        totalCorrect,
-        totalWrong,
-        totalAccuracy,
-    
-        loadStatistics,
-        getSkillsGraphInfo,
-        getGeneralInfo,
-    } = useStatistics()
+		skills,
+		skillsPercentages,
+		skillsAnswered,
 
-	let info: string;
+		totalQuestions,
+		totalCorrect,
+		totalWrong,
+		totalAccuracy,
+
+		loadStatistics,
+		getSkillsGraphInfo,
+		getGeneralInfo,
+	} = useStatistics()
+
+	let info: string
 
 	useEffect(() => {
 		async function load(period) {
-
-
 			const a = await loadStatistics({
 				period: period,
-				level: "all",
-			});
-	
+				level: 'all',
+			})
+			void a // será usada no futuro
+
 			await getSkillsGraphInfo({
 				period: period,
-				level: "all",
-			});
-	
+				level: 'all',
+			})
+
 			await getGeneralInfo({
 				period: period,
-				level: "all",
-			});
+				level: 'all',
+			})
 		}
-	
-		load(period);
-	}, []);
 
-	if (data === "percentage" && skill === "all") {
-		info = `${(Number(totalAccuracy)).toFixed(2)}%`
-	}
-	else if (data === "percentage") {
-		let i=0;
+		load(period)
+	}, [getGeneralInfo, getSkillsGraphInfo, loadStatistics, period])
+
+	if (data === 'percentage' && skill === 'all') {
+		info = `${Number(totalAccuracy).toFixed(2)}%`
+	} else if (data === 'percentage') {
+		let i = 0
 		for (const s of skills) {
-			let skill2 = String(skill);
+			const skill2 = String(skill)
 			if (s === skill2) {
-				break;
+				break
 			}
-			i++;
+			i++
 		}
 		info = `${Number(skillsPercentages[i]).toFixed(2)}%`
-	}
-	else if (data === "answered" && skill === "all") {
+	} else if (data === 'answered' && skill === 'all') {
 		info = `${Number(totalCorrect) + Number(totalWrong)}/${totalQuestions}`
-	}
-	else {
-		let i=0;
+	} else {
+		let i = 0
 		for (const s of skills) {
-			let skill2 = String(skill);
+			const skill2 = String(skill)
 			if (s === skill2) {
-				break;
+				break
 			}
-			i++;
+			i++
 		}
-		info = `${skillsAnswered[i]}/${statistics?.database["question_types"][skill]}`
+		info = `${skillsAnswered[i]}/${statistics?.database['question_types'][skill]}`
 	}
 
 	return (
-			<ContentBox usage={"card"}>
-				<Text usage={"subtitle"} align={"center"}>
-					{title}
-				</Text>
-				<Text usage={"title"} align={"center"}>{info}</Text>
-			</ContentBox>
+		<ContentBox usage={'card'}>
+			<Text
+				usage={'subtitle'}
+				align={'center'}>
+				{title}
+			</Text>
+			<Text
+				usage={'title'}
+				align={'center'}>
+				{info}
+			</Text>
+		</ContentBox>
 	)
 }
-
 
 // Display that contains all boxes with statistics
 function StatisticsDisplay({ skill }) {
@@ -108,25 +108,25 @@ function StatisticsDisplay({ skill }) {
 					title='Porcentagem de acertos'
 					data='percentage'
 					skill={skill}
-					period="all"
+					period='all'
 				/>
 				<StatDisplayBox
 					title='Questões respondidas'
 					data='answered'
 					skill={skill}
-					period="all"
+					period='all'
 				/>
 				<StatDisplayBox
 					title='Porcentagem de acertos hoje'
 					data='percentage'
 					skill={skill}
-					period="day"
+					period='day'
 				/>
 				<StatDisplayBox
 					title='Questões respondidas hoje'
 					data='answered'
 					skill={skill}
-					period="day"
+					period='day'
 				/>
 			</div>
 			<button
@@ -139,13 +139,19 @@ function StatisticsDisplay({ skill }) {
 }
 
 // Navigation buttons in the statistics section (Meu progresso)
-function StatisticsNavButton({ active2, buttonId, setActive2, text, direction }) {
+function StatisticsNavButton({
+	active2,
+	buttonId,
+	setActive2,
+	text,
+	direction,
+}) {
 	return (
 		<SelectableLeafButton
 			direction={direction}
-			status={active2 === buttonId ? "selected" : "enabled"}
+			status={active2 === buttonId ? 'selected' : 'enabled'}
 			onClick={() => setActive2(buttonId)}
-			shape={"competency"}
+			shape={'competency'}
 			id={buttonId}>
 			{text}
 		</SelectableLeafButton>
@@ -175,7 +181,7 @@ function StartButton({
 	topic = 'kanji',
 	level = 'N4',
 	limit = '5',
-	mocktest = 'false'
+	mocktest = 'false',
 }: StartButtonProps) {
 	const navigate = useNavigate()
 	const [popup, setPopup] = useState(false) // variable that defines if warning PopUp is active
@@ -184,7 +190,9 @@ function StartButton({
 	const { getQuestionCount } = useQuestions()
 	return (
 		<>
-			<BrushstrokeButton size={"md"} inkColor={"black"}
+			<BrushstrokeButton
+				size={'md'}
+				inkColor={'black'}
 				onClick={() => {
 					const filters: QuestionFilters = {
 						level: level as QuestionFilters['level'],
@@ -192,21 +200,20 @@ function StartButton({
 						answer_status,
 						limit: limit as QuestionFilters['limit'],
 					}
-					if (mocktest === "true") {
+					if (mocktest === 'true') {
 						const query = new URLSearchParams({
 							mocktest,
 							level,
 						})
 						navigate(`question?${query.toString()}`)
-					}
-					else {
+					} else {
 						getQuestionCount(filters).then((response) => {
 							if (response === 0) {
-								setText("Não há questões para os filtros selecionados.");
-								setPopup(!popup);
+								setText('Não há questões para os filtros selecionados.')
+								setPopup(!popup)
 							} else if (response === -1) {
-								setText("Ocorreu um erro ao tentar buscar questões.");
-								setPopup(!popup);
+								setText('Ocorreu um erro ao tentar buscar questões.')
+								setPopup(!popup)
 							} else {
 								const query = new URLSearchParams({
 									level,
@@ -218,9 +225,12 @@ function StartButton({
 							}
 						})
 					}
-				}}
-			>
-				<Text usage={"brushstroke_button_text"} align={"center"}>Começar</Text>
+				}}>
+				<Text
+					usage={'brushstroke_button_text'}
+					align={'center'}>
+					Começar
+				</Text>
 			</BrushstrokeButton>
 			<WarningPopUp
 				text={text}
@@ -235,9 +245,9 @@ function StartButton({
 function QuestionsButton({ active, buttonId, setActive, text, alignment }) {
 	return (
 		<SelectableLeafButton
-			status={active === buttonId ? "selected" : "enabled"}
+			status={active === buttonId ? 'selected' : 'enabled'}
 			onClick={() => setActive(buttonId)}
-			shape={"filter"}
+			shape={'filter'}
 			direction={alignment}
 			className='w-full'>
 			{text}
@@ -249,9 +259,9 @@ function QuestionsButton({ active, buttonId, setActive, text, alignment }) {
 function FilterLeafButton({ active, buttonId, setActive, text }) {
 	return (
 		<SelectableLeafButton
-			status={active === buttonId ? "selected" : "enabled"}
+			status={active === buttonId ? 'selected' : 'enabled'}
 			onClick={() => setActive(buttonId)}
-			shape={"square"}
+			shape={'square'}
 			direction='right'>
 			{text}
 		</SelectableLeafButton>
@@ -263,7 +273,7 @@ function PopUpLeafButton({ active, setActive }) {
 	return (
 		<LeafButton
 			onClick={() => setActive(!active)}
-			shape={"square"}
+			shape={'square'}
 			direction='right'>
 			OK
 		</LeafButton>
@@ -273,7 +283,9 @@ function PopUpLeafButton({ active, setActive }) {
 // Dropdown button for each main section of the dashboard
 function MainButton({ title, active1, setActive1 }) {
 	return (
-		<DropdownButton usage={"dashboard"} onClick={() => setActive1(!active1)} >
+		<DropdownButton
+			usage={'dashboard'}
+			onClick={() => setActive1(!active1)}>
 			{/* Text div */}
 			<div className='flex items-center gap-3 justify-start'>
 				{/* Dropdown triangle */}
@@ -289,7 +301,7 @@ function MainButton({ title, active1, setActive1 }) {
 				/>
 
 				{/* Main button text */}
-				<Text usage={"title"}>{title}</Text>
+				<Text usage={'title'}>{title}</Text>
 			</div>
 		</DropdownButton>
 	)
@@ -322,7 +334,7 @@ function StatisticsBox() {
 						text='Kanji'
 					/>
 					<StatisticsNavButton
-						direction={"right"}
+						direction={'right'}
 						active2={active2}
 						buttonId='vocabulary'
 						setActive2={setActive2}
@@ -335,7 +347,7 @@ function StatisticsBox() {
 						text='Leitura'
 					/>
 					<StatisticsNavButton
-						direction={"right"}
+						direction={'right'}
 						active2={active2}
 						buttonId='grammar'
 						setActive2={setActive2}
@@ -348,7 +360,7 @@ function StatisticsBox() {
 						text='Audição'
 					/>
 					<StatisticsNavButton
-						direction={"right"}
+						direction={'right'}
 						active2={active2}
 						buttonId='all'
 						setActive2={setActive2}
@@ -582,7 +594,6 @@ function QuestionBox() {
 
 // Main box for mock test
 function MockTestBox({ title }) {
-
 	const [active1, setActive1] = useState(false)
 	const [active2, setActive2] = useState('N4') // variable that defines which number of questions is selected
 
@@ -599,7 +610,6 @@ function MockTestBox({ title }) {
 			<div
 				className={`mt-3 flex flex-col align-center justify-center sm:grid-cols-2 gap-5 transition-all duration-500 ease-out
 			${active1 ? 'max-h-[1000px] opacity-100' : 'max-h-[0px] pointer-events-none opacity-0'}`}>
-
 				{/* Level filter */}
 				<div className='text-xl font-bold p-1'>Nível</div>
 				<div className={`flex flex-row gap-x-1 gap-y-5 mb-5`}>
@@ -619,7 +629,7 @@ function MockTestBox({ title }) {
 
 				<div className='flex items-center justify-center'>
 					<StartButton
-						mocktest="true"
+						mocktest='true'
 						level={active2}
 					/>
 				</div>
